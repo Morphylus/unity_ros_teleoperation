@@ -1,0 +1,436 @@
+<root xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:property name="mm2_to_m2" value="0.000001" />
+<xacro:property name="mm_to_m" value="0.001" />
+
+<xacro:property name="base_mass" value="1.53" />
+<xacro:property name="base_mocap_mount_mass" value="0.197" />
+<xacro:property name="link01_mass" value="2.644" />
+<xacro:property name="link02_mass" value="1.394" />
+<xacro:property name="link03_mass" value="1.1" />
+<xacro:property name="link03_mocap_mount_mass" value="0.132" />
+
+<xacro:property name="link04_4tube_mass" value="0.154" />
+<xacro:property name="link04_4tube_realsense_mass" value="0.02" />
+<xacro:property name="link04_elbow_realsense_mass" value="0.0" />
+<xacro:property name="link04_4tube_mira_mass" value="1.8" />
+<xacro:property name="link04_4tube_wrist1_mass" value="0.05" />
+<xacro:property name="link04_4tube_wrist1_dynamixel_mass" value="0.0216" />
+<xacro:property name="link04_4tube_plate_mass" value="0.03" />
+<xacro:property name="link04_4tube_ftsensor_mass" value="0.220" />
+<xacro:property name="link04_4tube_catchingNet_mass" value="0.05" />
+<xacro:property name="link04_festoHand_mass" value="1.44" />
+<xacro:property name="link04_payload_adapter_mass" value="1.52" />
+<xacro:property name="link04_payload_adapter_wPayload_mass" value="4.17" />
+<xacro:property name="link04_payload_adapter_wRectPayload_mass" value="6.0" />
+<xacro:property name="link04_payload_adapter_wFullPayload_mass" value="8.53" />
+<xacro:property name="link04_realsense_testing_main_structure_mass" value="0.443" />
+<xacro:property name="link04_realsense_testing_realsense_slider_mass" value="0.03" />
+<xacro:property name="link04_realsense_testing_realsense_mount_mass" value="0.009" />
+<xacro:property name="link04_realsense_testing_noFtSensor_mass" value="0.3" />
+
+<xacro:property name="link05_mass" value="1.79" />
+<xacro:property name="link06_mass" value="0.03" />
+<xacro:property name="end_effector_mocap_mount_mass" value="0.119" />
+<xacro:property name="link05_dynamixel_mass" value="0.133" />
+<xacro:property name="link06_dynamixel_mass" value="0.02" />
+
+<!-- The following inertia factors are used to make the simulation stable -->
+<xacro:property name="inertia_factor_forearm_xx" value="5.0"/>
+<xacro:property name="inertia_factor_forearm_yy" value="5.0"/>
+<xacro:property name="inertia_factor_forearm_zz" value="70.0"/>
+<xacro:property name="inertia_factor_wrist_2" value="100.0"/>
+
+<xacro:macro name="dynaarm_inertial" params="link_nbr">
+
+        <!-- *********************************************** -->
+        <!-- *************** base CAD datas. *************** -->
+        <!-- *********************************************** -->
+        <xacro:unless value="${link_nbr-base_nbr}">
+                <inertial>
+                        <mass value="${base_mass}" />
+                        <origin xyz="${0.026302343*mm_to_m} ${-0.226836219*mm_to_m} ${-30.535730330*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${1853.4*mm2_to_m2}"
+                                iyy="${1851.4*mm2_to_m2}" izz="${2234.47*mm2_to_m2}"
+                                ixy="${-4.535*mm2_to_m2}" ixz="${0.9010*mm2_to_m2}"
+                                iyz="${5.559454625*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-base_mocap_mount_nbr}">
+                <inertial>
+                        <mass value="${base_mocap_mount_mass}" />
+                        <origin xyz="${0.0*mm_to_m} ${0.0*mm_to_m} ${0.0*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${793.652405029*mm2_to_m2}"
+                                iyy="${333.473680159*mm2_to_m2}" izz="${933.256614783*mm2_to_m2}"
+                                ixy="${0.000681253*mm2_to_m2}" ixz="${-0.000175675*mm2_to_m2}"
+                                iyz="${-47.017865545*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** shoulder CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link01_nbr}">
+                <inertial>
+                        <mass value="${link01_mass}" />
+                        <origin xyz="0.0 0.0 ${-1.7336*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${10301.21*mm2_to_m2}"
+                                iyy="${3016.50*mm2_to_m2}" izz="${10099.04*mm2_to_m2}"
+                                ixy="${-50.85*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"
+                                iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** upperarm CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link02_nbr}">
+                <inertial>
+                        <mass value="${link02_mass}" />
+                        <origin xyz="${211.09*mm_to_m} ${0.022*mm_to_m} ${-0.317*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${1161.79*mm2_to_m2}"
+                                iyy="${46092.126*mm2_to_m2}" izz="${46279.53*mm2_to_m2}"
+                                ixy="${-0.72*mm2_to_m2}" ixz="${-140.45*mm2_to_m2}"
+                                iyz="${0.007*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** elbow CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link03_nbr}">
+                <inertial>
+                        <mass value="${link03_mass}" />
+                        <origin xyz="${6.8*mm_to_m} ${-84.8*mm_to_m} ${-0.6*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${1384.3*mm2_to_m2}"
+                                iyy="${716.8*mm2_to_m2}" izz="${1130.1*mm2_to_m2}"
+                                ixy="${-41.6*mm2_to_m2}" ixz="${8.5*mm2_to_m2}"
+                                iyz="${-10.5*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-link03_elbow_mocap_mount_nbr}">
+                <inertial>
+                        <mass value="${link03_mocap_mount_mass}" />
+                        <origin xyz="${-42.829390793*mm_to_m} ${-176.117774165*mm_to_m} ${-0.007600871*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${299.351954213*mm2_to_m2}"
+                                iyy="${257.901127388*mm2_to_m2}" izz="${210.754960660*mm2_to_m2}"
+                                ixy="${12.080520345*mm2_to_m2}" ixz="${-0.011575315*mm2_to_m2}"
+                                iyz="${-0.054953969*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** 4tube CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link04_4tube_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_mass}" />
+                        <origin xyz="0.0 0.0 0.133" rpy="0 0 0" />
+                        <xacro:unless value="${simulation_property}">
+                                <inertia ixx="${1850*mm2_to_m2}"
+                                        iyy="${1849*mm2_to_m2}" izz="${115*mm2_to_m2}"
+                                        ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                        </xacro:unless>
+                        <xacro:if value="${simulation_property}">
+                                <inertia ixx="${inertia_factor_forearm_xx*1850*mm2_to_m2}"
+                                        iyy="${inertia_factor_forearm_yy*1849*mm2_to_m2}"
+                                        izz="${inertia_factor_forearm_zz*115*mm2_to_m2}"
+                                        ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                        </xacro:if>
+                </inertial>
+        </xacro:unless>
+        <!-- exported values from meshlab. scaled accordingly -->
+        <xacro:unless value="${link_nbr-link04_4tube_realsense_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_realsense_mass}" />
+                        <origin xyz="-0.02 0.0 -0.001" rpy="0 0 0" />
+                        <inertia ixx="${5*mm2_to_m2}"
+                                iyy="${8*mm2_to_m2}" izz="${12*mm2_to_m2}"
+                                ixy="${0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        
+        <xacro:unless value="${link_nbr-link04_elbow_realsense_nbr}">
+                <!-- not sure about there. just added small values-->
+                <inertial>
+                        <mass value="${link04_4tube_realsense_mass}"/>
+                        <origin xyz="${80.573479*mm_to_m} ${1.560477*mm_to_m} ${2.3759630*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${40*mm2_to_m2}"  iyy="${140*mm2_to_m2}"  izz="${178*mm2_to_m2}"
+                                ixy="${-6.0*mm2_to_m2}" ixz="${5.0*mm2_to_m2}"    
+                                iyx="${-6.0*mm2_to_m2}" iyz="${0*mm2_to_m2}"  izx="${5.0*mm2_to_m2}" izy="${0*mm2_to_m2}"/>
+
+                </inertial>                        
+        </xacro:unless>        
+
+        <xacro:unless value="${link_nbr-link04_4tube_mira_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_mira_mass}" />
+                        <origin xyz="0.14 -0.007 -0.078" rpy="0 0 0" />
+                        <inertia ixx="${2365*mm2_to_m2}"
+                                iyy="${11878*mm2_to_m2}" izz="${13116*mm2_to_m2}"
+                                ixy="${12*mm2_to_m2}" ixz="${180*mm2_to_m2}"    iyz="${164*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-link04_4tube_ftSensor_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_ftsensor_mass}" />
+                        <origin xyz="0.0 0.0 0.015" rpy="0 0 0" />
+                        <inertia ixx="${33.9*mm2_to_m2}"
+                                iyy="${33.9*mm2_to_m2}" izz="${43*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-link04_4tube_ftsPlate_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_plate_mass}" />
+                        <origin xyz="0.0 0.0 0.003" rpy="0 0 0" />
+                        <inertia ixx="${10*mm2_to_m2}"
+                                iyy="${10*mm2_to_m2}" izz="${20*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-link04_4tube_catchingNet_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_catchingNet_mass}" />
+                        <origin xyz="0.0 0.066 0.0447" rpy="0 0 0" />
+                        <inertia ixx="${172.3*mm2_to_m2}"
+                                iyy="${254.8*mm2_to_m2}" izz="${88.9*mm2_to_m2}"
+                                ixy="${-5.4*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** Festo Hand CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link04_festoHand_nbr}">
+                <inertial>
+                        <mass value="${link04_festoHand_mass}" />
+                        <origin xyz="0.01058 -0.00498 0.20527" rpy="0 0 0" />
+                        <inertia ixx="${11393*mm2_to_m2}"
+                                iyy="${11642*mm2_to_m2}" izz="${1811*mm2_to_m2}"
+                                ixy="${38*mm2_to_m2}" ixz="${797*mm2_to_m2}"    iyz="${898*mm2_to_m2}"/>
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** forearm payload adapter CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link04_payloadAdapter_nbr}">
+                <inertial>
+                        <mass value="${link04_payload_adapter_mass}" />
+                        <origin xyz="${0.0*mm_to_m} ${0.0*mm_to_m} ${245.7*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${29283*mm2_to_m2}"
+                                iyy="${29495*mm2_to_m2}" izz="${1773*mm2_to_m2}"
+                                ixy="0" ixz="0"    iyz="0" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_payloadAdapter_wPayload_nbr}">
+                <inertial>
+                        <mass value="${link04_payload_adapter_wPayload_mass}" />
+                        <origin xyz="${0.0*mm_to_m} ${0.0*mm_to_m} ${377.4*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${83333.9*mm2_to_m2}"
+                                iyy="${83334.6*mm2_to_m2}" izz="${11449*mm2_to_m2}"
+                                ixy="0" ixz="0"    iyz="0" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_payloadAdapter_wRectPayload_nbr}">
+                <inertial>
+                        <mass value="${link04_payload_adapter_wRectPayload_mass}" />
+                        <origin xyz="${0.0*mm_to_m} ${0.0*mm_to_m} ${390*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${85554*mm2_to_m2}"
+                                iyy="${98636*mm2_to_m2}" izz="${33488*mm2_to_m2}"
+                                ixy="0" ixz="0"    iyz="0" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_payloadAdapter_wFullPayload_nbr}">
+                <inertial>
+                        <mass value="${link04_payload_adapter_wFullPayload_mass}" />
+                        <origin xyz="${0.0*mm_to_m} ${0.0*mm_to_m} ${439.56*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${125117*mm2_to_m2}"
+                                iyy="${138410*mm2_to_m2}" izz="${43508*mm2_to_m2}"
+                                ixy="0" ixz="0"    iyz="0" />
+                </inertial>
+        </xacro:unless>
+
+
+        <!-- *************************************************** -->
+        <!-- *************** realsense testing CAD datas. *************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link04_realsense_testing_nbr}">
+                <inertial>
+                        <mass value="${link04_realsense_testing_main_structure_mass}" />
+                        <origin xyz="0.0 0.0 0.18285" rpy="0 0 0" />
+                        <inertia ixx="${5344.6*mm2_to_m2}"
+                                iyy="${5348.8*mm2_to_m2}" izz="${267.3*mm2_to_m2}"
+                                ixy="${1.5*mm2_to_m2}" ixz="${-0.7*mm2_to_m2}"    iyz="${1.5*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_realsense_testing_slider_nbr}">
+                <inertial>
+                        <mass value="${link04_realsense_testing_realsense_slider_mass}" />
+                        <origin xyz="0.0 0.055 0.035" rpy="0 0 0" />
+                        <inertia ixx="${21*mm2_to_m2}"
+                                iyy="${5*mm2_to_m2}" izz="${24*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_realsense_testing_interface_nbr}">
+                <inertial>
+                        <mass value="${link04_realsense_testing_realsense_mount_mass}" />
+                        <origin xyz="0.0 0.0 0.006" rpy="0 0 0" />
+                        <inertia ixx="${0.2*mm2_to_m2}"
+                                iyy="${1.7*mm2_to_m2}" izz="${1.6*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <xacro:unless value="${link_nbr-link04_realsense_testing_noFtSensor_nbr}">
+                <inertial>
+                        <mass value="${link04_realsense_testing_noFtSensor_mass}" />
+                        <origin xyz="0.0 0.0 0.129" rpy="0 0 0" />
+                        <inertia ixx="${2787.2*mm2_to_m2}"
+                                iyy="${2786.8*mm2_to_m2}" izz="${227.1*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${0.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- *************** Wrist 1 CAD datas. **************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link05_nbr}">
+                <inertial>
+                        <mass value="${link05_mass}" />
+                        <origin xyz="0.047 0.0 0.029" rpy="0 0 0" />
+                        <inertia ixx="${1672*mm2_to_m2}"
+                                iyy="${4985*mm2_to_m2}" izz="${5210*mm2_to_m2}"
+                                ixy="${0*mm2_to_m2}" ixz="${129.7*mm2_to_m2}"	iyz="${-3.7*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link05_dynamixel_nbr}">
+                <inertial>
+                        <mass value="${link05_dynamixel_mass}" />
+                        <origin xyz="-0.0079 0.0 0.0228" rpy="0 0 0" />
+                        <inertia ixx="${43*mm2_to_m2}"
+                                iyy="${58.7*mm2_to_m2}" izz="${70*mm2_to_m2}"
+                                ixy="${2.4*mm2_to_m2}" ixz="${-1.0*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_4tube_wrist1_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_wrist1_mass}" />
+                        <origin xyz="0.0 -0.0284 0.0223" rpy="0 0 0" />
+                        <inertia ixx="${32*mm2_to_m2}"
+                                iyy="${33*mm2_to_m2}" izz="${17*mm2_to_m2}"
+                                ixy="${0*mm2_to_m2}" ixz="${0*mm2_to_m2}"	iyz="${-5.4*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        <xacro:unless value="${link_nbr-link04_4tube_wrist1_dynamixel_nbr}">
+                <inertial>
+                        <mass value="${link04_4tube_wrist1_dynamixel_mass}" />
+                        <origin xyz="-0.0075 0.0354 0.0349" rpy="0 0 0" />
+                        <inertia ixx="${2458*mm2_to_m2}"
+                                iyy="${172*mm2_to_m2}" izz="${1719*mm2_to_m2}"
+                                ixy="${-16.2*mm2_to_m2}" ixz="${-14*mm2_to_m2}"	iyz="${66.4*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+        
+        <!-- *************************************************** -->
+        <!-- *************** Wrist 2 CAD datas. **************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-link06_nbr}">
+                <inertial>
+                        <mass value="${link06_mass}" />
+                        <origin xyz="0.0 0.0 0.0064" rpy="0 0 0" />
+                        <xacro:unless value="${simulation_property}">
+                                <inertia ixx="${7.4*mm2_to_m2}"
+                                        iyy="${7.4*mm2_to_m2}" izz="${14.2*mm2_to_m2}"
+                                        ixy="${0.0*mm2_to_m2}" ixz="${0*mm2_to_m2}"	iyz="${0.0*mm2_to_m2}" />
+                        </xacro:unless>
+                        <xacro:if value="${simulation_property}">
+                                <inertia ixx="${inertia_factor_wrist_2*7.4*mm2_to_m2}"
+                                        iyy="${inertia_factor_wrist_2*7.4*mm2_to_m2}" izz="${inertia_factor_wrist_2*14.2*mm2_to_m2}"
+                                        ixy="${0.0*mm2_to_m2}" ixz="${0*mm2_to_m2}"	iyz="${0.0*mm2_to_m2}" />
+                        </xacro:if>
+                </inertial>
+        </xacro:unless>
+               
+        <xacro:unless value="${link_nbr-link06_dynamixel_nbr}">
+                <inertial>
+                        <mass value="${link06_dynamixel_mass}" />
+                        <origin xyz="0.0034 0.0 0.0217" rpy="0 0 0" />
+                        <inertia ixx="${6.5*mm2_to_m2}"
+                                iyy="${12.8*mm2_to_m2}" izz="${10.5*mm2_to_m2}"
+                                ixy="${0.0*mm2_to_m2}" ixz="${-1.57*mm2_to_m2}"    iyz="${0.0*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+        <!-- *************************************************** -->
+        <!-- ****************** End effector. ****************** -->
+        <!-- *************************************************** -->
+        <xacro:unless value="${link_nbr-end_effector_mocap_mount_nbr}">
+                <inertial>
+                        <mass value="${end_effector_mocap_mount_mass}" />
+                        <origin xyz="${10.011989679*mm_to_m} ${-0.000384264*mm_to_m} ${42.506262937*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${232.020538566*mm2_to_m2}"
+                                iyy="${156.787805171*mm2_to_m2}" izz="${196.826957375*mm2_to_m2}"
+                                ixy="${0.000073217*mm2_to_m2}" ixz="${-1.423153238*mm2_to_m2}"
+                                iyz="${0.000278443*mm2_to_m2}" />
+                </inertial>
+        </xacro:unless>
+
+</xacro:macro>
+
+</root>
+
+
+<!-- *********************************************** -->
+<!-- *************** Inertia data for the arm with the festo design parts. 
+                        Use with caution. Inertia has changed with new drives! *************** -->
+<!-- *********************************************** -->
+
+                <!-- *********************************************** -->
+                <!-- *************** base CAD datas. *************** -->
+                <!-- *********************************************** -->
+                <!-- <inertial>
+                        <mass value="${1.53}" />
+                        <origin xyz="${0.2956*mm_to_m} ${-0.016*mm_to_m} ${-33.014*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${1679.05*mm2_to_m2}"
+                                iyy="${1661.31*mm2_to_m2}" izz="${2060.95*mm2_to_m2}"
+                                ixy="${-0.2543*mm2_to_m2}" ixz="${-13.77*mm2_to_m2}"
+                                iyz="${0.15*mm2_to_m2}" />
+                </inertial> -->
+                <!-- *************************************************** -->
+                <!-- *************** shoulder CAD datas. *************** -->
+                <!-- *************************************************** -->
+                <!-- <inertial>
+                        <mass value="${4.23}" />
+                        <origin xyz="${-0.010*mm_to_m} ${-0.04*mm_to_m} ${-30.46*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${41334.0*mm2_to_m2}"
+                                iyy="${35722.15*mm2_to_m2}" izz="${48133.33*mm2_to_m2}"
+                                ixy="${15.75*mm2_to_m2}" ixz="${-18.99*mm2_to_m2}"    iyz="${0.81*mm2_to_m2}" />
+                </inertial> -->
+                <!-- *************************************************** -->
+                <!-- *************** upperarm CAD datas. *************** -->
+                <!-- *************************************************** -->
+                <!-- <inertial>
+                        <mass value="${2.61}" />
+                        <origin xyz="${217.73*mm_to_m} ${20.9819*mm_to_m} ${-1.4606*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${5740.7*mm2_to_m2}"
+                                iyy="${54891.8*mm2_to_m2}" izz="${58161.6*mm2_to_m2}"
+                                ixy="${756.2*mm2_to_m2}" ixz="${-500.7*mm2_to_m2}"    iyz="${-72.4*mm2_to_m2}" />
+                </inertial> -->
+                <!-- *************************************************** -->
+                <!-- *************** elbow CAD datas. *************** -->
+                <!-- *************************************************** -->
+                <!-- <inertial>
+                        <mass value="${1.61}" />
+                        <origin xyz="${16.204*mm_to_m} ${-81.64*mm_to_m} ${-0.23*mm_to_m}" rpy="0 0 0" />
+                        <inertia ixx="${4033.82*mm2_to_m2}"
+                                iyy="${6388.99*mm2_to_m2}" izz="${7346.04*mm2_to_m2}"
+                                ixy="${-15.54*mm2_to_m2}" ixz="${-2.82*mm2_to_m2}"    iyz="${-53.54*mm2_to_m2}" />
+                </inertial>  -->

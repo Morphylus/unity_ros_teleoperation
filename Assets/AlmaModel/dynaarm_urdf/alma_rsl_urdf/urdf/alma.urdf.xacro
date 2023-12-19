@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<robot name="alma"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Arguments -->
+  <xacro:arg name="simulation" default="false"/>
+
+  <!-- Load the specific ANYmal urdf here. Default is anymal_c_rsl. -->
+  <xacro:arg name="robot_generation" default="d"/>
+  <xacro:arg name="robot_package" default="anymal_dingo_rsl"/>
+  <xacro:property name="robot_package_property" default="$(arg robot_package)"/>
+  <xacro:property name="robot_generation_property" default="$(arg robot_generation)"/>
+  <xacro:if value="${robot_package_property == 'anymal_c_rsl'}">
+    <xacro:include filename="$(find anymal_c_rsl)/urdf/anymal_c_rsl.urdf.xacro"/>
+  </xacro:if>
+  <xacro:if value="${robot_package_property == 'anymal_dingo_rsl'}">
+    <xacro:include filename="$(find anymal_dingo_rsl)/urdf/anymal_dingo_rsl.urdf.xacro"/>
+  </xacro:if>
+  <xacro:if value="${robot_package_property == 'anymal_donkey_rsl'}">
+    <xacro:include filename="$(find anymal_donkey_rsl)/urdf/anymal_donkey_rsl.urdf.xacro"/>
+  </xacro:if>
+
+  <!-- Load Dynaarm specifics here-->
+  <!-- 0: Default 4tube forearm, 1: Festo hand, 40: payload adapter -->
+  <xacro:arg name="forearm_configuration" default="0" />
+  <xacro:arg name="use_longer_4tube_forearm" default="true" />
+  <!-- choose mounted gripper. If nothing if specified no gripper will be added to the urdf. -->
+  <!-- Options: "Robotiq", "EZgripper", "CatchingNet", "Mocap", "". -->
+  <xacro:arg name="gripper"                         default=""/>
+  <xacro:arg name="use_realsense_forearm"           default="false" />
+  <xacro:arg name="use_realsense_wrist"             default="false" />
+  <xacro:arg name="use_realsense_base"              default="false" />
+  <xacro:arg name="use_realsense_elbow"             default="false" />
+  <xacro:arg name="use_realsense_fts"               default="false" />  
+  <xacro:arg name="realsense_mount_angle_pos"       default="0" /> <!-- 0 is 0 deg, 1 is 15  deg, 2 is 17.5 deg and 3 is 20 deg -->
+  <xacro:arg name="camera_head"                     default="false" />
+  <xacro:arg name="use_mira"                        default="false" />
+  <xacro:arg name="use_mocap_base"                  default="false" />
+  <xacro:arg name="use_mocap_elbow"                 default="false" />
+  <xacro:arg name="nbr_of_dof"                      default="6" />
+  <xacro:arg name="use_ftSensor"                    default="false" />
+  <xacro:arg name="realsense_type"                  default="d435" />
+  <xacro:arg name="wrist_version"                   default="dynadrive" />    <!-- dynadrive or dynamixel -->
+  <xacro:arg name="dynaarm_base_additional_height"  default="0" />    <!-- dynadrive or dynamixel -->
+  <xacro:arg name="reduced_gripper_collision_body"  default="false" />    <!-- false wrist contains collision body for ee as well; true there is a very accurate collision body for the gripper  -->
+  <xacro:arg name="fix_arm_joints"                  default="false" />
+
+  <xacro:property name="forearm_configuration_property"           value="$(arg forearm_configuration)"/>
+  <xacro:property name="use_longer_4tube_forearm_property"        value="$(arg use_longer_4tube_forearm)"/>
+  <xacro:property name="simulation_property"                      value="$(arg simulation)"/>
+  <xacro:property name="gripper_property"                         value="$(arg gripper)"/>
+  <xacro:property name="use_realsense_forearm_property"           value="$(arg use_realsense_forearm)"/>
+  <xacro:property name="use_realsense_wrist_property"             value="$(arg use_realsense_wrist)"/>
+  <xacro:property name="use_realsense_base_property"              value="$(arg use_realsense_base)"/>
+  <xacro:property name="use_realsense_elbow_property"             value="$(arg use_realsense_elbow)"/>
+  <xacro:property name="use_realsense_fts_property"               value="$(arg use_realsense_fts)"/>  
+  <xacro:property name="realsense_mount_angle_property"           value="$(arg realsense_mount_angle_pos)"/>
+  <xacro:property name="use_mira_property"                        value="$(arg use_mira)"/>
+  <xacro:property name="use_mocap_base_property"                  value="$(arg use_mocap_base)"/>
+  <xacro:property name="use_mocap_elbow_property"                 value="$(arg use_mocap_elbow)"/>
+  <xacro:property name="nbr_of_dof_property"                      value="$(arg nbr_of_dof)"/>
+  <xacro:property name="use_ftSensor_property"                    value="$(arg use_ftSensor)"/>
+  <xacro:property name="realsense_type_property"                  value="$(arg realsense_type)"/>
+  <xacro:property name="wrist_version_property"                   value="$(arg wrist_version)"/>
+  <xacro:property name="reduced_gripper_collision_body_property"  value="$(arg reduced_gripper_collision_body)"/>
+  <xacro:property name="dynaarm_base_additional_height_property"  value="$(arg dynaarm_base_additional_height)"/>
+  <xacro:property name="fix_arm_joints_property"                  value="$(arg fix_arm_joints)"/>
+
+  <xacro:include filename="$(find dynaarm_urdf)/urdf/dynaarm_armConfigs.urdf.xacro"/>
+
+  <!-- ANYmal D had a different position of the dynaarm base than ANYmal_c.-->
+  <xacro:if value="${robot_generation_property == 'c'}">
+    <xacro:dynaarm parent_link="base" joint_origin="0.116 0.0 ${0.16+dynaarm_base_additional_height_property}"/>
+  </xacro:if>
+  <xacro:if value="${robot_generation_property == 'd'}">
+    <xacro:dynaarm parent_link="base" joint_origin="0.16525 0.0 0.204"/>
+    <xacro:include filename="$(find alma_rsl_urdf)/urdf/dynaarm_interface_parts.urdf.xacro" />
+    <xacro:dynaarm_interface_parts parent_link="base"/>
+  </xacro:if>
+
+  <!-- Load simple ANYmal collision bodies for self-collision avoidance -->
+  <xacro:arg name="use_simple_collision_geometry" default="true" />
+  <!-- WARNING: the simple collision geometry for the legs will mess with the gazebo simulation-->
+  <xacro:arg name="use_simple_collision_legs_geometry" default="false" />
+  <xacro:if value="$(arg use_simple_collision_geometry)">
+    <xacro:include filename="$(find alma_rsl_urdf)/urdf/alma_self_collision.urdf.xacro"/>
+    <xacro:almaollision_extras legs="$(arg use_simple_collision_legs_geometry)" base="true"/>
+  </xacro:if>
+
+  <xacro:if value="$(arg camera_head)">
+    <xacro:include filename="$(find dynaarm_camera_head_urdf)/urdf/camera_head.urdf.xacro"/>
+    <xacro:camera_head parent="base" origin_xyz="0.35 0 0.1" origin_rpy="0 0 0"/>
+    <!-- <xacro:camera_head parent="base" origin_xyz="-0.3 0.15 0.5" origin_rpy="3.14 0.0 0"/> -->
+    <!-- <xacro:camera_head parent="base" origin_xyz="-0.35 0.0 0.65" origin_rpy="0 0.4 0"/> -->
+  </xacro:if>
+
+
+  <!-- Add gazebo plugin to control Alma in the gazebo simulation -->
+  <xacro:if value="$(arg simulation)">
+    <gazebo>
+      <plugin name="gazebo_ros_control" filename="libalma_gazebo.so">
+        <robotNamespace>alma</robotNamespace>
+        <robotDescription>alma_description</robotDescription>
+        <robotBaseLink>base</robotBaseLink>
+        <statePublisherRate>400.0</statePublisherRate>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+</robot>

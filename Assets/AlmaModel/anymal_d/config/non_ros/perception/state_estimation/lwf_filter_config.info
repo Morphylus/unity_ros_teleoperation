@@ -1,0 +1,185 @@
+Init
+{
+    State
+    {
+        pos_0 0
+        pos_1 0
+        pos_2 0
+        vel_0 0
+        vel_1 0
+        vel_2 0
+        acb_0 0
+        acb_1 0
+        acb_2 0
+        gyb_0 0
+        gyb_1 0
+        gyb_2 0
+        att_x 0
+        att_y 0
+        att_z 0
+        att_w 1
+        PIpos_0 0
+        PIpos_1 0
+        PIpos_2 0
+        PIatt_x 0
+        PIatt_y 0
+        PIatt_z 0
+        PIatt_w 1
+        FP_0_0 0
+        FP_0_1 0
+        FP_0_2 0
+        FP_1_0 0
+        FP_1_1 0
+        FP_1_2 0
+        FP_2_0 0
+        FP_2_1 0
+        FP_2_2 0
+        FP_3_0 0
+        FP_3_1 0
+        FP_3_2 0
+    }
+    Covariance
+    {
+        pos_0 31
+        pos_1 0.01
+        pos_2 0.01
+        vel_0 0.01
+        vel_1 0.01
+        vel_2 0.01
+        acb_0 4e-4
+        acb_1 4e-4
+        acb_2 4e-4
+        gyb_0 3e-4
+        gyb_1 3e-4
+        gyb_2 3e-4
+        PIpos_0 1e6
+        PIpos_1 1e6
+        PIpos_2 1e6
+        att_0 0.01
+        att_1 0.01
+        att_2 0.01
+        PIatt_0 1
+        PIatt_1 1
+        PIatt_2 1
+        FP_0 1e6
+        FP_1 1e6
+        FP_2 1e6
+        FP_3 1e6
+        FP_4 1e6
+        FP_5 1e6
+        FP_6 1e6
+        FP_7 1e6
+        FP_8 1e6
+        FP_9 1e6
+        FP_10 1e6
+        FP_11 1e6
+    }
+}
+Prediction
+{
+    PredictionNoise
+    {
+        pos_0 1e-8
+        pos_1 1e-8
+        pos_2 1e-8
+        vel_0 4e-6
+        vel_1 4e-6
+        vel_2 4e-6
+        acb_0 1e-8
+        acb_1 1e-8
+        acb_2 1e-8
+        gyb_0 3.8e-7
+        gyb_1 3.8e-7
+        gyb_2 3.8e-7
+        att_0 7.6e-7
+        att_1 7.6e-7
+        att_2 7.6e-7
+        PIpos_0 1e-5
+        PIpos_1 1e-5
+        PIpos_2 1e-5
+        PIatt_0 1e-5
+        PIatt_1 1e-5
+        PIatt_2 1e-5
+        FP_0 0.000001
+        FP_1 0.000001
+        FP_2 0.000001
+        FP_3 0.000001
+        FP_4 0.000001
+        FP_5 0.000001
+        FP_6 0.000001
+        FP_7 0.000001
+        FP_8 0.000001
+        FP_9 0.000001
+        FP_10 0.000001
+        FP_11 0.000001
+    }
+    alpha 0.001
+    beta 2
+    kappa 0
+}
+Update0
+{
+    maxNumIteration 10
+    MahalanobisTh0 40 # 12.6511204
+    UpdateNoise
+    {
+        pos_0 0.003
+        pos_1 0.003
+        pos_2 0.003
+        att_0 0.03
+        att_1 0.03
+        att_2 0.03
+    }
+    alpha 0.001
+    beta 2
+    kappa 0
+    updateVecNormTermination 1e-06
+    qVM_x 0
+    qVM_y -1
+    qVM_z 0
+    qVM_w 0
+    MrMV_x 0.038
+    MrMV_y -0.06245
+    MrMV_z 0.1837
+}
+
+
+; M --> imu frame
+; B --> main body frame
+; V --> vision or external pose measurements frame
+
+Update1
+{
+    maxNumIteration 10
+    MahalanobisTh0 100
+    MahalanobisTh1 100
+    MahalanobisTh2 100
+    MahalanobisTh3 100
+    UpdateNoise
+    {
+        kin_0 0.0001
+        kin_1 0.0001
+        kin_2 0.0001
+        kin_3 0.0001
+        kin_4 0.0001
+        kin_5 0.0001
+        kin_6 0.0001
+        kin_7 0.0001
+        kin_8 0.0001
+        kin_9 0.0001
+        kin_10 0.0001
+        kin_11 0.0001
+    }
+    alpha 0.001
+    beta 2
+    kappa 0
+    updateVecNormTermination 1e-06
+    qMB_x 0
+    qMB_y 1
+    qMB_z 0
+    qMB_w 0
+    BrBM_x 0.038
+    BrBM_y 0.06245
+    BrBM_z 0.1837
+    initCovFP 1e6
+}

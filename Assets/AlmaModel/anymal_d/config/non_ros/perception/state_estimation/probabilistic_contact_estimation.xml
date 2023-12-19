@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ProbabilisticContactEstimation foot_center_over_elevation_map="0.0091">
+  <RestConfiguration joint_angle_tolerance_in_rad="0.1"/>
+  <MeasurementModel>
+    <StandardDeviations>
+      <FootVelocity xy="0.50" z="0.2"/>
+      <!-- Small values: Detect lift-off later and contact earlier. Less likely to lose contact (stable contact), less likely to enter regaining -->
+      <!-- Large values: Detect lift-off earlier and contact later. More likely to lose contact (vibrating contact switches), more likely to enter regaining -->
+      <JointAcceleration x="100.0" y="100.0" z="100.0"/>
+      <!-- Small Values: Detect lift-off later and contact earlier. Suppresses noise in stance phase  -->
+      <!-- Large Values: Detect lift-off earlier and contact later. Suppresses noise in swing phase -->
+      <Disturbance x="0.1" y="0.1" z="0.1"/>
+      <!-- Small Values: Detect lift-off later and contact earlier. More trust to contact state (less likely to lose contact). Contact is detected with small contact forces -->
+      <!-- Large Values: Detect lift-off earlier and contact later. More trust to swing state (more likely to lose contact and cause vibrations). Contact is detected if contact forces are large -->
+      <ContactForce x="100.0" y="100.0" z="100.0"/>
+      <GroundHeight value="0.02"/>
+    </StandardDeviations>
+  </MeasurementModel>
+  <TransitionModel>
+    <StandardDeviations>
+      <FootVelocity xy="0.3"/>
+    </StandardDeviations>
+    <Filters vel_filter_constant="0.02"/>
+  </TransitionModel>
+  <TerrainEstimation>
+    <Filters terrain_filter_constant="0.05" ground_height_filter_constant="0.025"/>
+  </TerrainEstimation>
+</ProbabilisticContactEstimation>

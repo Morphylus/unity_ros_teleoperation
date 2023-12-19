@@ -1,0 +1,140 @@
+stack_launcher:
+  stacks:
+    lpc_drivers_cpu12:
+      nodes:
+        hbc_driver:
+          enabled: true
+          name: hbc_driver
+    navigation:
+      nodes:
+        hbc_guidance:
+          enabled: true
+          name: hbc_guidance
+  nodes:
+    hbc_driver:
+      preprocessed_params:
+        lowlevel_controller_commands_path:
+          key: /hbc_driver/lowlevel_controller_commands_path
+          value: $(rospack find hbc_display)/txt/Menu_03/LowlevelControllerServices.txt
+        motion_commands_path:
+          key: /hbc_driver/motion_commands_path
+          value: $(rospack find hbc_display)/txt/Menu_01/Controllers.txt
+        state_estimator_commands_path:
+          key: /hbc_driver/state_estimator_commands_path
+          value: $(rospack find hbc_display)/txt/Menu_02/StateEstimatorServices.txt
+      roslaunch:
+        cpuset: io_prio
+        name: hbc_driver
+        node_type: hbc_driver_node
+        output: log
+        package: hbc_driver
+    hbc_guidance:
+      roslaunch:
+        name: hbc_guidance
+        node_type: hbc_navigation_ros_node
+        output: screen
+        package: hbc_navigation_ros
+hbc_driver:
+  empty_serial_throws_estop: false
+  publish_joy_on_change_only: false
+  lowlevel_controller_commands_path: ""
+  motion_commands_path: ""
+  publishers:
+    joyPublisher:
+      latch: false
+      queue_size: 2
+      topic: /anyjoy/rcu
+  notification:
+    output_devices:
+      hbc_remote_control:
+        queue_size: 200
+        topic: /notification
+  serial_port:
+    baudrate: 57600
+    name: /dev/hbcRemoteControl
+    timeout: 10000
+  standalone: true
+  state_estimator_commands_path: ""
+  subscribers:
+    active_motion_state:
+      queue_size: 1
+      topic: /motion_control_manager/active_motion_state
+    actuator_readings:
+      queue_size: 10
+      topic: /anymal_low_level_controller/actuator_readings_extended_throttled
+    anymal_state:
+      queue_size: 10
+      topic: /state_estimator/anymal_state_throttle
+    battery_state:
+      queue_size: 10
+      topic: /pdb/battery_state
+    control_unit_state:
+      queue_size: 10
+      topic: /motion_control_manager/notify_control_unit_state
+    current_motion_state:
+      queue_size: 1
+      topic: /motion_control_manager/current_motion_state
+    lowlevel_controller_active_state:
+      queue_size: 1
+      topic: /anymal_low_level_controller/current_active_state
+    pin_state:
+      queue_size: 10
+      topic: /pdb/pin_state
+    module_state:
+      queue_size: 1
+      topic: /pdb/module_state
+    slam_node_state:
+      queue_size: 10
+      topic: /slam/node_state
+    collision_reaction_status:
+      queue_size: 1
+      topic: /collision_reaction_status
+    #user_interaction_mode: # (escioni) under feature flag, remove me.
+      #queue_size: 1
+      #topic: /behavior_engine/user_interaction_mode
+  clients:
+    protective_stop:
+      persistent: false
+      service: /motion_control_manager/protective_stop
+    clear_protective_stop:
+      persistent: false
+      service: /motion_control_manager/clear_protective_stop
+  verbose: true
+  worker:
+    name: updateWorker
+    priority: 30
+hbc_guidance:
+  subscribers:
+    hbc_rcu:
+      topic: /anyjoy/rcu
+      queue_size: 1
+  clients:
+    switch_collision_filter_mode:
+      service: /rcu/collision_filter/switch_mode
+      persistent: false
+    switch_default_local_planner:
+      service: /rcu/path_planning_and_following/default_path_follower/switch
+      persistent: false
+    switch_waypoints_recorder_local_planner:
+      service: /waypoints_recording/switch_local_planner
+      persistent: false
+  mode_configurations:
+    local_planner:
+      enabled: true
+      blind:
+        planner_name: strict_path_follower
+        planner_mode: blind
+      perceptive:
+        planner_name: strict_path_follower
+        planner_mode: stop_and_go
+      avoiding:
+        planner_name: smooth_path_follower
+        planner_mode: avoid_obstacles
+    collision_filter:
+      enabled: true
+      blind:
+        mode: blind
+      perceptive:
+        mode: stop_and_go
+      avoiding:
+        mode: stop_and_go

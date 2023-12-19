@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<LocomotionController>
+    <!-- Only used in sim -->
+    <ActuationModel enable="true" policy_file="anydrive_3_6_20210303.txt"/>
+
+    <TerrainModel>
+        <MapTopic input="/elevation_mapping/elevation_map_raw" output="/elevation_map_processing/sub_map"/>
+        <MapToOdomTFFilter dt="0.5" timeConstant="0."/>
+    </TerrainModel>
+
+</LocomotionController>

@@ -1,0 +1,385 @@
+launch:
+  feature_toggles:
+    auditive_inspection_frequency: disabled
+    data_synchronization: disabled
+    diagnostic_mode: disabled
+    docking: disabled
+    environment_data_package: empty_data
+    inspection_intelligence: disabled
+    inspection_payload: disabled
+    point_cloud_odometry: real
+    rcu: disabled
+    sensor_reactions: disabled
+    slam: real
+    state_estimation: real
+    visual_inspection_dial: disabled
+gui:
+  control_lease:
+    model: fixed
+  sensors:
+    wide_angle_camera_front:
+      topic: /wide_angle_camera_front/image_color
+    wide_angle_camera_rear:
+      topic: /wide_angle_camera_rear/image_color
+interaction_marker:
+  initial_reset_timeout: 0.0
+  plugin_setup:
+    plugins:
+      20_set_localization_initial_guess:
+        parameters:
+          publishers:
+            pose:
+              topic: /gui/interaction_marker/localization_initial_guess
+inspection_payload_robot_state_publisher:
+  publish_frequency: 100.0
+load_anymal_description:
+  custom_parameters:
+    bagfile_is_played: true
+slam:
+  localization:
+    enable_on_launch: false
+  mapping:
+    enable_on_launch: false
+slam_gui:
+  presenter:
+    engage_autostart_service: "/slam_gui/engage_autostart"
+    frame_connector_reset_service: /localization_manager/slam_connector/reset
+    initial_guess_reset_service: /slam/clear_initial_guess
+    load_map_service: /slam/load_map_from_file
+    publish_map_service: /slam/publish_map
+    reset_service: /slam/reset
+    reset_slam_supervisor_service: "/slam_supervisor/reset"
+    save_map_service: /slam/save_map_to_file
+    set_initial_guess_method_service: /slam/set_initial_guess_method
+    toggle_localization_service: /slam/toggle_localization
+    toggle_loop_detection_service: /slam/toggle_loop_detection
+    toggle_mapping_service: /slam/toggle_mapping
+stack_launcher:
+  nodes:
+    camera_decompress_template:
+      roslaunch: &camera_decompress_template
+        args: <compressed_template> in:=/<camera_name_template>/image_color raw out:=/<camera_name_template>/image_color
+        name: <camera_name_template>_image_decompress
+        node_type: republish
+        output: screen
+        package: image_transport
+    depth_camera_front_lower_depth_decompress:
+      roslaunch: &depth_camera_depth_decompress
+        <<: *camera_decompress_template
+        args: compressedDepth in:=depth/image_rect_raw raw out:=depth/image_rect_raw
+        name: depth_decompress
+        namespace: /depth_camera_front_lower
+    depth_camera_front_lower_infra1_decompress:
+      roslaunch: &depth_camera_infra_decompress
+        <<: *camera_decompress_template
+        args: compressed in:=infra1/image_rect_raw raw out:=infra1/image_rect_raw
+        name: infra1_decompress
+        namespace: /depth_camera_front_lower
+    depth_camera_front_upper_depth_decompress:
+      roslaunch:
+        <<: *depth_camera_depth_decompress
+        namespace: /depth_camera_front_upper
+    depth_camera_front_upper_infra1_decompress:
+      roslaunch:
+        <<: *depth_camera_infra_decompress
+        namespace: /depth_camera_front_upper
+    depth_camera_rear_lower_depth_decompress:
+      roslaunch:
+        <<: *depth_camera_depth_decompress
+        namespace: /depth_camera_rear_lower
+    depth_camera_rear_lower_infra1_decompress:
+      roslaunch:
+        <<: *depth_camera_infra_decompress
+        namespace: /depth_camera_rear_lower
+    depth_camera_rear_upper_depth_decompress:
+      roslaunch:
+        <<: *depth_camera_depth_decompress
+        namespace: /depth_camera_rear_upper
+    depth_camera_rear_upper_infra1_decompress:
+      roslaunch:
+        <<: *depth_camera_infra_decompress
+        namespace: /depth_camera_rear_upper
+    depth_camera_left_depth_decompress:
+      roslaunch:
+        <<: *depth_camera_depth_decompress
+        namespace: /depth_camera_left
+    depth_camera_left_infra1_decompress:
+      roslaunch:
+        <<: *depth_camera_infra_decompress
+        namespace: /depth_camera_left
+    depth_camera_right_depth_decompress:
+      roslaunch:
+        <<: *depth_camera_depth_decompress
+        namespace: /depth_camera_right
+    depth_camera_right_infra1_decompress:
+      roslaunch:
+        <<: *depth_camera_infra_decompress
+        namespace: /depth_camera_right
+    inspection_payload_robot_state_publisher:
+      roslaunch:
+        name: inspection_payload_robot_state_publisher
+        node_type: robot_state_publisher
+        package: robot_state_publisher
+        remap_args:
+          joint_states:
+            from: joint_states
+            to: inspection_payload/joint_states_zoh
+          robot_description:
+            from: robot_description
+            to: anymal_description
+    interaction_marker:
+      roslaunch:
+        remap_args:
+          tf:
+            from: /tf
+            to: /tf
+    load_anymal_description_from_saved_parameters:
+      finite: true
+      roslaunch:
+        name: load_anymal_description_from_saved_parameters
+        node_type: load_anymal_description_from_saved_parameters
+        output: screen
+        package: anymal_record
+    rqt_gui:
+      roslaunch:
+        remap_args:
+          tf:
+            from: /tf
+            to: /tf
+    wide_angle_camera_front_image_decompress:
+      roslaunch: &wide_angle_camera_decompress
+        <<: *camera_decompress_template
+        args: compressed in:=image_color raw out:=image_color
+        name: image_decompress
+        namespace: /wide_angle_camera_front
+    wide_angle_camera_rear_image_decompress:
+      roslaunch:
+        <<: *wide_angle_camera_decompress
+        namespace: /wide_angle_camera_rear
+  stacks:
+    depth_cameras_infra1:
+      nodes:
+        depth_camera_front_lower_infra1_decompress:
+          enabled: true
+          name: depth_camera_front_lower_infra1_decompress
+        depth_camera_front_upper_infra1_decompress:
+          enabled: true
+          name: depth_camera_front_upper_infra1_decompress
+        depth_camera_rear_lower_infra1_decompress:
+          enabled: true
+          name: depth_camera_rear_lower_infra1_decompress
+        depth_camera_rear_upper_infra1_decompress:
+          enabled: true
+          name: depth_camera_rear_upper_infra1_decompress
+        depth_camera_left_infra1_decompress:
+          enabled: true
+          name: depth_camera_left_infra1_decompress
+        depth_camera_right_infra1_decompress:
+          enabled: true
+          name: depth_camera_right_infra1_decompress
+    # Disable the nodes from navigation for replay stack.
+    navigation:
+      nodes:
+        anymal_state_relay:
+          enabled: false
+        behavior_engine:
+          enabled: false
+        depth_camera_left_depth_image_to_point_cloud:
+          enabled: false
+        depth_camera_right_depth_image_to_point_cloud:
+          enabled: false
+        depth_camera_left_plane_detector:
+          enabled: false
+        depth_camera_right_plane_detector:
+          enabled: false
+        depth_camera_left_point_cloud_self_filter:
+          enabled: false
+        depth_camera_right_point_cloud_self_filter:
+          enabled: false
+        dysfunction_state_publisher:
+          enabled: false
+        monitor_network_llpc:
+          enabled: false
+        path_planning_and_following:
+          enabled: false
+        notification_relay:
+          enabled: false
+        report_relay:
+          enabled: false
+        report_writer:
+          enabled: false
+        sensor_power_supervisor_depth_cameras:
+          enabled: false
+        sensor_power_supervisor_lidar:
+          enabled: false
+        sensor_power_supervisor_wide_angle_cameras:
+          enabled: false
+        slam_supervisor:
+          enabled: false
+        wide_angle_camera_front_image_crop_decimate:
+          enabled: false
+        wide_angle_camera_front_image_debayer:
+          enabled: false
+        wide_angle_camera_front_image_rectifier:
+          enabled: false
+        wide_angle_camera_front_nodelet_manager:
+          enabled: false
+        wide_angle_camera_rear_image_crop_decimate:
+          enabled: false
+        wide_angle_camera_rear_image_debayer:
+          enabled: false
+        wide_angle_camera_rear_image_rectifier:
+          enabled: false
+        wide_angle_camera_rear_nodelet_manager:
+          enabled: false
+    post_process_config:
+      nodes:
+        load_anymal_description:
+          enabled: true
+          name: load_anymal_description
+        load_anymal_description_from_saved_parameters:
+          enabled: true
+          name: load_anymal_description_from_saved_parameters
+    terrain_mapping: # Notice this stack doesn't contain depth_camera_front_upper related nodes, which are added into replay stack individually.
+      nodes:
+        depth_camera_front_lower_plane_detector:
+          enabled: true
+          name: depth_camera_front_lower_plane_detector
+        depth_camera_left_plane_detector:
+          enabled: true
+          name: depth_camera_left_plane_detector
+        depth_camera_rear_lower_plane_detector:
+          enabled: true
+          name: depth_camera_rear_lower_plane_detector
+        depth_camera_rear_upper_plane_detector:
+          enabled: true
+          name: depth_camera_rear_upper_plane_detector
+        depth_camera_right_plane_detector:
+          enabled: true
+          name: depth_camera_right_plane_detector
+        depth_camera_front_lower_nodelet_manager:
+          enabled: true
+          name: depth_camera_front_lower_nodelet_manager
+        depth_camera_left_nodelet_manager:
+          enabled: true
+          name: depth_camera_left_nodelet_manager
+        depth_camera_rear_lower_nodelet_manager:
+          enabled: true
+          name: depth_camera_rear_lower_nodelet_manager
+        depth_camera_rear_upper_nodelet_manager:
+          enabled: true
+          name: depth_camera_rear_upper_nodelet_manager
+        depth_camera_right_nodelet_manager:
+          enabled: true
+          name: depth_camera_right_nodelet_manager
+        depth_camera_front_lower_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_front_lower_depth_image_to_point_cloud
+        depth_camera_left_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_left_depth_image_to_point_cloud
+        depth_camera_rear_lower_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_rear_lower_depth_image_to_point_cloud
+        depth_camera_rear_upper_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_rear_upper_depth_image_to_point_cloud
+        depth_camera_right_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_right_depth_image_to_point_cloud
+        depth_camera_front_lower_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_front_lower_point_cloud_self_filter
+        depth_camera_left_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_left_point_cloud_self_filter
+        depth_camera_rear_lower_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_rear_lower_point_cloud_self_filter
+        depth_camera_rear_upper_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_rear_upper_point_cloud_self_filter
+        depth_camera_right_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_right_point_cloud_self_filter
+        elevation_mapping:
+          enabled: true
+          name: elevation_mapping
+    # Disable the nodes from user_interface for replay stack.
+    user_interface:
+      nodes:
+        monitor_network_op:
+          enabled: false
+        pharos_map_editor:
+          enabled: false
+        play_audio:
+          enabled: false
+        slam_maps_transformer:
+          enabled: false
+        tf_opc_relay:
+          enabled: false
+    wide_angle_cameras:
+      nodes:
+        wide_angle_camera_front_image_decompress:
+          enabled: true
+          name: wide_angle_camera_front_image_decompress
+        wide_angle_camera_front_nodelet_manager:
+          enabled: true
+          name: wide_angle_camera_front_nodelet_manager
+        wide_angle_camera_front_image_rectifier:
+          enabled: true
+          name: wide_angle_camera_front_image_rectifier
+        wide_angle_camera_rear_image_decompress:
+          enabled: true
+          name: wide_angle_camera_rear_image_decompress
+        wide_angle_camera_rear_nodelet_manager:
+          enabled: true
+          name: wide_angle_camera_rear_nodelet_manager
+        wide_angle_camera_rear_image_rectifier:
+          enabled: true
+          name: wide_angle_camera_rear_image_rectifier
+    replay:
+      nodes:
+        anymal_tf_publisher:
+          enabled: true
+          name: anymal_tf_publisher
+        depth_camera_front_upper_plane_detector:
+          enabled: true
+          name: depth_camera_front_upper_plane_detector
+        depth_camera_front_upper_nodelet_manager:
+          enabled: true
+          name: depth_camera_front_upper_nodelet_manager
+        depth_camera_front_upper_depth_image_to_point_cloud:
+          enabled: true
+          name: depth_camera_front_upper_depth_image_to_point_cloud
+        depth_camera_front_upper_point_cloud_self_filter:
+          enabled: true
+          name: depth_camera_front_upper_point_cloud_self_filter
+        inspection_payload_robot_state_publisher:
+          enabled: true
+          name: inspection_payload_robot_state_publisher
+        lidar_nodelet_cloud:
+          enabled: true
+          name: lidar_nodelet_cloud
+        lidar_nodelet_manager:
+          enabled: true
+          name: lidar_nodelet_manager
+        state_estimator:
+          enabled: false
+          name: state_estimator
+      stacks:
+        navigation:
+          enabled: true
+          name: navigation
+        terrain_mapping:
+          enabled: false
+          name: terrain_mapping
+        user_interface:
+          enabled: true
+          name: user_interface
+        wide_angle_cameras:
+          enabled: false
+          name: wide_angle_cameras
+state_estimator:
+  standalone: true
+use_sim_time: true

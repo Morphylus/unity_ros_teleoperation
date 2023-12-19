@@ -1,0 +1,84 @@
+<launch>
+
+  <arg name="description_name"               default="dynaarm_description"/>
+  <arg name="description_file"               default="$(find dynaarm_urdf)/urdf/dynaarm.urdf.xacro"/>
+    
+  <!-- parameter to choose the forearm configuration.
+  -1 = no forearm mounted
+  0 = default final forearm to be used with realsense, wrist, robotiq
+  1 = festo hand,
+  40 = payload adapter configuration (large rectangular lasercutted forearm, add payload with 41,42,43),
+  50 = drill dummy
+  7 = temporary lasercut forearm to attach realsense and robotiq. Robotiq can be added with or without ftSensor,  -->
+  <arg name="forearm_configuration" default="0"/>
+  <!-- add the realsense model to the urdf. Will only be added if possible -->
+  <arg name="use_realsense_forearm"                default="false"/>       <!-- true for visual servoing -->
+  <arg name="use_realsense_wrist"                  default="false"/>       <!-- true for visual servoing -->
+  <arg name="use_realsense_base"                   default="false"/>       <!-- true for visual servoing -->
+  <arg name="use_realsense_elbow"                  default="false"/>       <!-- true for visual servoing -->
+  <arg name="realsense_mount_angle_pos"            default="0"/>           <!-- only relevant when use_realsense_elbow is true: 0 is 0 deg, 1 is 15  deg, 2 is 17.5 deg and 3 is 20 deg -->  
+  <arg name="use_realsense_fts"                    default="true"/>  
+  <!-- relevant just if use_realsense_forearm or realsense_wrist is set to true -->
+  <arg name="realsense_type"        default="d435"/>
+  <!-- add the tf sensor model to the urdf. Will only be added if possible -->
+  <arg name="use_ftSensor"          default="false"/>
+  <!-- used to set whether the realsense should publish simulated camera images and infos -->
+  <arg name="simulation"            default="false"/>
+  <!-- choose mounted gripper. If nothing if specified no gripper will be added to the urdf. -->
+  <!-- Options: "Robotiq", "EZgripper", "CatchingNet", "Mocap", "". -->
+  <arg name="Gripper"               default=""/>
+  <!-- Can choose which mocap mount to load separately. -->
+  <arg name="use_mocap_base"            default="false"/>
+  <arg name="use_mocap_elbow"           default="false"/>
+
+  <!-- Run xacro script to generate Dynaarm description-->
+  <param name="$(arg description_name)" command="$(find xacro)/xacro $(arg description_file) 
+        forearm_configuration:=$(arg forearm_configuration)
+        use_realsense_forearm:=$(arg use_realsense_forearm)
+        use_realsense_base:=$(arg use_realsense_base)
+        use_realsense_wrist:=$(arg use_realsense_wrist)
+        use_realsense_elbow:=$(arg use_realsense_elbow)
+        use_realsense_fts:=$(arg use_realsense_fts)      
+        realsense_mount_angle_pos:=$(arg realsense_mount_angle_pos)
+        use_ftSensor:=$(arg use_ftSensor)
+        simulation:=$(arg simulation)
+        gripper:=$(arg Gripper)
+        realsense_type:=$(arg realsense_type)
+        use_mocap_base:=$(arg use_mocap_base)
+        use_mocap_elbow:=$(arg use_mocap_elbow)"/>
+
+  <group if="$(eval Gripper == 'Robotiq')">
+    <!-- Joint state topic name -->
+    <arg name="joint_states_topic" default="/gripper/joint_states"/>
+    <!-- Namespace to run the nodes in -->
+    <arg name="ns" default="gripper"/>
+    <arg name="tf_prefix" default="" />
+
+    <!-- Publish robot state (joints) as TF-->
+    <node ns="$(arg ns)" name="robotiq_gripper_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+        <param name="publish_frequency" value="100"/>
+        <param name="use_tf_static"     value="true"/>
+        <param name="tf_prefix"         value="$(arg tf_prefix)"/>
+        <remap from="robot_description" to="$(arg description_name)"/>
+        <remap from="joint_states"      to="$(arg joint_states_topic)"/>
+    </node>
+  </group>
+
+  <group if="$(eval Gripper == 'EZgripper')">
+      <!-- Joint state topic name -->
+      <arg name="joint_states_topic" default="/gripper/joint_states"/>
+      <!-- Namespace to run the nodes in -->
+      <arg name="ns" default="gripper"/>
+      <arg name="tf_prefix" default="" />
+
+      <!-- Publish robot state (joints) as TF-->
+      <node ns="$(arg ns)" name="EZgripper_gripper_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+          <param name="publish_frequency" value="100"/>
+          <param name="use_tf_static"     value="true"/>
+          <param name="tf_prefix"         value="$(arg tf_prefix)"/>
+          <remap from="robot_description" to="$(arg description_name)"/>
+          <remap from="joint_states"      to="$(arg joint_states_topic)"/>
+      </node>
+  </group>
+
+</launch>

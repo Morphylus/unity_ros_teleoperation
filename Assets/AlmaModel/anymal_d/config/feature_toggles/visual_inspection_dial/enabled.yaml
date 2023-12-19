@@ -1,0 +1,266 @@
+visual_inspection_dial_behavior_plugins:
+  inspect_from_here:
+    inspection_manager_plugin_name: visual_inspection_dial_plugin/VisualInspectionDialPlugin
+  inspect_from_pose:
+    move_main_body: false
+environment:
+  object_types:
+    visual_inspection_dial:
+      interactions:
+        - label: Read Dial From Here
+          auto_control_required: true
+          state_name:
+            postfix: FromHere
+            prefix: ReadDialOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: visual_inspection_dial_behavior_plugins::InspectFromHere
+        - label: Read Dial
+          auto_control_required: true
+          state_name:
+            postfix: ""
+            prefix: ReadDialOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: visual_inspection_dial_behavior_plugins::Inspect
+      name: visual_inspection_dial
+      visualization:
+        color:
+          blue: 0.1171875
+          green: 0.1953125
+          red: 0.703125
+        mesh: package://environment_visualizer/meshes/inspectable_items/pressure_gauge.dae
+inspection_manager_ros:
+  plugins:
+    visual_inspection_dial:
+      action: inspect_visual_item/dial
+      allow_multiple_instances: false
+      label: Visual Dial Plugin
+      name: visual_inspection_dial_plugin/VisualInspectionDialPlugin
+      type: visual
+  visual_inspection_dial:
+    abort_criteria:
+      first:
+        number_of_images: 5
+        number_of_measurements: 0
+      second:
+        number_of_images: 10
+        number_of_measurements: 2
+      third:
+        number_of_images: 25
+    circle_detection:
+      accumulator_param:
+        - 50
+        - 45
+        - 40
+      canny_param:
+        - 65
+        - 55
+        - 45
+      gaussian_blur_sigma_x: 3
+      gaussian_blur_size: 0
+      inverse_ratio_of_resolution: 2
+      min_dist: 5
+    equalize_hist: false
+    feature_matcher:
+      akaze:
+        descriptor_channels: 3
+        descriptor_size: 0
+        descriptor_type: 5
+        diffusivity: 1
+        n_octave_layers: 4
+        n_octaves: 4
+        threshold: 0.001
+      brisk:
+        octaves: 3
+        pattern_scale: 1.1
+        threshold: 20
+      detector: sift
+      extractor: sift
+      fast:
+        nonmax_suppression: true
+        threshold: 50
+        type: 2
+      flann_based:
+        index_params:
+          kd_tree:
+            trees: 5
+          lsh:
+            key_size: 12
+            multi_probe_level: 1
+            table_number: 15
+        search_params:
+          checks: 100
+      freak:
+        n_octaves: 4
+        orientation_normalized: true
+        pattern_scale: 15.0
+        scale_normalized: false
+      matcher: FlannBased
+      orb:
+        edge_threshold: 31
+        fast_threshold: 0
+        first_level: 0
+        n_features: 3000
+        n_levels: 8
+        patch_size: 31
+        scale_factor: 1.2
+        score_type: 2
+        wta_k: 2
+      sift:
+        contrast_threshold: 0.04
+        edge_threshold: 10
+        n_features: 0
+        n_octave_layers: 3
+        sigma: 1.6
+      surf:
+        extended: false
+        hessian_threshold: 80
+        n_octave_layers: 3
+        n_octaves: 4
+        upright: false
+    homography:
+      filter:
+        max_angle: 180.0
+        max_line_length: 1100
+        min_angle: 0.0
+        min_area: 50000
+        perspective_threshold: 0.002
+      number_of_good_matches_min: 4
+    image_size:
+      height: 720
+      width: 1280
+    line_detection:
+      canny_threshold_1:
+        - 80
+        - 70
+        - 50
+      canny_threshold_2:
+        - 70
+        - 60
+        - 40
+      gaussian_blur_sigma_x: 2
+      gaussian_blur_size: 0
+      max_line_gap: 5
+      min_line_length: 50
+      morph_dilate_kernel: 2
+      rho: 1
+      theta: 180.0
+      threshold:
+        - 120
+        - 100
+        - 80
+    line_filter:
+      cutoff_manual: 3000
+      cutoff_manual_vertical: 25
+      cutoff_margin_factor: 0.05
+      cutoff_margin_factor_vertical: 3.0
+    second_algorithm:
+      area_max: 2100
+      area_min: 550
+      contour_thickness: 3
+      gaussian_blur: 3
+      hough_threshold: 25
+      mask_radius: 50
+      max_line_gap: 5
+      min_distance_to_mass_center: 10
+      min_line_length: 10
+      ransac_distance_threshold: 20
+      ransac_min_number_of_lines: 5
+      ransac_number_of_iterations: 20
+      ransac_outlier_percentage: 0.4
+      seed_upper_diff: 55
+      seed_value: 57
+      use_as_2nd_measurement: false
+      use_ransac: true
+      vertical_distance_threshold: 30
+    success_criteria:
+      number_of_measurements: 15
+    take_every_nth_image: 5
+    template_path: ""
+    use_detection_roi: true
+    use_high_resolution_images: true
+    use_multiple_templates: true
+  visual_inspection_dial_plugin:
+    detector:
+      hog:
+        descriptor_path: ""
+        initial_additional_size: 0
+        max_hog_runs: 3
+        padding: 16
+        step_size: 24
+        use_transparent_api: false
+        win_stride: 8
+    optical_flow:
+      max_corners: 500
+      resize_factor: 0.5
+      sub_pixel_win_size: 10
+      term_criteria_epsilon: 0.3
+      term_criteria_max_count: 10
+      win_size: 31
+    particle_filter:
+      association_distance_max: 50.0
+      covariance_threshold:
+        estimation_bad: 500.0
+        estimation_good: 100.0
+      field_size:
+        height: 432
+        width: 768
+      number_of_particles: 200
+      standard_deviation:
+        measurement:
+          x: 2.0
+          y: 2.0
+        observation:
+          x: 10.0
+          y: 10.0
+        roughening:
+          x: 2.0
+          y: 2.0
+    time_limit: 60.0
+rqt_task_execution:
+  advanced_tasks:
+    list:
+      60_visual_inspection_dial_from_here:
+        label: Read Dial From Here
+        state:
+          name:
+            postfix: FromHere
+            prefix: ReadDialOf
+          settings:
+            environment_object_type: visual_inspection_dial
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: visual_inspection_dial_behavior_plugins::InspectFromHere
+      61_visual_inspection_dial:
+        label: Read Dial
+        state:
+          name:
+            postfix: ""
+            prefix: ReadDialOf
+          settings:
+            environment_object_type: visual_inspection_dial
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: visual_inspection_dial_behavior_plugins::Inspect
+rqt_environment_editor:
+  plugins:
+    visual_inspection_dial:
+      label: Visual Inspection Dial
+      name: visual_inspection_dial_qt_plugin/VisualInspectionDialQtPlugin
+rqt_state_machine_editor:
+  behavior_plugins:
+    visual_inspection_dial_behavior_plugins:
+      namespace: visual_inspection_dial_behavior_plugins
+stack_launcher:
+  nodes:
+    inspection_manager:
+      preprocessed_params:
+        visual_inspection_dial_template_path:
+          key: /inspection_manager_ros/visual_inspection_dial/template_path
+          value: $(rospack find inspection_data)/inspection/visual_inspection/dial/image_templates
+        visual_inspection_dial_plugin_detector_hog_descriptor_path:
+          key: /inspection_manager_ros/visual_inspection_dial_plugin/detector/hog/descriptor_path
+          value: $(rospack find inspection_data)/inspection/visual_inspection/dial/hog_templates/hog_dial_1_128.yaml

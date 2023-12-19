@@ -1,0 +1,17 @@
+environment_visualizer:
+  publishers:
+    switch_operational_mode:
+      latch: false
+      queue_size: 1
+      topic: /behavior_engine/switch_operational_mode
+hbc_driver:
+  subscribers:
+    user_interaction_mode:
+      queue_size: 1
+      topic: /behavior_engine/user_interaction_mode
+robot_behavior_plugins:
+  monitor_behavior_mode:
+    subscribers:
+      gui_dial:
+        topic: /behavior_engine/switch_operational_mode # This interface is used in a PoC. Please contact Remo if you need to change it.
+        queue_size: 1

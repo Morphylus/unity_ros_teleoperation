@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<LocomotionController>
+  <include_xml dir="ComSupportControl.xml"/>
+  <include_xml dir="EventDetector.xml"/>
+  <include_xml dir="FootPlacementStrategy.xml"/>
+  <include_xml dir="GaitSelection.xml"/>
+  <include_xml dir="LimbCoordination.xml"/>
+  <include_xml dir="Mission.xml"/>
+  <include_xml dir="ReferenceTrajectory.xml"/>
+  <include_xml dir="ModelPredictiveTorsoControl.xml"/>
+  <include_xml dir="MotionController.xml"/>
+  <include_xml dir="PerformanceMonitor.xml"/>
+  <include_xml dir="TerrainModel.xml"/>
+  <include_xml dir="TerrainPerception.xml"/>
+  <include_xml dir="WholeBodyControlSim.xml"/>
+</LocomotionController>

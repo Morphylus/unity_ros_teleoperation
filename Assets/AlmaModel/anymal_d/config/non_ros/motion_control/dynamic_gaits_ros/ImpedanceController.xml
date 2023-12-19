@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<ImpedanceController>
+  <Interpolation duration="0.5"/>
+</ImpedanceController>

@@ -1,0 +1,10 @@
+stack_launcher:
+  stacks:
+    navigation:
+      nodes:
+        point_cloud_odometry:
+          enabled: false
+    simulation_environment:
+      nodes:
+        point_cloud_odometry_sim:
+          enabled: true

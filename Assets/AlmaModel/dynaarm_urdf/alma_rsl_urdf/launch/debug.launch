@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+
+  <!-- Name of the robot setup -->
+  <arg name="model_setup" default="alma"/>
+  <!-- Give the robot description parameter a name -->
+  <arg name="description_name" default="alma_description"/>
+  <!-- Set path of robot description -->
+  <arg name="description_file" default="$(find alma_rsl_urdf)/urdf/$(arg model_setup).urdf.xacro"/>
+  <!-- TF prefix -->
+  <arg name="tf_prefix" default=""/>
+  <!-- Joint state topic name -->
+  <arg name="joint_states_topic" default="/sensors/joint_states"/>
+  <!-- Namespace to run the nodes in -->
+  <arg name="ns" default="alma_tf_publisher"/>
+  <!-- Whether to use the realsense mounted on the base -->
+
+  <!-- Load robot description -->
+  <include file="$(find alma_rsl_urdf)/launch/load.launch">
+    <arg name="description_name" value="$(arg description_name)"/>
+    <arg name="description_file" value="$(arg description_file)"/>
+  </include>
+
+  <!-- Open joint_state_publisher for alma_description with GUI for debugging -->
+  <node name="alma_joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" output="screen">
+    <param name="rate"              value="100"/>
+    <remap from="robot_description" to="$(arg description_name)"/>
+    <remap from="joint_states"      to="$(arg joint_states_topic)"/>
+  </node>
+
+  <!-- Publish robot state (joints) as TF -->
+  <node ns="$(arg ns)" name="alma_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="100"/>
+    <param name="use_tf_static"     value="true"/>
+    <param name="tf_prefix"         value="$(arg tf_prefix)"/>
+    <remap from="robot_description" to="$(arg description_name)"/>
+    <remap from="joint_states"      to="$(arg joint_states_topic)"/>
+  </node>
+
+  <!-- Open Rviz -->
+  <node name="rviz" pkg="rviz" type="rviz"
+  args="-d $(find alma_rsl_urdf)/rviz/alma_description.rviz"
+  output="screen"/>
+
+</launch>

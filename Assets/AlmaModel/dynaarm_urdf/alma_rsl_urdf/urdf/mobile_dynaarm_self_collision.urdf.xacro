@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<robot name="alma" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="collision_base">
+    <link name="collision_base">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.9 0.34 0.2"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="collision_base_joint" type="fixed">
+       <parent link="base"/>
+       <child link="collision_base"/>
+       <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="almaollision_extras" params="base">
+    <xacro:if value="${base}">
+      <xacro:collision_base/>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>

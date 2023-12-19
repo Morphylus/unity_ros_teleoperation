@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<ignore_root>
+  <include_xml dir="ComSupportControl.xml"/>
+  <include_xml dir="ContactForceDistribution.xml"/>
+  <include_xml dir="ContactInvariantDamper.xml"/>
+  <include_xml dir="EventDetector.xml"/>
+  <include_xml dir="FootPlacementStrategy.xml"/>
+  <include_xml dir="ForceCalibration.xml"/>
+  <include_xml dir="ImpedanceController.xml"/>
+  <include_xml dir="LimbCoordination.xml"/>
+  <include_xml dir="Mission.xml"/>
+  <include_xml dir="MotionController.xml"/>
+  <include_xml dir="PerformanceMonitor.xml"/>
+  <include_xml dir="TerrainModel.xml"/>
+  <include_xml dir="TerrainPerception.xml"/>
+  <include_xml dir="TorsoControl.xml"/>
+  <include_xml dir="ZmpOptimizer.xml"/>
+</ignore_root>

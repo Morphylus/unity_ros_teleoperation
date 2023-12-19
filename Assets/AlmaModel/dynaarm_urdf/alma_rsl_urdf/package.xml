@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>alma_rsl_urdf</name>
+  <version>0.0.0</version>
+  <description>ALMA robot URDF package</description>
+  <author email="bellicoso@mavt.ethz.ch">Dario Bellicoso</author>
+  <maintainer email="jichiu@ethz.ch">Jia-Ruei Chiu</maintainer>
+  <license>TODO</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- URDF + visualization -->
+  <depend>xacro</depend>
+  <depend>dynaarm_urdf</depend>
+
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+
+</package>

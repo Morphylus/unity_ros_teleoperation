@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find dynaarm_urdf)/urdf/dynaarm_common.urdf.xacro" />
+
+  <xacro:macro name="dynaarm_interface_parts" params="parent_link">
+
+    <xacro:dynaarm_link link_name="dynaarm_interface" file_name="dynaarm_interface_parts" link_nbr="1000" />
+    <xacro:dynaarm_joint_fixed joint_name="dynaarm_interface_parts_joint" parent="${parent_link}" child="dynaarm_interface"
+                              joint_origin_xyz="0 0 0.059" joint_origin_rpy="${J_PI/2} 0 ${J_PI/2}" />
+
+
+  </xacro:macro>
+
+
+</robot>

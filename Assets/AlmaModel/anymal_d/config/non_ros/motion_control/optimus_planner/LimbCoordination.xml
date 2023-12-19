@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<LimbCoordination>
+  <ContactSchedule verbose="false">
+    <GaitPattern default="walk" balancing_gait="balance" init_stance_phase="0.1">
+      <Gait type="walk" swingPhase="0.4" stop_with_balancing_gait="false" reversible="true">
+        <Stride nominal="0.9" fb_gain="0.2" min="0.7"/>
+        <LF liftOff="0.02"/>
+        <RF liftOff="0.52"/>
+        <LH liftOff="0.52"/>
+        <RH liftOff="0.02"/>
+      </Gait>
+      <Gait type="crawl" swingPhase="0.4" stop_with_balancing_gait="false" reversible="true">
+        <Stride nominal="0.8" fb_gain="0.2" min="0.6"/>
+        <LF liftOff="0.02"/>
+        <RF liftOff="0.52"/>
+        <LH liftOff="0.52"/>
+        <RH liftOff="0.02"/>
+      </Gait>
+      <Gait type="balance" swingPhase="0.45" stop_with_balancing_gait="false" reversible="true">
+        <Stride nominal="0.6" fb_gain="0.3" min="0.60"/>
+        <LF liftOff="0.02"/>
+        <RF liftOff="0.52"/>
+        <LH liftOff="0.52"/>
+        <RH liftOff="0.02"/>
+      </Gait>
+    </GaitPattern>
+  </ContactSchedule>
+</LimbCoordination>

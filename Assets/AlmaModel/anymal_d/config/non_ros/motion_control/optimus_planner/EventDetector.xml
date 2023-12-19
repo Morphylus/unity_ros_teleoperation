@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<EventDetector>
+  <FrictionModulation enable="true" value_while_slipping="0.50"/>
+</EventDetector>	

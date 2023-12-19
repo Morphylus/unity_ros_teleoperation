@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<VirtualModelController>
+  <Gains>
+    <Heading kp="970" kd="160" kff="1.0" ki="0.0" maxI="200.0"/>
+    <Lateral kp="900" kd="180" kff="1.0" ki="0.0" maxI="200.0"/>
+    <Vertical kp="2000" kd="250" kff="1.0" ki="0.0" maxI="600.0"/>
+    <Roll kp="200" kd="15" kff="0.0" ki="0.0" maxI="100.0"/>
+    <Pitch kp="250" kd="40" kff="0.0" ki="10.0" maxI="100.0"/>
+    <Yaw kp="80" kd="20" kff="0.0" ki="10.0" maxI="100.0"/>
+  </Gains>
+  <PIDGains>
+    <SupportLegCommands>
+      <HAA pGain="0.0" iGain="0.0" dGain="0.1"/>
+      <HFE pGain="0.0" iGain="0.0" dGain="0.1"/>
+      <KFE pGain="0.0" iGain="0.0" dGain="0.1"/>
+    </SupportLegCommands>
+    <SwingLegCommands>
+      <HAA pGain="30.0" iGain="0.0" dGain="0.2"/>
+      <HFE pGain="30.0" iGain="0.0" dGain="0.2"/>
+      <KFE pGain="20.0" iGain="0.0" dGain="0.1"/>
+    </SwingLegCommands>
+  </PIDGains>
+</VirtualModelController>

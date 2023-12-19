@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<ZmpOptimizer>
+  <Solver verbose="false">
+    <QPSolver method="as"/> <!-- active set method  -->
+    <NonLinSolver method="SQP" max_iter="17" use_hessian_of_constraints="false"/> <!-- SQP -->
+    <SQPLineSearch max_iter_back_tracing="10" alpha="0.4" beta="0.6" w_eq="200.0" w_ineq="200.0"/>
+  </Solver>
+  <ZSpline exp_alpha="4.0" exp_lambda="30.0"/> <!-- velocity gain alpha*exp(-lambda* DeltaX^2) -->
+
+  <Gait type="walk, crawl, run, balance">
+    <Weights>
+      <x>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="50.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="250.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="15000.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="50.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="250.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="15000.0"/>
+      </y>
+      <PreviousSolution der0="5.0" der1="2.0"/>
+      <SoftInitialState der2="200.0"/>
+      <SoftFinalState der0="600.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.04" weight_lin="3.0" weight_quad="8.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <Gait type="crawling_no_stance, dyn_lateral_walk, amble">
+    <Weights>
+      <x>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="50.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="250.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="15000.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="50.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="250.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="15000.0"/>
+      </y>
+      <PreviousSolution der0="5.0" der1="2.0"/>
+      <SoftInitialState der2="200.0"/>
+      <SoftFinalState der0="600.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.04" weight_lin="3.0" weight_quad="8.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <Gait type="pace">
+    <Weights>
+      <x>
+        <MinAcceleration der2="5.0"/>
+        <PathRegularizer der0="100.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="100.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="1.0"/>
+        <PathRegularizer der0="0.0" der1="0.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="100.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </y>
+      <PreviousSolution der0="50.0" der1="10.0"/>
+      <SoftInitialState der2="0.0"/>
+      <SoftFinalState der0="1000.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.1" weight_lin="3.0" weight_quad="8.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <Gait type="flying_trot, flying_pace, jump_diagonal, pronking">
+    <Weights>
+      <x>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="50.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="100.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="5.0" der1="10.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="100.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </y>
+      <z>
+        <MinAcceleration der2="1.0"/>
+        <PathRegularizer der0="50.0" der1="10.0"/>
+        <MinDeviation lin="100.0" quad="0.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </z>
+      <PreviousSolution der0="10.0" der1="5.0"/>
+      <SoftInitialState der2="100.0"/>
+      <SoftFinalState der0="500.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.15" weight_lin="3.0" weight_quad="8.0"/>
+      <FlightTrajectory x="0.0" y="0.0" z="500.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <Gait type="bound">
+    <Weights>
+      <x>
+        <MinAcceleration der2="7.0"/>
+        <PathRegularizer der0="10.0" der1="100.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="0.0" der1="0.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </y>
+      <z>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="2500.0" der1="0.0"/>
+        <MinDeviation lin="20.0" quad="120.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </z>
+      <pitch>
+        <MinAcceleration der2="0.07"/>
+        <PathRegularizer der0="400" der1="0.0"/>
+        <MinDeviation lin="1.0" quad="10.0"/>
+      </pitch>
+      <PreviousSolution der0="100.0" der1="0.0"/>
+      <SoftInitialState der2="0.0"/>
+      <SoftFinalState der0="150.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.1" weight_lin="3.0" weight_quad="8.0"/>
+      <FlightTrajectory x="0.0" y="0.0" z="0.0" pitch="0.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <Gait type="traverse_gallop, rotatory_gallop, canter">
+    <Weights>
+      <x>
+        <MinAcceleration der2="7.0"/>
+        <PathRegularizer der0="100.0" der1="0.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </x>
+      <y>
+        <MinAcceleration der2="4.0"/>
+        <PathRegularizer der0="0.0" der1="0.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </y>
+      <z>
+        <MinAcceleration der2="10.0"/>
+        <PathRegularizer der0="2500.0" der1="0.0"/>
+        <MinDeviation lin="20.0" quad="120.0"/>
+        <DefaultLegConfig der0="0.0"/>
+        <MinLegExtension der0="0.0"/>
+        <TipOverAvoidance der0="0.0"/>
+      </z>
+      <pitch>
+        <MinAcceleration der2="0.07"/>
+        <PathRegularizer der0="200" der1="0.0"/>
+        <MinDeviation lin="0.0" quad="0.0"/>
+      </pitch>
+      <PreviousSolution der0="50.0" der1="0.0"/>
+      <SoftInitialState der2="0.0"/>
+      <SoftFinalState der0="150.0" der1="0.0"/>
+      <ZmpInequalityRelaxation rel_relax_horizon="0.1" weight_lin="3.0" weight_quad="8.0"/>
+    </Weights>
+    <SplinesPerPhase stance="1" single_swing="1" double_swing="1" triple_swing="1"/>
+  </Gait>
+
+  <InequalityConstraints>
+    <FinalCogBox enable="true" x_y_z="0.05" roll_pitch_yaw="0.3141"/>
+    <ForceModel enable="false" friction_coefficient="0.5" max_normal_force="700.0"/>
+  </InequalityConstraints>
+</ZmpOptimizer>
+

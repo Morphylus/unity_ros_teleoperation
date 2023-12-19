@@ -1,0 +1,122 @@
+launch:
+  feature_toggles:
+    state_estimation: simulated
+    slam: simulated
+    point_cloud_odometry: simulated
+    environment_data_package: playground_data
+    environment_config: default
+    data_synchronization: disabled
+gui:
+  toolbar_menu:
+    plugins:
+      rqt_gazebo_interface:
+        label: Simulation
+        location: menu_advanced
+        name: GazeboInterfacePlugin
+        object_name: GazeboInterface
+        order: 100
+motion_control_manager:
+  controller:
+    simulation: true
+load_anymal_description:
+  custom_parameters:
+    gpu_lidar: true
+    simulate_depth_camera: true
+    simulate_lidar: true
+    simulate_thermal_camera: true
+    simulate_wide_angle_camera: true
+    simulate_zoom_camera: true
+    simulation: true
+monitor_network_llpc:
+  simulation: true
+monitor_network_op:
+  simulation: true
+operational_mode_manager:
+  perception_sensors_silent_start: true
+path_planning_and_following:
+  simulation: true
+rqt_motion_control:
+  simulation: true
+stack_launcher:
+  nodes:
+    depth_camera_front_lower_depth_image_to_point_cloud:
+      roslaunch:
+        camera_info:
+            from: /depth_camera_front_lower/depth/camera_info
+            to: /depth_camera_front_lower/color/camera_info
+        remap_args:
+          image_rect:
+            from: image_rect
+            to: /depth_camera_front_lower/aligned_depth_to_color/image_raw
+    depth_camera_front_upper_depth_image_to_point_cloud:
+      roslaunch:
+        camera_info:
+            from: /depth_camera_front_upper/depth/camera_info
+            to: /depth_camera_front_upper/color/camera_info
+        remap_args:
+          image_rect:
+            from: image_rect
+            to: /depth_camera_front_upper/aligned_depth_to_color/image_raw
+    depth_camera_left_depth_image_to_point_cloud:
+      roslaunch:
+        remap_args:
+          camera_info:
+            from: /depth_camera_left/depth/camera_info
+            to: /depth_camera_left/color/camera_info
+          image_rect:
+            from: image_rect
+            to: /depth_camera_left/aligned_depth_to_color/image_raw
+    depth_camera_rear_lower_depth_image_to_point_cloud:
+      roslaunch:
+        remap_args:
+          camera_info:
+            from: /depth_camera_rear_lower/depth/camera_info
+            to: /depth_camera_rear_lower/color/camera_info
+          image_rect:
+            from: image_rect
+            to: /depth_camera_rear_lower/aligned_depth_to_color/image_raw
+    depth_camera_rear_upper_depth_image_to_point_cloud:
+      roslaunch:
+        remap_args:
+          camera_info:
+            from: /depth_camera_rear_upper/depth/camera_info
+            to: /depth_camera_rear_upper/color/camera_info
+          image_rect:
+            from: image_rect
+            to: /depth_camera_rear_upper/aligned_depth_to_color/image_raw
+    depth_camera_right_depth_image_to_point_cloud:
+      roslaunch:
+        remap_args:
+          camera_info:
+            from: /depth_camera_right/depth/camera_info
+            to: /depth_camera_right/color/camera_info
+          image_rect:
+            from: image_rect
+            to: /depth_camera_right/aligned_depth_to_color/image_raw
+  stacks:
+    post_process_config:
+      nodes:
+        load_dodgeball_description:
+          enabled: true
+state_estimator:
+  simulation: true
+  tsif:
+    angular_variance_threshold: 0.00015
+system_behavior_plugins:
+  start_up:
+    simulation: true
+use_sim_time: true
+user_interaction_mode_manager:
+  communication_relay_profiles:
+    direct_control:
+      services:
+        go_to_low_level_controller_life_cycle_state:
+          enabled: false
+        set_fan_speed:
+          enabled: false
+        switch_low_level_controller_state:
+          enabled: false
+    direct_control_rcu:
+      services:
+        switch_low_level_controller_state:
+          enabled: false

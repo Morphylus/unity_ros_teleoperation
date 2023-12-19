@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<ComSupportControl verbose="false" logging="true">
+  <Timing advance_method="sampling_time"/> <!-- sampling_time, real_sampling_time, average_real_sampling_time  -->
+  <Conditioning skip_polygon_if_time_smaller_than="0.020"/>
+  <SupportPolygons safety_margin="0.4"
+                   line_to_rectangle_offset="0.0025"
+                   point_to_rectangle_offset="0.05"/>
+  <Initialization alpha="0.2"/>
+  <PathRegularizer weight_disturbance_follower="0.0"/>
+  <TerrainAdaption min_height_scale="0.85" max_interp_angle_deg="55.0" gravity_factor="0.65"/>
+  <LineSearch verbose="false"
+              tol="1e-4" max_iter="12"
+              max_iter_back_tracing="10" alpha="0.4" beta="0.6"/>
+  <Interpolation num_of_samples="3"/>
+  <FootholdTracking nominal_offset="0.04" gain="0.05"/>
+
+  <!-- Time after walking during which yaw control of the base is progressively reset to the heading direction.
+       The heading duration is computed from footsteps, see HeadingGeneratorAnymal. -->
+  <SwitchToStance duration="2.0"/>
+</ComSupportControl>

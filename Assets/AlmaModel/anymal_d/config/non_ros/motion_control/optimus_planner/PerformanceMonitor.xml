@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<PerformanceMonitor>
+  <TwistTracking time_constant="3.2"/>
+</PerformanceMonitor>

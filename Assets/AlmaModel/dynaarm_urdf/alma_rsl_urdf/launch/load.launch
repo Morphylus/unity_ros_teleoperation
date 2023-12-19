@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+
+  <!-- Set true for simulation of ALMA in Gazebo -->
+  <arg name="simulation"               default="false"/>
+  <!-- Set true to fix the base of ALMA in simulation -->
+  <arg name="fixed"                    default="false"/>
+  <!-- Give the robot description parameter a name -->
+  <arg name="description_name"         default="alma_description"/>
+  <!-- Set robot description path -->
+  <arg name="description_file"            default="$(find alma_rsl_urdf)/urdf/alma.urdf.xacro"/>
+  <arg name="realsense_on_wrist"          default="false"/>
+  <arg name="realsense_on_forearm"        default="false"/>
+  <arg name="realsense_on_base"           default="false"/>
+  <arg name="realsense_on_elbow"          default="false"/>
+  <arg name="realsense_on_fts"            default="false"/>
+  <arg name="realsense_mount_angle_pos"   default="0"/> <!-- only relevant when use_realsense_elbow is true: 0 is 0 deg, 1 is 15  deg, 2 is 17.5 deg and 3 is 20 deg -->  
+  <arg name="use_ftSensor"                default="false" />
+  <!-- choose mounted gripper. If nothing if specified no gripper will be added to the urdf. -->
+  <!-- Options: "Robotiq", "EZgripper", "CatchingNet", "Mocap", "". -->  
+  <arg name="gripper"                     default=""/>
+  <arg name="realsense_type"              default="l515"/>
+  <arg name="use_mocap_base"              default="false"/>
+  <arg name="use_mocap_elbow"             default="false"/>
+
+  <!-- Run xacro script to generate ALMA description -->
+  <param name="$(arg description_name)" command="$(find xacro)/xacro $(arg description_file)
+    simulation:=$(arg simulation)
+    use_realsense_forearm:=$(arg realsense_on_forearm)
+    use_realsense_wrist:=$(arg realsense_on_wrist)
+    use_realsense_elbow:=$(arg realsense_on_elbow)
+    use_realsense_fts:=$(arg realsense_on_fts)
+    use_ftSensor:=$(arg use_ftSensor)
+    realsense_mount_angle_pos:=$(arg realsense_mount_angle_pos)
+    gripper:=$(arg gripper)
+    fix_base:=$(arg fixed)
+    realsense_type:=$(arg realsense_type)"/>
+
+  <group if="$(eval arg('gripper')=='Robotiq')">
+    <!-- Joint state topic name -->
+    <arg name="joint_states_topic" default="/gripper/joint_states"/>
+    <!-- Namespace to run the nodes in -->
+    <arg name="ns" default="gripper"/>
+    <arg name="tf_prefix" default="" />
+
+    <!-- Publish robot state (joints) as TF-->
+    <node ns="$(arg ns)" name="robotiq_gripper_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+      <param name="publish_frequency" value="100"/>
+      <param name="use_tf_static"     value="false"/>
+      <param name="tf_prefix"         value="$(arg tf_prefix)"/>
+      <remap from="robot_description" to="$(arg description_name)"/>
+      <remap from="joint_states"      to="$(arg joint_states_topic)"/>
+    </node>
+  </group>
+
+</launch>

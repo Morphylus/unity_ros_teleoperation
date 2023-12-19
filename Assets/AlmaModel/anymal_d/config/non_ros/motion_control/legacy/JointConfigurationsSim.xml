@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<JointConfigurationsController>
+  
+  <Gains>
+    <HAA pGain="2000.0" iGain="2.0" dGain="4.0"/>
+    <HFE pGain="2000.0" iGain="2.0" dGain="4.0"/>
+    <KFE pGain="2000.0" iGain="2.0" dGain="4.0"/>
+  </Gains>
+
+  <JointConfigurations>
+    <JointConfiguration name="default">
+      <Checks tracking="true" contact="true" numberOfContactsThreshold="1"/>
+      <JointPositions LF_HAA="-0.1" LF_HFE=" 0.7" LF_KFE="-1.0"
+                      RF_HAA=" 0.1" RF_HFE=" 0.7" RF_KFE="-1.0"
+                      LH_HAA="-0.1" LH_HFE="-0.7" LH_KFE=" 1.0"
+                      RH_HAA=" 0.1" RH_HFE="-0.7" RH_KFE=" 1.0"/>
+    </JointConfiguration>
+    <JointConfiguration name="zero">
+      <Checks tracking="true" contact="true" numberOfContactsThreshold="1"/>
+      <JointPositions LF_HAA="0.0" LF_HFE="0.0" LF_KFE="0.0"
+                      RF_HAA="0.0" RF_HFE="0.0" RF_KFE="0.0"
+                      LH_HAA="0.0" LH_HFE="0.0" LH_KFE="0.0"
+                      RH_HAA="0.0" RH_HFE="0.0" RH_KFE="0.0"/>
+    </JointConfiguration>
+    <JointConfiguration name="rest">
+      <Checks tracking="true" contact="false" numberOfContactsThreshold="4"/>
+      <JointPositions LF_HAA="-0.05" LF_HFE=" 1.57" LF_KFE="-2.75"
+                      RF_HAA=" 0.05" RF_HFE=" 1.57" RF_KFE="-2.75"
+                      LH_HAA="-0.05" LH_HFE="-1.57" LH_KFE=" 2.75"
+                      RH_HAA=" 0.05" RH_HFE="-1.57" RH_KFE=" 2.75"/>
+    </JointConfiguration>
+    <!-- Insert further joint configurations here. -->
+  </JointConfigurations>
+
+  <Limits>
+    <MaxJointVelocity value="0.2"/>
+    <MaxAbsJointPositionError value="0.1"/>
+    <AbsJointPositionErrorTolerance value="0.05"/>
+  </Limits>
+
+</JointConfigurationsController>

@@ -1,0 +1,112 @@
+ads_agent_lpc:
+  server: 'localhost:58050'
+  loglevel: 'debug'
+  credentials_dir: '/none'
+  pc_name: 'lpc'
+ads_agent_npc:
+  server: 'localhost:58050'
+  loglevel: 'debug'
+  credentials_dir: '/none'
+  pc_name: 'npc'
+ads_server:
+  unauthenticated: true
+  insecure: true
+  ephemeral: true
+  loglevel: 'debug'
+behavior_engine_execute_mission_api: # Absolute names, as these parameters are read by different nodes.
+  monitor: &behavior_engine_execute_mission_monitor
+    subscribers:
+      state_execution_events:
+        queue_size: 10
+        topic: /behavior_engine/execute_mission/mission_execution_events
+      state_progressed_events:
+        queue_size: 10
+        topic: /behavior_engine/execute_mission/mission_progressed_events
+inspection_presenter:
+  assets_fetching:
+    parameter_key: "/environment/objects"
+  event_interpreters:
+    auditive_inspection_frequency:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_auditive_item/frequency/result"
+    auditive_inspection_simple:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_auditive_item/simple/result"
+    inspection_intelligence:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_inspection_intelligence_object/result"
+    visual_inspection_dial:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_visual_item/dial/result"
+    visual_inspection_simple:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_visual_item/simple/result"
+    visual_inspection_thermal:
+      queue_size: 1
+      topic: "/inspection_manager_ros/inspect_visual_item/thermal/result"
+  metadata_retrieval:
+    monitor_mission:
+      <<: *behavior_engine_execute_mission_monitor
+  number_threads_ros_spinner: 2
+  transform_retrieval:
+    coordinate_frames:
+      mission_frame: "map"
+      robot_frame: "base"
+    transform_wait_timeout: 0.1
+gui:
+  toolbar_menu:
+    plugins:
+      rqt_anymal_data_sync:
+        icon_path: :/images/data_sync.svg
+        label: Data Sync
+        location: toolbar
+        name: rqt_anymal_data_sync/AnymalDataSyncPlugin
+        object_name: AnymalDataSyncWidget
+        order: 2
+stack_launcher:
+  nodes:
+    ads_agent_lpc:
+      roslaunch:
+        name: ads_agent_lpc
+        node_type: ads_agent_wrapper
+        package: anymal_data_sync_agent
+        respawn: true
+    ads_agent_npc:
+      roslaunch:
+        name: ads_agent_npc
+        node_type: ads_agent_wrapper
+        package: anymal_data_sync_agent
+        respawn: true
+    ads_server:
+      roslaunch:
+        name: ads_server
+        node_type: ads_server_wrapper
+        package: anymal_data_sync_server
+        respawn: true
+    inspection_presenter:
+      roslaunch:
+        name: inspection_presenter
+        node_type: inspection_presentation_node
+        output: screen
+        package: inspection_presentation
+  stacks:
+    inspection:
+      nodes:
+        inspection_presenter:
+          enabled: true
+          name: inspection_presenter
+    locomotion:
+      nodes:
+        ads_agent_lpc:
+          enabled: true
+          name: ads_agent_lpc
+    navigation:
+      nodes:
+        ads_agent_npc:
+          enabled: true
+          name: ads_agent_npc
+    simulation_environment:
+      nodes:
+        ads_server:
+          enabled: true
+          name: ads_server

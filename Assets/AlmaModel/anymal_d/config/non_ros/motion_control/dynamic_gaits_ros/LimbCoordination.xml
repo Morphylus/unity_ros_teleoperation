@@ -1,0 +1,128 @@
+<?xml version="1.0" ?>
+<LimbCoordination>
+  <ContactSchedule verbose="false">
+    <GaitPattern default="walk" balancing_gait="balance" init_stance_phase="0.4">
+      <!-- walk = trot, crawl = crawling, run = trot_no_stance, balance = trot_no_stance -->
+      <Gait type="walk" swingPhase="0.45" stop_with_balancing_gait="false" perceptive="false" reversible="true">
+        <Stride nominal="0.8" fb_gain="0.30" min="0.60"/>
+        <LF liftOff="0.02"/>
+        <RF liftOff="0.52"/>
+        <LH liftOff="0.52"/>
+        <RH liftOff="0.02"/>
+      </Gait>
+      <Gait type="crawl" swingPhase="0.20" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="2.0" fb_gain="0.5" min="1.5"/>
+        <RH liftOff="0.05"/>
+        <RF liftOff="0.30"/>
+        <LH liftOff="0.55"/>
+        <LF liftOff="0.80"/>
+      </Gait>
+      <Gait type="run" swingPhase="0.50" stop_with_balancing_gait="false" perceptive="false" reversible="true">
+        <Stride nominal="0.8" fb_gain="0.30" min="0.60"/>
+        <LF liftOff="0.00"/>
+        <RF liftOff="0.50"/>
+        <LH liftOff="0.50"/>
+        <RH liftOff="0.00"/>
+      </Gait>
+      <Gait type="balance" swingPhase="0.49" stop_with_balancing_gait="false" perceptive="false" reversible="true">
+        <Stride nominal="0.7" fb_gain="0.30" min="0.60"/>
+        <LF liftOff="0.00"/>
+        <RF liftOff="0.50"/>
+        <LH liftOff="0.50"/>
+        <RH liftOff="0.00"/>
+      </Gait>
+      <Gait type="crawling_no_stance" swingPhase="0.25" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="1.4" fb_gain="0.9" min="1.0"/>
+        <RH liftOff="0.00"/>
+        <RF liftOff="0.25"/>
+        <LH liftOff="0.50"/>
+        <LF liftOff="0.75"/>
+      </Gait>
+      <Gait type="dyn_lateral_walk" swingPhase="0.45" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="1.0" fb_gain="0.5" min="0.70"/>
+        <RH liftOff="0.00"/>
+        <RF liftOff="0.25"/>
+        <LH liftOff="0.50"/>
+        <LF liftOff="0.75"/>
+      </Gait>
+      <Gait type="amble" swingPhase="0.50" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="1.0" fb_gain="0.5" min="0.80"/>
+        <RH liftOff="0.00"/>
+        <RF liftOff="0.25"/>
+        <LH liftOff="0.50"/>
+        <LF liftOff="0.75"/>
+      </Gait>
+      <Gait type="pace" swingPhase="0.40" stop_with_balancing_gait="true" perceptive="false" reversible="true">
+        <Stride nominal="0.95" fb_gain="0.4" min="0.7"/>
+        <LF liftOff="0.10"/>
+        <RF liftOff="0.60"/>
+        <LH liftOff="0.10"/>
+        <RH liftOff="0.60"/>
+      </Gait>
+      <Gait type="flying_trot" swingPhase="0.65" stop_with_balancing_gait="false" perceptive="false" reversible="true">
+        <Stride nominal="0.69" fb_gain="0.0"/>
+        <LF liftOff="0.00"/>
+        <RF liftOff="0.50"/>
+        <LH liftOff="0.50"/>
+        <RH liftOff="0.00"/>
+      </Gait>
+      <Gait type="jump_diagonal" swingPhase="-1.0" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="1.70" fb_gain="0.0"/>
+
+        <LF liftOff="0.05" swingPhase="0.40"/>
+        <LF liftOff="0.69" swingPhase="0.12"/>
+
+        <RH liftOff="0.05" swingPhase="0.40"/>
+        <RH liftOff="0.69" swingPhase="0.12"/>
+
+        <RF liftOff="0.19" swingPhase="0.12"/>
+        <RF liftOff="0.55" swingPhase="0.40"/>
+
+        <LH liftOff="0.19" swingPhase="0.12"/>
+        <LH liftOff="0.55" swingPhase="0.40"/>
+      </Gait>
+      <Gait type="flying_pace" swingPhase="0.65" stop_with_balancing_gait="true" perceptive="false" reversible="true">
+        <Stride nominal="0.60" fb_gain="0.0"/>
+        <LF liftOff="0.50"/>
+        <RF liftOff="0.00"/>
+        <LH liftOff="0.50"/>
+        <RH liftOff="0.00"/>
+      </Gait>
+      <Gait type="pronking" swingPhase="0.4" stop_with_balancing_gait="false" perceptive="false" reversible="true">
+        <Stride nominal="0.5" fb_gain="0.0"/>
+        <LF liftOff="0.20"/>
+        <RF liftOff="0.20"/>
+        <LH liftOff="0.20"/>
+        <RH liftOff="0.20"/>
+      </Gait>
+      <Gait type="traverse_gallop" swingPhase="0.60" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="0.53" fb_gain="0.1" min="0.35"/>
+        <RH liftOff="0.0"/>
+        <LH liftOff="0.25"/>
+        <RF liftOff="0.50"/>
+        <LF liftOff="0.75"/>
+      </Gait>
+      <Gait type="rotatory_gallop" swingPhase="0.60" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="0.53" fb_gain="0.1" min="0.35"/>
+        <RH liftOff="0.0"/>
+        <LH liftOff="0.25"/>
+        <RF liftOff="0.50"/>
+        <LF liftOff="0.75"/>
+      </Gait>
+      <Gait type="canter" swingPhase="-1.0" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="0.52" fb_gain="0.1" min="0.35"/>
+        <LH liftOff="0.35" swingPhase="0.65"/>
+        <LF liftOff="0.65" swingPhase="0.50"/>
+        <RH liftOff="0.65" swingPhase="0.50"/>
+        <RF liftOff="0.85" swingPhase="0.65"/>
+      </Gait>
+      <Gait type="bound" swingPhase="0.60" stop_with_balancing_gait="false" perceptive="false" reversible="false">
+        <Stride nominal="0.40" fb_gain="0.0"/>
+        <RH liftOff="0.0"/>
+        <RF liftOff="0.5"/>
+        <LH liftOff="0.0"/>
+        <LF liftOff="0.5"/>
+      </Gait>
+    </GaitPattern>
+  </ContactSchedule>
+</LimbCoordination>

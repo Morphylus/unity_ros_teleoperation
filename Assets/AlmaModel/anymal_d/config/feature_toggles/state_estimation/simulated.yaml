@@ -1,0 +1,9 @@
+gazebo:
+  simulate_estimator: true
+  sync_name: anymal_controller_sync
+stack_launcher:
+  stacks:
+    locomotion_cpu12:
+      nodes:
+        state_estimator:
+          enabled: false

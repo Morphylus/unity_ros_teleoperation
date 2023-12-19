@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<LocomotionController>
+
+    <FlipOverCommands>
+        <HAA pGain="85.0" iGain="0.0" dGain="0.6" />
+        <HFE pGain="85.0" iGain="0.0" dGain="0.6" />
+        <KFE pGain="85.0" iGain="0.0" dGain="0.6" />
+    </FlipOverCommands>
+
+    <FlipOverPolicy policy_file="2021_06_04_14_22_42_500.pb"/>
+
+    <!-- Only used in sim -->
+    <ActuationModel enable="true" policy_file="anydrive_3_6_20210303.txt"/>
+
+</LocomotionController>

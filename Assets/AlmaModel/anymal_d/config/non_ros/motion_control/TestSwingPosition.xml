@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<SwingPidGains>
+  <HAA>
+    <Min pGain="0.0" iGain="0.0" dGain="0.0"/>
+    <Default pGain="300.0" iGain="0.05" dGain="0.25"/>
+    <Max pGain="400" iGain="10.0" dGain="10.0"/>
+  </HAA>
+  <HFE>
+    <Min pGain="0.0" iGain="0.0" dGain="0.0"/>
+    <Default pGain="300.0" iGain="0.05" dGain="0.2"/>
+    <Max pGain="400" iGain="10.0" dGain="10.0"/>
+  </HFE>
+  <KFE>
+    <Min pGain="0.0" iGain="0.0" dGain="0.0"/>
+    <Default pGain="80.0" iGain="0.4" dGain="0.16"/>
+    <Max pGain="400" iGain="10.0" dGain="10.0"/>
+  </KFE>
+</SwingPidGains>

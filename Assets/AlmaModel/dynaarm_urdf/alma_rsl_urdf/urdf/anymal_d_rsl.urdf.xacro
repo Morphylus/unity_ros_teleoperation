@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- This file contains the description of the ANYmal robot. -->
+
+<robot name="anymal" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find anymal_d_rsl)/urdf/anymal_d_rsl.urdf.xacro"/>
+
+    <!-- Load Dynaarm specifics here-->
+  <!-- 0: Default 4tube forearm, 1: Festo hand, 40: payload adapter -->
+  <xacro:arg name="forearm_configuration"           default="0" />
+  <xacro:arg name="use_longer_4tube_forearm"          default="true" />
+  <!-- choose mounted gripper. If nothing if specified no gripper will be added to the urdf. -->
+  <!-- Options: "Robotiq", "EZgripper", "CatchingNet", "Mocap", "". -->  
+  <xacro:arg name="gripper"                         default="Robotiq"/>
+  <xacro:arg name="use_realsense_forearm"           default="false" />
+  <xacro:arg name="use_realsense_wrist"             default="false" />
+  <xacro:arg name="use_realsense_base"              default="false" />
+  <xacro:arg name="use_realsense_elbow"             default="false" />
+  <xacro:arg name="use_mira"                        default="false" />
+  <xacro:arg name="use_mocap_base"                  default="false" />
+  <xacro:arg name="use_mocap_elbow"                 default="false" />
+  <xacro:arg name="nbr_of_dof"                      default="6" />
+  <xacro:arg name="use_ftSensor"                    default="false" />
+  <xacro:arg name="realsense_type"                  default="d435" />
+  <xacro:arg name="wrist_version"                   default="dynadrive" />    <!-- dynadrive or dynamixel -->
+  <xacro:arg name="dynaarm_base_additional_height"  default="0" />    <!-- dynadrive or dynamixel -->
+  <xacro:arg name="reduced_gripper_collision_body"  default="true" />    <!-- dynadrive or dynamixel -->
+  <xacro:arg name="fix_arm_joints"                  default="true" />
+
+  <xacro:property name="forearm_configuration_property"           value="$(arg forearm_configuration)"/>
+  <xacro:property name="use_longer_4tube_forearm_property"        value="$(arg use_longer_4tube_forearm)"/>
+  <xacro:property name="simulation_property"                      value="$(arg simulation)"/>
+  <xacro:property name="gripper_property"                         value="$(arg gripper)"/>
+  <xacro:property name="use_realsense_forearm_property"           value="$(arg use_realsense_forearm)"/>
+  <xacro:property name="use_realsense_wrist_property"             value="$(arg use_realsense_wrist)"/>
+  <xacro:property name="use_realsense_base_property"              value="$(arg use_realsense_base)"/>
+  <xacro:property name="use_realsense_elbow_property"             value="$(arg use_realsense_elbow)"/>
+  <xacro:property name="use_mira_property"                        value="$(arg use_mira)"/>
+  <xacro:property name="use_mocap_base_property"                  value="$(arg use_mocap_base)"/>
+  <xacro:property name="use_mocap_elbow_property"                 value="$(arg use_mocap_elbow)"/>
+  <xacro:property name="nbr_of_dof_property"                      value="$(arg nbr_of_dof)"/>
+  <xacro:property name="use_ftSensor_property"                    value="$(arg use_ftSensor)"/>
+  <xacro:property name="realsense_type_property"                  value="$(arg realsense_type)"/>
+  <xacro:property name="wrist_version_property"                   value="$(arg wrist_version)"/>
+  <xacro:property name="reduced_gripper_collision_body_property"  value="$(arg reduced_gripper_collision_body)"/>
+  <xacro:property name="dynaarm_base_additional_height_property"  value="$(arg dynaarm_base_additional_height)"/>
+  <xacro:property name="fix_arm_joints_property"                  value="$(arg fix_arm_joints)"/>
+
+  <xacro:include filename="$(find dynaarm_urdf)/urdf/dynaarm_armConfigs.urdf.xacro"/>
+
+    <xacro:dynaarm parent_link="base" joint_origin="0.16525 0.0 0.204"/>
+    <xacro:include filename="$(find alma_rsl_urdf)/urdf/dynaarm_interface_parts.urdf.xacro" />
+    <xacro:dynaarm_interface_parts parent_link="base"/>
+
+</robot>

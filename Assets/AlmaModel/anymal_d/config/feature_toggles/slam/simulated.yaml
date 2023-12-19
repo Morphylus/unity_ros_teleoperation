@@ -1,0 +1,42 @@
+stack_launcher:
+  stacks:
+    navigation:
+      nodes:
+        slam:
+          enabled: false
+        slam_supervisor:
+          enabled: false
+    simulation_environment:
+      nodes:
+        slam_sim:
+          enabled: true
+user_interaction_mode_manager:
+  clients:
+    relay_communication:
+      service: /user_interaction_mode/relay_communication
+  communication_relay_profiles:
+    direct_control:
+      services:
+        clear_initial_guess:
+          enabled: false
+        load_map:
+          enabled: false
+        reset_slam:
+          enabled: false
+        reset_slam_connector:
+          enabled: false
+        reset_slam_supervisor:
+          enabled: false
+        save_map:
+          enabled: false
+        set_initial_guess_method:
+          enabled: false
+        toggle_localization:
+          enabled: false
+        toggle_loop_detection:
+          enabled: false
+        toggle_mapping:
+          enabled: false
+      topics:
+        localization_initial_guess:
+          enabled: false

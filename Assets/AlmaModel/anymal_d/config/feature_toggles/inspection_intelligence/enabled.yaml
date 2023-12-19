@@ -1,0 +1,251 @@
+environment:
+  object_types:
+    inspection_intelligence:
+      interactions:
+        - label: Read Object From Here
+          auto_control_required: true
+          state_name:
+            postfix: FromHere
+            prefix: ReadObjectOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: inspection_intelligence_behavior_plugins::InspectFromHere
+        - label: Read Object
+          auto_control_required: true
+          state_name:
+            postfix: ""
+            prefix: ReadObjectOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: inspection_intelligence_behavior_plugins::Inspect
+      name: inspection_intelligence
+      visualization:
+        color:
+          blue: 0.1171875
+          green: 0.1953125
+          red: 0.703125
+        mesh: package://environment_visualizer/meshes/inspectable_items/pressure_gauge.dae
+inspection_intelligence_behavior_plugins:
+  inspect_from_here:
+    inspection_manager_plugin_name: inspection_intelligence_controller_plugin/InspectionIntelligenceControllerPlugin
+  inspect_from_pose:
+    move_main_body: false
+point_cloud_reprojection_ros:
+  max_distance_points: 0.5
+  fixed_frame: "odom"
+  publishers:
+    colorized_point_cloud:
+      topic: /point_cloud_filter/lidar_depth_camera/point_reprojection_cloud_colorized
+      latch: false
+  subscribers:
+    color_image:
+      camera_info_topic: /zoom_camera/camera_info
+      topic: /zoom_camera/image_raw
+    input_point_cloud:
+      topic: /point_cloud_filter/lidar_depth_camera/point_cloud_filtered
+  time:
+    allowed_tf_find_time: 1
+    sleep_time: 0
+inspection_intelligence_detector:
+  publishers:
+    image:
+      topic: /inspection_intelligence/detector/image
+    image_cropped:
+      topic: /inspection_intelligence/detector/image_cropped
+  servers:
+    detect_object:
+      topic: /inspection_intelligence/detector/detect_object
+  output_dir: log/inspection_intelligence
+  publish_images: true
+  min_confidence: 0.5
+  label_map:
+    "1": analog_gauge
+    "2": digital_counter
+    "3": lever_valve
+inspection_intelligence_interpreter:
+  publishers:
+    image:
+      topic: /inspection_intelligence/interpreter/image
+    image_failed:
+      topic: /inspection_intelligence/interpreter/image_failed
+  servers:
+    interpret_object:
+      topic: /inspection_intelligence/interpreter/interpret_object
+  output_dir: log/inspection_intelligence
+  publish_images: true
+  analog_counter_ocr_min_confidence: 0.5
+  digital_counter_ocr_min_confidence: 0.7
+  digital_counter_ocr_line_margin_normalized: 0.1
+  analog_counter_ocr_image_size:
+    width: 512
+    height: 512
+  analog_gauge_regression_image_size:
+    width: 256
+    height: 256
+  digital_counter_ocr_image_size:
+    width: 512
+    height: 512
+  lever_valve_regression_image_size:
+    width: 256
+    height: 256
+  linear_gauge_regression_image_size:
+    width: 512
+    height: 512
+  label_map:
+    "2": "1"
+    "3": "2"
+    "4": "3"
+    "5": "4"
+    "6": "5"
+    "7": "6"
+    "8": "7"
+    "9": "8"
+    "10": "9"
+    "1": "0"
+inspection_intelligence_ocr_ros:
+  publishers:
+    image:
+      topic: /inspection_intelligence/ocr/images
+  servers:
+    do_ocr:
+      topic: /inspection_intelligence/ocr/do_ocr
+  output_dir: log/inspection_intelligence
+  publish_image: true
+inspection_intelligence_test_micro_services:
+  image_dir: ~/inspection_intelligence_images
+inspection_manager_ros:
+  plugins:
+    inspection_intelligence_controller_plugin:
+      label: Inspection Intelligence Controller Plugin
+      name: inspection_intelligence_controller_plugin/InspectionIntelligenceControllerPlugin
+      action: inspect_inspection_intelligence_object
+      type: visual
+      allow_multiple_instances: false
+  inspection_intelligence_controller_plugin:
+    wait_before_taking_image_for_detector: 100
+    number_of_detector_retries: 1
+    number_of_interpreter_calls: 3
+    visual_servoing:
+      clients:
+        do_visual_servoing:
+          topic: /inspection_payload/visual_servoing/do_visual_servoing
+    detector:
+      clients:
+        detect_object:
+          topic: /inspection_intelligence/detector/detect_object
+    interpreter:
+      bounding_box_margin: 0
+      clients:
+        interpret_object:
+          topic: /inspection_intelligence/interpreter/interpret_object
+      testing:
+        is_testing: true
+        publishers:
+          cropped_image:
+            topic: /inspection_intelligence/interpreter/testing/cropped_image
+rqt_task_execution:
+  advanced_tasks:
+    list:
+      900_inspection_intelligence_from_here:
+        label: Analyse Object From Here
+        state:
+          name:
+            prefix: AnalyseObjectOf
+            postfix: FromHere
+          settings:
+            environment_object_type: inspection_intelligence
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: inspection_intelligence_behavior_plugins::InspectFromHere
+      901_inspection_intelligence:
+        label: Analyse Object
+        state:
+          name:
+            prefix: AnalyseObjectOf
+            postfix: ""
+          settings:
+            environment_object_type: inspection_intelligence
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: inspection_intelligence_behavior_plugins::Inspect
+rqt_environment_editor:
+  plugins:
+    inspection_intelligence:
+      label: Inspection Intelligence
+      name: inspection_intelligence_qt_plugin/InspectionIntelligenceQtPlugin
+rqt_state_machine_editor:
+  behavior_plugins:
+    inspection_intelligence_behavior_plugins:
+      namespace: inspection_intelligence_behavior_plugins
+stack_launcher:
+  nodes:
+    inspection_intelligence_detector:
+      preprocessed_params:
+        inspection_intelligence_detector_model_path:
+          key: /inspection_intelligence_detector/model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/object_detection/effdet2.onnx
+      roslaunch:
+        name: inspection_intelligence_detector
+        node_type: inspection_intelligence_detector_node
+        output: screen
+        package: inspection_intelligence_detector
+    inspection_intelligence_interpreter:
+      preprocessed_params:
+        inspection_intelligence_interpreter_analog_counter_ocr_model_path:
+          key: /inspection_intelligence_interpreter/analog_counter_ocr_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/digit_detection/analog_counter.onnx
+        inspection_intelligence_interpreter_analog_gauge_regression_model_path:
+          key: /inspection_intelligence_interpreter/analog_gauge_regression_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/image_regression/round_gauge_regressor.onnx
+        inspection_intelligence_interpreter_digital_counter_ocr_model_path:
+          key: /inspection_intelligence_interpreter/digital_counter_ocr_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/digit_detection/seven_segments.onnx
+        inspection_intelligence_interpreter_lever_valve_regression_model_path:
+          key: /inspection_intelligence_interpreter/lever_valve_regression_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/image_regression/lever_valve.onnx
+        inspection_intelligence_interpreter_linear_gauge_regression_model_path:
+          key: /inspection_intelligence_interpreter/linear_gauge_regression_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/image_regression/linear_gauge.onnx
+      roslaunch:
+        name: inspection_intelligence_interpreter
+        node_type: inspection_intelligence_interpreter_node
+        output: screen
+        package: inspection_intelligence_interpreter
+    inspection_intelligence_ocr_ros:
+      preprocessed_params:
+        inspection_intelligence_ocr_ros_detector_model_path:
+          key: /inspection_intelligence_ocr_ros/detector_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/keras_ocr/detector/ocr_detector.onnx
+        inspection_intelligence_ocr_ros_recognizer_model_path:
+          key: /inspection_intelligence_ocr_ros/recognizer_model_path
+          value: $(rospack find inspection_intelligence_production_models)/models/keras_ocr/recognizer/ocr_recognizer.onnx
+      roslaunch:
+        name: inspection_intelligence_ocr_ros
+        node_type: inspection_intelligence_ocr_ros_node
+        output: screen
+        package: inspection_intelligence_ocr_ros
+    point_cloud_reprojection_ros:
+      roslaunch:
+        args: load point_cloud_reprojection_ros/PointCloudReprojectionRos point_cloud_reprojection_ros
+        name: point_cloud_reprojection_ros
+        node_type: point_cloud_reprojection_ros_node
+        output: screen
+        package: point_cloud_reprojection_ros
+  stacks:
+    inspection:
+      nodes:
+        inspection_intelligence_detector:
+          enabled: true
+          name: inspection_intelligence_detector
+        inspection_intelligence_interpreter:
+          enabled: true
+          name: inspection_intelligence_interpreter
+        inspection_intelligence_ocr_ros:
+          enabled: true
+          name: inspection_intelligence_ocr_ros
+        point_cloud_reprojection_ros:
+          enabled: true
+          name: point_cloud_reprojection_ros
+

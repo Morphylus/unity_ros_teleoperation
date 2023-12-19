@@ -1,0 +1,45 @@
+# See https://github.com/ethz-asl/libpointmatcher/blob/master/doc/Datafilters.md
+
+readingDataPointsFilters:
+#  - RandomSamplingDataPointsFilter:
+#      prob: 0.35
+
+referenceDataPointsFilters:
+  # - RandomSamplingDataPointsFilter:
+  #     prob: 0.25
+
+matcher:
+  KDTreeMatcher:
+    knn: 3
+    maxDist: 0.5
+    epsilon: 1
+
+outlierFilters:
+  # - MaxDistOutlierFilter:
+  #     maxDist: 1.0
+  - TrimmedDistOutlierFilter:
+     ratio: 0.5
+  - SurfaceNormalOutlierFilter:
+     maxAngle: 1.04
+
+errorMinimizer:
+  PointToPlaneErrorMinimizer:
+    force4DOF: 1
+#  PointToPlaneWithCovErrorMinimizer
+
+transformationCheckers:
+  - DifferentialTransformationChecker:
+      minDiffRotErr: 0.01
+      minDiffTransErr: 0.01
+      smoothLength: 4
+  - CounterTransformationChecker:
+      maxIterationCount: 80
+  # - BoundTransformationChecker:
+  #     maxRotationNorm: 0.80
+  #     maxTranslationNorm: 1.0
+
+inspector:
+  NullInspector
+
+logger:
+  FileLogger

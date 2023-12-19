@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<ignore_root>
+  <TerrainPerception>
+    <PositionFilter time_constant="0.05" gain="1.0"/>
+    <NormalFilter time_constant="0.05" gain="1.0"/>
+  </TerrainPerception>
+  <TerrainPerceptionFreePlane>
+    <PositionFilter time_constant="0.05" gain="1.0"/>
+    <NormalFilter time_constant="0.05" gain="1.0"/>
+  </TerrainPerceptionFreePlane>
+</ignore_root>

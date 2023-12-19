@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<ForceCalibration>
+  <SwingPhaseTiming start="0.2" end="0.3"/>
+  <Sampling swingPhaseDuration="0.4" numGoodSamples="20"/>
+  <DisableOutlierDetection thresholdDuration="20.0"/>
+</ForceCalibration>

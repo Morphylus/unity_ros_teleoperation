@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="dynaarm_collision" params="link_nbr">
+<!-- forearm configuration = 0 -> no forearm -->
+    <xacro:unless value="${link_nbr - base_nbr}">
+      <collision>
+        <origin xyz="0 0 -0.04" rpy="0 0 0"/>
+        <geometry>
+          <!--<mesh filename="package://dynaarm_urdf/meshes/300_base_anymal_mesh_col.dae"/>-->
+          <cylinder radius="0.06" length="0.08"/>
+        </geometry>
+      </collision>
+    </xacro:unless>
+    
+    <xacro:unless value="${link_nbr - link01_nbr}">
+      <collision>
+        <origin xyz="0 0 0" rpy="1.57 0 0"/>
+        <geometry>
+          <cylinder radius="0.05" length="0.24"/>
+        </geometry>
+      </collision>
+    </xacro:unless>
+    
+    <xacro:unless value="${link_nbr - link02_nbr}">
+      <collision>
+        <origin xyz="0.25 0 0" rpy="1.57 0 1.57"/>
+        <geometry>
+          <cylinder radius="0.05" length="0.4"/>
+        </geometry>
+      </collision>
+    </xacro:unless>
+
+    <xacro:unless value="${link_nbr - link03_nbr}">
+      <xacro:unless value="${nbr_of_dof_property-4}">
+        <xacro:if value="${gripper_property == 'Robotiq'}">
+          <collision>
+              <xacro:if value="${reduced_gripper_collision_body_property}">
+                <origin xyz="0.165 -0.0935 0" rpy="0 1.57 0"/>
+                <geometry>
+                  <cylinder radius="0.047" length="0.43"/>
+                </geometry>
+              </xacro:if>
+              <xacro:unless value="${reduced_gripper_collision_body_property}">
+                <origin xyz="0.205 -0.0935 0" rpy="0 1.57 0"/>
+                <geometry>
+                  <cylinder radius="0.047" length="0.51"/>
+                </geometry>
+              </xacro:unless>
+          </collision>
+        </xacro:if>
+        <xacro:if value="${gripper_property == 'EZgripper'}">
+            <collision>
+                <xacro:if value="${reduced_gripper_collision_body_property}">
+                    <origin xyz="${0.05+0.084} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+                    <geometry>
+                        <cylinder radius="0.06" length="0.16"/>
+                    </geometry>
+                </xacro:if>
+                <xacro:unless value="${reduced_gripper_collision_body_property}">
+                    <origin xyz="${0.05+0.124} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+                    <geometry>
+                        <cylinder radius="0.06" length="0.24"/>
+                    </geometry>
+                </xacro:unless>
+            </collision>
+        </xacro:if>
+        <xacro:if value="${gripper_property == ''}">
+          <collision>
+            <origin xyz="0.13 -0.0935 0" rpy="0 1.57 0"/>
+            <geometry>
+              <cylinder radius="0.047" length="0.36"/>
+            </geometry>
+          </collision>
+        </xacro:if>
+      </xacro:unless>
+      <xacro:unless value="${nbr_of_dof_property-6}">
+        <xacro:unless value="${use_longer_4tube_forearm_property}">
+          <collision>
+            <origin xyz="0.135 -0.0935 0" rpy="0 1.57 0"/>
+            <geometry>
+              <cylinder radius="0.047" length="0.36"/>
+            </geometry>
+          </collision>
+        </xacro:unless>   
+        <xacro:if value="${use_longer_4tube_forearm_property}">    
+          <collision>
+            <origin xyz="0.185 -0.0935 0" rpy="0 1.57 0"/>
+            <geometry>
+              <cylinder radius="0.047" length="0.46"/>
+            </geometry>
+          </collision>         
+        </xacro:if>
+      </xacro:unless>
+    </xacro:unless>
+
+    <xacro:unless value="${link_nbr - link05_nbr}">
+      <xacro:if value="${gripper_property == 'Robotiq'}">
+        <collision>
+            <xacro:if value="${reduced_gripper_collision_body_property}">
+              <origin xyz="${0.04+0.035} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+              <geometry>
+                <cylinder radius="0.06" length="0.25"/>
+              </geometry>
+            </xacro:if>
+            <xacro:unless value="${reduced_gripper_collision_body_property}">
+              <origin xyz="${0.118} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+              <geometry>
+                <cylinder radius="0.06" length="0.34"/>
+              </geometry>
+            </xacro:unless>
+        </collision>
+      </xacro:if>
+      <xacro:if value="${gripper_property == 'EZgripper'}">
+          <collision>
+              <xacro:if value="${reduced_gripper_collision_body_property}">
+                  <origin xyz="${0.04+0.035} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+                  <geometry>
+                      <cylinder radius="0.06" length="0.25"/>
+                  </geometry>
+              </xacro:if>
+              <xacro:unless value="${reduced_gripper_collision_body_property}">
+                  <origin xyz="${0.118} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+                  <geometry>
+                      <cylinder radius="0.06" length="0.34"/>
+                  </geometry>
+              </xacro:unless>
+          </collision>
+      </xacro:if>
+      <xacro:if value="${gripper_property == ''}">
+        <collision>
+          <origin xyz="${0.045} 0 0.03" rpy="0 ${J_PI/2} 0"/>
+          <geometry>
+            <cylinder radius="0.055" length="0.18"/>
+          </geometry>
+        </collision>
+      </xacro:if>
+    </xacro:unless>
+
+</xacro:macro>
+
+</robot>

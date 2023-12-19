@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<ignore_root>
+  <ReferenceTrajectoryBase>
+    <TorsoHeight nominal="0.58" min="0.25" max="0.60"/>
+    <PoseControl>
+      <OffsetGain position="3." orientation="5."/>
+    </PoseControl>
+  </ReferenceTrajectoryBase>
+  <ReferenceTrajectoryFreePlane max_distance_to_recover="0.15" max_yaw_to_recover="0.35"/>
+  <ReferenceTrajectoryTerrainAware lookAheadDuration="0.5" pullingVelocityGain="0.5" torsoAdaptationGain="1.0" gravityFactor="0.7"
+                                   maxLegExtensionFactor="0.7"/>
+</ignore_root>

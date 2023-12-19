@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<LocomotionController>
+  <include_xml dir="Params.xml"/>
+  <include_xml dir="sim/Params.xml"/>
+</LocomotionController>

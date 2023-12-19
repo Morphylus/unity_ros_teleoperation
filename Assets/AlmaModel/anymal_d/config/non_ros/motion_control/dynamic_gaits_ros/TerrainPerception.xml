@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<TerrainPerceptionFreePlane logging="true">
+  <PositionFilter time_constant="0.05" gain="1.0"/>
+  <NormalFilter time_constant="0.05" gain="1.0"/>
+  <!-- <RegainingFilter time_constant="0.08"/>  Only enabled if TerrainPerceptionPredictiveFreePlane is used. If so, set PositionFilter and NormalFilter time_constant to 0.3-->
+</TerrainPerceptionFreePlane>

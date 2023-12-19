@@ -1,0 +1,439 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1/Frames1
+        - /MarkerArray1/Namespaces1
+      Splitter Ratio: 0.474119991
+    Tree Height: 408
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 23; 23; 24
+      Enabled: true
+      Line Style:
+        Line Width: 0.0299999993
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        LF_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link Tree Style: Links in Alphabetic Order
+        RF_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_inertia:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_end_effector:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_base_inertia:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        dynaarm_link_finger_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_finger_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_finger_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_finger_tip_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_finger_tip_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        dynaarm_link_finger_tip_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: RobotModel
+      Robot Description: /alma_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        LF_ADAPTER:
+          Value: true
+        LF_FOOT:
+          Value: true
+        LF_HIP:
+          Value: true
+        LF_SHANK:
+          Value: true
+        LF_THIGH:
+          Value: true
+        LH_ADAPTER:
+          Value: true
+        LH_FOOT:
+          Value: true
+        LH_HIP:
+          Value: true
+        LH_SHANK:
+          Value: true
+        LH_THIGH:
+          Value: true
+        RF_ADAPTER:
+          Value: true
+        RF_FOOT:
+          Value: true
+        RF_HIP:
+          Value: true
+        RF_SHANK:
+          Value: true
+        RF_THIGH:
+          Value: true
+        RH_ADAPTER:
+          Value: true
+        RH_FOOT:
+          Value: true
+        RH_HIP:
+          Value: true
+        RH_SHANK:
+          Value: true
+        RH_THIGH:
+          Value: true
+        arm_base:
+          Value: true
+        base:
+          Value: true
+        base_inertia:
+          Value: true
+        imu_link:
+          Value: true
+        dynaarm_end_effector:
+          Value: true
+        dynaarm_link_1:
+          Value: true
+        dynaarm_link_2:
+          Value: true
+        dynaarm_link_3:
+          Value: true
+        dynaarm_link_4:
+          Value: true
+        dynaarm_link_5:
+          Value: true
+        dynaarm_link_6:
+          Value: true
+        dynaarm_link_base:
+          Value: true
+        dynaarm_link_base_inertia:
+          Value: true
+        dynaarm_link_finger_1:
+          Value: true
+        dynaarm_link_finger_2:
+          Value: true
+        dynaarm_link_finger_3:
+          Value: true
+        dynaarm_link_finger_tip_1:
+          Value: true
+        dynaarm_link_finger_tip_2:
+          Value: true
+        dynaarm_link_finger_tip_3:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        base:
+          LF_HIP:
+            LF_THIGH:
+              LF_SHANK:
+                LF_ADAPTER:
+                  LF_FOOT:
+                    {}
+          LH_HIP:
+            LH_THIGH:
+              LH_SHANK:
+                LH_ADAPTER:
+                  LH_FOOT:
+                    {}
+          RF_HIP:
+            RF_THIGH:
+              RF_SHANK:
+                RF_ADAPTER:
+                  RF_FOOT:
+                    {}
+          RH_HIP:
+            RH_THIGH:
+              RH_SHANK:
+                RH_ADAPTER:
+                  RH_FOOT:
+                    {}
+          arm_base:
+            dynaarm_link_base:
+              dynaarm_link_1:
+                dynaarm_link_2:
+                  dynaarm_link_3:
+                    dynaarm_link_4:
+                      dynaarm_link_5:
+                        dynaarm_link_6:
+                          dynaarm_end_effector:
+                            {}
+                          dynaarm_link_finger_1:
+                            dynaarm_link_finger_tip_1:
+                              {}
+                          dynaarm_link_finger_2:
+                            dynaarm_link_finger_tip_2:
+                              {}
+                          dynaarm_link_finger_3:
+                            dynaarm_link_finger_tip_3:
+                              {}
+              dynaarm_link_base_inertia:
+                {}
+          base_inertia:
+            {}
+          imu_link:
+            {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: visualization_marker_array
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 1000
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 181; 181; 181
+    Default Light: true
+    Fixed Frame: base
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/MoveCamera
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/Select
+    - Class: rviz/SetInitialPose
+      Topic: initialpose
+    - Class: rviz/SetGoal
+      Topic: goal
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 3.91873837
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.0599999987
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0.25652957
+        Y: 0.0501689315
+        Z: -0.0299730673
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.00999999978
+      Pitch: 0.190397024
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 5.44221306
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 655
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd0000000100000000000001a00000022cfc0200000001fb000000100044006900730070006c00610079007301000000420000022c000000dc00ffffff000002da0000022c00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Width: 1152
+  X: 2347
+  Y: 232

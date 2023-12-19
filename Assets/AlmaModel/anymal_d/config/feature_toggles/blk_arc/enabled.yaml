@@ -1,0 +1,22 @@
+blk_driver:
+  serial_number: 0 # set by the robot specific configuration.
+gui:
+  sensors:
+    blk_arc:
+      label: Blk Arc
+      order: 5
+      type: blk_arc
+stack_launcher:
+  nodes:
+    blk_driver:
+      roslaunch:
+        name: blk_driver
+        node_type: blk_provider.py
+        output: screen
+        package: blk_driver
+  stacks:
+    npc_drivers:
+      nodes:
+        blk_driver:
+          enabled: true
+          name: blk_driver

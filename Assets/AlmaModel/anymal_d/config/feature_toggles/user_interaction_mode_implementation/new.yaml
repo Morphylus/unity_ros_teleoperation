@@ -1,0 +1,19 @@
+stack_launcher:
+  stacks:
+    navigation:
+      nodes:
+        user_interaction_mode_manager:
+          enabled: true
+environment_visualizer:
+  control_lease:
+    subscribers:
+      user_interaction_mode: /user_interaction_mode_manager/current_mode
+operational_mode_manager:
+  subscribers:
+    user_interaction_mode:
+      queue_size: 1
+      topic: /user_interaction_mode_manager/current_mode
+interaction_marker:
+  control_lease:
+    subscribers:
+      user_interaction_mode: /user_interaction_mode_manager/current_mode

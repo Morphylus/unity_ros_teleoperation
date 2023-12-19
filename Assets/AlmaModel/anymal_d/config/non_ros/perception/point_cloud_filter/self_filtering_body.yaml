@@ -1,0 +1,9 @@
+timeout_usec: 20000
+self_see_links:
+    - name: base
+      padding: 0.04
+#    - name: lidar_cage
+#      padding: 0.04
+    - name: body_top
+      padding: 0.0
+      filtering_method: projective

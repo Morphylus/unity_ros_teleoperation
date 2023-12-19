@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<LocomotionController>
+
+  <!--  Gains that the damping controller uses. Should be low to allow for compliance.  -->
+  <Gains pGain="45.0" iGain="0.0" dGain="0.3" />
+
+  <!--  Dampening kicks in after the normal of the joint velocity is above this number.  -->
+  <velocity_threshold velocity="1.0"/>  <!--  [rad/s]  -->
+
+  <!--  Used to calculate averaging alpha. Higher alpha emphasizes less damping, lower makes enables more damping.  -->
+  <!--  alpha = dt / time_constant, where alpha is the averaging constant new = alpha * new + (1 - alpha) * old.  -->
+  <filter time_constant="0.5"/>  <!--  [s]  -->
+
+  <!--  After this timeout the damping switches to freeze. Prevents drift.  -->
+  <timeout seconds="2.0"/>  <!--  [s]  -->
+
+</LocomotionController>

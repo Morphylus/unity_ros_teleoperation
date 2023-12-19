@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<Mission>
+  <Configuration>
+    <Position>
+      <Initial x="0.0" y="0.0" z="0.0"/>
+      <Minimal x="-0.3" y="-0.3" z="-0.3"/>
+      <Maximal x="0.3" y="0.5" z="0.05"/>
+    </Position>
+    <Orientation>      <!-- Euler Angle ZYX -->
+      <Initial x="0.0" y="0.0" z="0"/>
+      <Minimal x="-0.2" y="-0.2" z="-0.2"/>
+      <Maximal x="0.2" y="0.2" z="0.2"/>
+    </Orientation>
+  </Configuration>
+  <Speed>
+    <Initial headingSpeed="0.0" lateralSpeed="0.0" turningSpeed="0.0"/>
+    <Maximum headingSpeed="0.0" lateralSpeed="0.0" turningSpeed="0.0"/>
+    <RateLimits enable="false">
+      <Acceleration x="0.1" y="0.1" z="0.1"/>
+      <Deceleration x="1.0" y="1.0" z="1.0"/>
+    </RateLimits>
+    <FilterAlpha>
+      <Position x="0.01" y="0.01" z="0.01"/>
+      <Rotation x="0.01" y="0.01" z="0.01"/>
+      <Velocity x="0.3" y="0.3" z="0.3"/>
+    </FilterAlpha>
+    <Gait type="walk, balance">
+      <Maximum headingSpeed="0.4" lateralSpeed="0.3" turningSpeed="0.5"/>
+    </Gait>
+    <Gait type="crawl">
+      <Maximum headingSpeed="0.1" lateralSpeed="0.1" turningSpeed="0.5"/>
+    </Gait>
+    <VelocityClipping type="ellipsoid"/>    <!-- box/ellipsoid -->
+  </Speed>
+  <BaseHeight>
+    <Gait type="walk, balance">
+      <Reference height="0.58"/>
+    </Gait>
+    <Gait type="crawl">
+      <Reference height="0.28"/>
+    </Gait>
+  </BaseHeight>
+  <WalkToPose position_tolerance="0.02" yaw_angle_tolerance="0.02"/>
+  <LocomotionStateSwitches>
+    <BaseVelocityFilter time_constant="0.3" velocity_scaling="1.0"/>
+    <SwitchToStand start_vel_threshold="0.07" end_vel_threshold="0.05" time_threshold="0.10"/>
+    <SwitchDirection start_vel_threshold="0.020" end_vel_threshold="0.050" time_threshold="0.05"/>
+    <Balancing start_vel_threshold="1.50" end_vel_threshold="0.350" time_threshold="0.80" shrink_polygon_factor="0.1"/>
+  </LocomotionStateSwitches>
+</Mission>

@@ -1,0 +1,77 @@
+auditive_inspection_frequency_behavior_plugins:
+  inspect_from_here:
+    inspection_manager_plugin_name: auditive_inspection_frequency_plugin/AuditiveInspectionFrequencyPlugin
+  inspect_from_pose:
+    move_main_body: false
+environment:
+  object_types:
+    auditive_inspection_frequency:
+      interactions:
+        - label: Analyze Audio Frequency from here
+          auto_control_required: true
+          state_name:
+            postfix: FromHere
+            prefix: AnalyzeAudioFrequencyOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: auditive_inspection_frequency_behavior_plugins::InspectFromHere
+        - label: Analyze Audio Frequency
+          auto_control_required: true
+          state_name:
+            postfix: ""
+            prefix: AnalyzeAudioFrequencyOf
+          state_settings:
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          state_type: auditive_inspection_frequency_behavior_plugins::Inspect
+      name: auditive_inspection_frequency
+      visualization:
+        color:
+          blue: 0.1171875
+          green: 0.1953125
+          red: 0.703125
+        mesh: package://environment_visualizer/meshes/navigation_goals/inspection_point.dae
+inspection_manager_ros:
+  auditive_inspection_frequency: ""
+  plugins:
+    auditive_inspection_frequency:
+      action: inspect_auditive_item/frequency
+      allow_multiple_instances: true
+      label: Auditive Frequency Plugin
+      name: auditive_inspection_frequency_plugin/AuditiveInspectionFrequencyPlugin
+      type: auditive
+rqt_task_execution:
+  advanced_tasks:
+    list:
+      80_auditive_inspection_frequency_from_here:
+        label: Analyze Audio Frequency From Here
+        state:
+          name:
+            postfix: FromHere
+            prefix: AnalyzeAudioFrequencyOf
+          settings:
+            environment_object_type: auditive_inspection_frequency
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: auditive_inspection_frequency_behavior_plugins::InspectFromHere
+      81_auditive_inspection_frequency:
+        label: Analyze Audio Frequency
+        state:
+          name:
+            postfix: ""
+            prefix: AnalyzeAudioFrequencyOf
+          settings:
+            environment_object_type: auditive_inspection_frequency
+            parameter_name: inspectable_item
+            parameter_type: InspectableItem
+          type: auditive_inspection_frequency_behavior_plugins::Inspect
+rqt_environment_editor:
+  plugins:
+    auditive_inspection_frequency:
+      label: Auditive Inspection Frequency
+      name: auditive_inspection_frequency_qt_plugin/AuditiveInspectionFrequencyQtPlugin
+rqt_state_machine_editor:
+  behavior_plugins:
+    auditive_inspection_frequency_behavior_plugins:
+      namespace: auditive_inspection_frequency_behavior_plugins

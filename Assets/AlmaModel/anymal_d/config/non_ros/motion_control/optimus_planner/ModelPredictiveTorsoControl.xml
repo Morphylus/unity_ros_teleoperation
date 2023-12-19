@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<ModelPredictiveTorsoControl>
+  <RecedingHorizon duration="0.8" num_steps="12"/>
+  <CentroidalPlanner>
+    <TrajectoryOptimizer solver="qpOASES"/>
+    <StateCost>
+      <StateWeights roll="50." pitch="100." yaw="100."
+                    com_x="100." com_y="100." com_z="100."
+                    ang_vel_x="1." ang_vel_y="5." ang_vel_z="1."
+                    lin_vel_x="50." lin_vel_y="200." lin_vel_z="10."/>
+    </StateCost>
+    <InputCost>
+      <InputWeight weight="1e-4"/>
+    </InputCost>
+    <InputConstraint swing_formulation="pyramid" max_stance_force="1000." max_swing_force="1e-3" friction_coefficient="0.4"/>
+  </CentroidalPlanner>
+  <FallDetection max_divergent_plans="3" divergence_position_threshold="0.5"/>
+</ModelPredictiveTorsoControl>

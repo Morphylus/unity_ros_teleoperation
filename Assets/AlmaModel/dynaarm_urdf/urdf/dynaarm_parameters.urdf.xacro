@@ -1,0 +1,188 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+        <xacro:property name="baboon_peak_torque" value="40"/>
+        <xacro:property name="baboon_max_speed" value="4"/>
+
+        <xacro:property name="dynamixel_peak_torque" value="2.5"/>
+        <xacro:property name="dynamixel_max_speed" value="5"/>
+
+        <xacro:property name="base"             value="dynaarm_base" />
+        <xacro:property name="link01"           value="dynaarm_SHOULDER" />
+        <xacro:property name="link02"           value="dynaarm_UPPERARM" />
+        <xacro:property name="link03"           value="dynaarm_ELBOW" />
+        <xacro:property name="link04"           value="dynaarm_FOREARM" />
+        <xacro:property name="link05"           value="dynaarm_WRIST_1" />
+        <xacro:property name="link06"           value="dynaarm_WRIST_2" />
+        <xacro:property name="realsense"        value="dynaarm_REALSENSE" />
+        <xacro:property name="end_effector"     value="dynaarm_END_EFFECTOR" />
+
+        <xacro:property name="base_mesh"                                value="base_mesh" />
+        <xacro:property name="base_realsense_mount_mesh"                value="base_realsense_mount_mesh" />
+        <xacro:property name="base_mocap_mount_mesh"                    value="base_mocap_mount_mesh" />
+        <xacro:property name="link01_mesh"                              value="shoulder_mesh" />
+        <xacro:property name="link02_mesh"                              value="upperarm_mesh" />
+        <xacro:property name="link03_mesh"                              value="elbow_mesh" />
+        <xacro:property name="link03_elbow_mocap_mount_mesh"            value="elbow_mocap_mount_mesh" />
+        <xacro:property name="link04_elbow_realsense_bracelet_mesh"     value="elbow_realsense_bracelet_mesh" />
+        <xacro:property name="link04_elbow_realsense_mount_mesh"        value="elbow_realsense_adjustable_mount_mesh" />        
+        <xacro:property name="link04_4tube_mesh"                        value="forearm_4tube_mesh" />
+        <xacro:property name="link04_4tube_longer_mesh"                 value="forearm_4tube_longer_mesh" />
+        <xacro:property name="link04_4tube_realsense_mesh"              value="forearm_4tube_realsense_mesh" />
+        <xacro:property name="link04_4tube_mira_mesh"                   value="forearm_4tube_mira_mesh" />
+        <xacro:property name="link04_4tube_ftsPlate_mesh"               value="forearm_4tube_ftsPlate_mesh" />
+        <xacro:property name="link04_4tube_ftSensor_mesh"               value="forearm_4tube_ftsensor_SensOne_mesh" />
+        <xacro:property name="link04_4tube_wrist1_mesh"                 value="forearm_4tube_wrist1_mesh" />
+        <xacro:property name="link04_4tube_wrist1_dynamixel_mesh"       value="forearm_4tube_wrist1_dynamixel_mesh" />
+        <xacro:property name="link04_4tube_catchingNet_mesh"            value="forearm_4tube_catchingNet_mesh" />
+        <xacro:property name="link04_payloadAdapter_mesh"               value="forearm_payload_adapter_mesh" />
+        <xacro:property name="link04_payloadAdapter_wPayload_mesh"      value="forearm_payload_adapter_wPayload_mesh" />
+        <xacro:property name="link04_payloadAdapter_wRectPayload_mesh"  value="forearm_payload_adapter_wRectPayload_mesh" />
+        <xacro:property name="link04_payloadAdapter_wFullPayload_mesh"  value="forearm_payload_adapter_wFullPayload_mesh" />
+        <xacro:property name="link04_festoHand_mesh"                    value="forearm_festoHand_mesh" />
+        <xacro:property name="link04_realsense_testing_mesh"            value="forearm_realsense_testing_mesh" />
+        <xacro:property name="link04_realsense_testing_slider_mesh"     value="forearm_realsense_testing_slider_mesh" />
+        <xacro:property name="link04_realsense_testing_interface_mesh"  value="forearm_realsense_testing_interface_mesh" />
+        <xacro:property name="link04_realsense_testing_noFtSensor_mesh" value="forearm_realsense_testing_noFtSensor_mesh" />
+        <xacro:property name="link05_mesh"                              value="wrist1_mesh" /> <!-- choose wrist1_V2_mesh for wrist with bevel gears -->
+        <xacro:property name="link06_mesh"                              value="wrist2_plate_mesh" /> <!-- choose wrist2_V2_mesh for wrist with bevel gears -->
+        <xacro:property name="link06_realsense_adapter_mesh"            value="realsense_adapter_mesh" /> <!-- choose wrist2_V2_mesh for wrist with bevel gears -->
+        <xacro:property name="fts_realsense_adapter_mesh"               value="fts_realsense_adapter_mesh" />
+        <xacro:property name="link05_dynamixel_mesh"                    value="wrist1_dynamixel_mesh" /> <!-- choose wrist1_V2_mesh for wrist with bevel gears -->
+        <xacro:property name="link06_dynamixel_mesh"                    value="wrist2_dynamixel_mesh" /> <!-- choose wrist2_V2_mesh for wrist with bevel gears -->
+        <xacro:property name="end_effector_mocap_mount_mesh"            value="end_effector_mocap_mount_mesh" /> 
+
+        <xacro:property name="base_nbr"                         value="0" />
+        <xacro:property name="base_realsense_mount_nbr"         value="1" />
+        <xacro:property name="base_mocap_mount_nbr"             value="9" />
+        <xacro:property name="link01_nbr"                       value="100" />
+        <xacro:property name="link02_nbr"                       value="200" />
+        <xacro:property name="link03_nbr"                       value="300" />
+        <xacro:property name="link03_elbow_mocap_mount_nbr"     value="309" />
+        <xacro:property name="link04_4tube_nbr"                         value="400" />
+        <xacro:property name="link04_4tube_realsense_nbr"               value="401" />
+        <xacro:property name="link04_elbow_realsense_nbr"               value="4011" />
+        <xacro:property name="link04_4tube_mira_nbr"                    value="402" />
+        <xacro:property name="link04_4tube_ftSensor_nbr"                value="403" />
+        <xacro:property name="link04_4tube_ftsPlate_nbr"                value="404" />
+        <xacro:property name="link04_4tube_wrist1_nbr"                  value="406" />
+        <xacro:property name="link04_4tube_wrist1_dynamixel_nbr"        value="407" />
+        <xacro:property name="link04_4tube_catchingNet_nbr"             value="408" />
+        <xacro:property name="link04_festoHand_nbr"                     value="410" />
+        <xacro:property name="link04_payloadAdapter_nbr"                value="440" />
+        <xacro:property name="link04_payloadAdapter_wPayload_nbr"       value="441" />
+        <xacro:property name="link04_payloadAdapter_wRectPayload_nbr"   value="442" />
+        <xacro:property name="link04_payloadAdapter_wFullPayload_nbr"   value="443" />
+        <xacro:property name="link04_realsense_testing_nbr"             value="450" />
+        <xacro:property name="link04_realsense_testing_slider_nbr"      value="451" />
+        <xacro:property name="link04_realsense_testing_interface_nbr"   value="452" />
+        <xacro:property name="link04_realsense_testing_noFtSensor_nbr"  value="453" />
+        <xacro:property name="link05_nbr"                       value="500" />
+        <xacro:property name="link06_nbr"                       value="600" />
+        <xacro:property name="link06_realsense_adapter_nbr"     value="602" />
+        <xacro:property name="link05_dynamixel_nbr"             value="501" />
+        <xacro:property name="link06_dynamixel_nbr"             value="601" />
+        <xacro:property name="fts_realsense_adapter_nbr"        value="603" />        
+        <xacro:property name="end_effector_mocap_mount_nbr"     value="609" />
+                
+        <xacro:property name="joint_base_name"          value="joint_base" />
+        <xacro:property name="joint_base_joint_type"   value="revolute" />
+        <xacro:property name="joint_base_axis_xyz"      value="0 0 0" />
+        <xacro:property name="joint_base_origin_xyz"    value="0 0 0" />
+        <xacro:property name="joint_base_origin_rpy"    value="0 0 0" />
+
+        <xacro:property name="joint_1_name"         value="SH_ROT" />
+        <xacro:property name="joint_1_joint_type"   value="revolute" />
+        <xacro:property name="joint_1_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_1_origin_xyz"   value="0 0 0.06" />
+        <xacro:property name="joint_1_origin_rpy"   value="0 0 0" />
+        <xacro:property name="joint_1_lower_limit"  value="${-J_PI + 0.1416}" />
+        <xacro:property name="joint_1_upper_limit"  value="${J_PI - 0.1416}" />
+
+        <xacro:property name="joint_2_name"         value="SH_FLE" />
+        <xacro:property name="joint_2_joint_type"   value="revolute" />
+        <xacro:property name="joint_2_axis_xyz"     value="0 0 -1" />
+        <xacro:property name="joint_2_origin_xyz"   value="0 0 0.0" />
+        <xacro:property name="joint_2_origin_rpy"   value="${J_PI/2} ${-J_PI/2} 0" />
+        <xacro:property name="joint_2_lower_limit"  value="${-J_PI/2 - 0.4}" />
+        <xacro:property name="joint_2_upper_limit"  value="${J_PI/2 + 0.4}" />
+
+        <xacro:property name="joint_3_name"         value="EL_FLE" />
+        <xacro:property name="joint_3_joint_type"   value="revolute" />
+        <xacro:property name="joint_3_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_3_origin_xyz"   value="0.412 0 0" />
+        <xacro:property name="joint_3_origin_rpy"   value="${J_PI} 0 0" />
+        <xacro:property name="joint_3_lower_limit"  value="-0.2" />
+        <xacro:property name="joint_3_upper_limit"  value="${J_PI}" />
+
+        <xacro:property name="joint_4_name"         value="FA_ROT" />
+        <xacro:property name="joint_4_joint_type"   value="revolute" />
+        <xacro:property name="joint_4_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_4_origin_xyz"   value="0.0325 -0.092 0" />
+        <xacro:property name="joint_4_origin_rpy"   value="${J_PI/2} 0 ${J_PI/2}" />
+        <xacro:property name="joint_4_lower_limit"  value="${-J_PI - 0.8584}" />
+        <xacro:property name="joint_4_upper_limit"  value="${J_PI + 0.8584}" />
+
+        <xacro:property name="joint_5_name"         value="WRIST_1" />
+        <xacro:property name="joint_5_joint_type"   value="revolute" />
+        <xacro:property name="joint_5_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_5_origin_xyz"   value="0.0 -0.03 0.055" />
+        <xacro:property name="joint_5_origin_rpy"   value="0 ${-J_PI/2} ${-J_PI/2}" />
+        <xacro:property name="joint_5_lower_limit"  value="${-J_PI/2}" />
+        <xacro:property name="joint_5_upper_limit"  value="${J_PI/2}" />
+        <xacro:property name="joint_5_dynamixel_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_5_dynamixel_origin_xyz"   value="0.0 0.0382 0.06" />
+        <xacro:property name="joint_5_dynamixel_origin_rpy"   value="${J_PI/2} 0 0" />
+        <xacro:property name="joint_5_dynamixel_lower_limit"  value="${-J_PI/2-J_PI/4}" />
+        <xacro:property name="joint_5_dynamixel_upper_limit"  value="${J_PI/2+J_PI/4}" />
+
+        <xacro:property name="joint_6_name"         value="WRIST_2" />
+        <xacro:property name="joint_6_joint_type"   value="revolute" />
+        <xacro:property name="joint_6_axis_xyz"     value="0 0 1" />
+        <xacro:property name="joint_6_origin_xyz"   value="0.12 0.0 0.03" />
+        <xacro:property name="joint_6_origin_rpy"   value="0 ${J_PI/2} 0" />
+        <xacro:property name="joint_6_lower_limit"  value="${-J_PI}" />
+        <xacro:property name="joint_6_upper_limit"  value="${J_PI}" />
+        <xacro:property name="joint_6_dynamixel_axis_xyz"     value="0 1 0" />
+        <xacro:property name="joint_6_dynamixel_origin_xyz"   value="0.0 0.0 0.0382" />
+        <xacro:property name="joint_6_dynamixel_origin_rpy"   value="0 ${J_PI/2} ${J_PI/2}" />
+        <xacro:property name="joint_6_dynamixel_lower_limit"  value="${-J_PI/2}" />
+        <xacro:property name="joint_6_dynamixel_upper_limit"  value="${J_PI/4}" />
+
+        <xacro:property name="joint_ee_name"                                    value="ee_fix_joint" />
+        <xacro:property name="joint_ee_origin_xyz"                              value="0.0 0.0 0.05" />
+        <xacro:property name="joint_ee_origin_festoHand_xyz"                    value="0.0 0.0 0.41" />
+        <xacro:property name="joint_ee_origin_payloadAdapter_xyz"               value="0.0 0.0 0.527" />
+        <xacro:property name="joint_ee_origin_passiveWrist_xyz"                 value="0.0 0.0 0.35" />
+        <xacro:property name="joint_ee_origin_realsense_testing_xyz"            value="0.0 0.0 0.35" />
+        <xacro:property name="joint_ee_origin_realsense_testing_noFtSensor_xyz" value="0.0 0.0 0.35" />
+        <xacro:property name="joint_ee_origin_4tube_xyz"                        value="0.0 0.0 0.30" />
+        <xacro:property name="joint_ee_origin_4tube_wftSensor_xyz"              value="0.0 0.0 0.415" />
+        <xacro:property name="joint_ee_origin_4tube_catchingNet_xyz"            value="0.0 0.0 0.095" />
+        <xacro:property name="joint_ee_origin_robotiq_xyz"                      value="0.0 0.0 0.14" />
+        <xacro:property name="joint_ee_origin_ezgripper_xyz"                    value="0.0 0.0 0.18" />
+        <xacro:property name="joint_ee_origin_ability_hand_xyz"                 value="0.0 0.0 0.18" />
+        <xacro:property name="joint_ee_origin_mocap_mount_xyz"                  value="0.0 0.0 0.0" />
+        <xacro:property name="joint_ee_origin_6dof_dynamixel_xyz"               value="-0.0333 0.0 0.047" />
+        <xacro:property name="joint_ee_origin_rpy"                              value="0 0 0" />
+        <xacro:property name="joint_ee_origin_yawed_rpy"                        value="0 0 0" />
+
+        <xacro:property name="joint_robotiq_base_4dof_origin_xyz" value="0.0 0.0 0.314" />
+        <xacro:property name="joint_robotiq_base_realsense_testing_noFtSensor_4dof_origin_xyz" value="0.0 0.0 0.277" />
+        <xacro:property name="joint_robotiq_base_4dof_origin_rpy" value="0 0 0" />
+        <xacro:property name="joint_robotiq_base_6dof_origin_xyz" value="0.0 0.0 0.036" />
+        <xacro:property name="joint_robotiq_base_6dof_origin_rpy" value="0 0 0" />
+
+        <xacro:property name="joint_realsense_name" value="realsense_fixed_joint" />
+        <xacro:property name="joint_realsense_origin_festoHand_xyz" value="0.0 -0.02787 0.221" />
+        <xacro:property name="joint_realsense_origin_festoHand_rpy" value="0 ${-J_PI/2+9.0*J_PI/180} ${J_PI/2}" />
+        <xacro:property name="joint_realsense_origin_realsense_testing_xyz" value="0.0 -0.07515 0.0627" />
+        <xacro:property name="joint_realsense_origin_realsense_testing_rpy" value="0 ${-J_PI/2} ${J_PI/2}" />
+        <xacro:property name="joint_realsense_origin_4tube_xyz"         value="0.0 0.0 0.0" />
+        <xacro:property name="joint_realsense_origin_4tube_testing_rpy" value="0 0 0" />
+        <xacro:property name="joint_realsense_origin_wrist_xyz"         value="0.0 0.0 0.0" />
+        <xacro:property name="joint_realsense_origin_wrist_testing_rpy" value="0 0 0" />
+
+        <xacro:property name="ft_sensor_orientation_z" value="${J_PI/2}" />
+        <!-- needed becuase the new and old fts we have have different sizes along their z axis -->
+        <xacro:property name="ft_sensor_size" value="0.035" />
+</robot>

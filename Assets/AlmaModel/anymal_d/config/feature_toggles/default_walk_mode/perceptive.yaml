@@ -1,0 +1,47 @@
+collision_filter:
+  elevation_map_lidar_obstacle_pipeline:
+    grid_map_height_mask:
+      height_threshold: 0.25
+motion_control_manager:
+  motion_transitioner:
+    motion_states:
+      blind_walk: # Since blind Trekker is not the default walk, provide a specific motion state for it
+        direct_transit_state: ""
+    transitions:
+      blind_walk:
+        connections:
+          run: 1.0
+          square_up: 2.5
+          stair_climbing: 1.0
+          stand: 2.0
+          walk: 1.0
+        motion:
+          motion_controller: trekker
+          operation_mode: walk
+          reference_type: twist
+        preempt_state: _preempted
+        target_state: blind_walk
+      freeze:
+        connections:
+          blind_walk: 1.0
+      walk:
+        connections:
+          blind_walk: 1.0
+        motion:
+          operation_mode: perceptive_walk
+path_planning_and_following:
+  elevation_map_lidar_obstacle_pipeline:
+    grid_map_height_mask:
+      height_threshold: 0.25
+  strict_path_follower:
+    blind_walk:
+      dt_ref: 0.4
+      acc_lim_theta: 0.45
+      max_vel_theta: 0.9
+      max_vel_x: 0.6
+      max_vel_x_backwards: 0.6
+      max_vel_y: 0.45
+      min_vel_theta: 0.01
+      min_vel_x: 0.02
+      min_vel_y: 0.02
+      weight_shortest_path: 4.0

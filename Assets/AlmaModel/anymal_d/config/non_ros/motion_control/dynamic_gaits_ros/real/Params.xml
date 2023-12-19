@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<ignore_root>
+  <include_xml dir="VirtualModelController.xml"/>
+  <include_xml dir="WholeBodyControl.xml"/>
+  <include_xml dir="GaitSelection.xml"/>
+</ignore_root>
