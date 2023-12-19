@@ -90,11 +90,12 @@
     - debayer image manually on image receive
 - [x] Updated URDF converter
     - _seems_ to work out of the box for tf tracking (2 joints mislabeled/rotated, although might be issue with source)
+- [x] Pointcloud2 viz to particle system
+    - works well enough, need to determine if lag is from network or render delays
 
 
 - [ ] Center around map (inverse tf)
-- [ ] Tune Nerf to look good/new data?
-- [ ] Pointcloud2 viz to gpu shader
+- [ ] Fix realsense tf tracking
 - [ ] async tcp
 - [ ] splat quest shader
 - [ ] splat streaming

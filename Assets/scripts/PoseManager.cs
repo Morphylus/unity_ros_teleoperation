@@ -64,10 +64,10 @@ public class PoseManager : MonoBehaviour
     void OffsetRotate(Vector2 input)
     {
         // offset on the y axis based on forwards/back on second joystick
-        Vector3 move = new Vector3(0, input.y/10, 0);
+        Vector3 move = new Vector3(0, input.y, 0);
 
         // rotate on the x axis based on left/right on second joystick
-        _root.Translate(move * speed * Time.deltaTime / 2);
+        _root.Translate(move * speed * Time.deltaTime / 10);
         _root.Rotate(0, input.x * speed * Time.deltaTime * 20, 0);
     }
 
