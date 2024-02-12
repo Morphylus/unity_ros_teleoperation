@@ -15,7 +15,6 @@ public class LidarDrawer : MonoBehaviour
     GraphicsBuffer _meshVertices;
     GraphicsBuffer _ptData;
 
-    public float offset = 4.5f;
     public float scale = 1.0f;
     public int maxPts = 1_000_000;
     public int displayPts = 10;
@@ -28,7 +27,7 @@ public class LidarDrawer : MonoBehaviour
     private ROSConnection _ros;
     private int _displayPts;
     private Mesh mesh;
-    private LidarSpawner lidarSpawner;
+    private LidarSpawner _lidarSpawner;
 
     void Start()
     {
@@ -42,12 +41,11 @@ public class LidarDrawer : MonoBehaviour
         _ptData = new GraphicsBuffer(GraphicsBuffer.Target.Structured, maxPts, _LidarDataSize);
         _displayPts = displayPts;
 
-
         renderParams = new RenderParams(rgbd ? rgbd_material : lidar_material);
         renderParams.worldBounds = new Bounds(Vector3.zero, Vector3.one * 100);
         renderParams.matProps = new MaterialPropertyBlock();
 
-        renderParams.matProps.SetMatrix("_ObjectToWorld", Matrix4x4.Translate(new Vector3(-offset, 0, 0)));
+        renderParams.matProps.SetMatrix("_ObjectToWorld", Matrix4x4.Translate(new Vector3(0, 0, 0)));
         renderParams.matProps.SetFloat("_PointSize", scale);
         renderParams.matProps.SetBuffer("_LidarData", _ptData);
         renderParams.matProps.SetInt("_BaseVertexIndex", (int)mesh.GetBaseVertex(0));
@@ -56,8 +54,11 @@ public class LidarDrawer : MonoBehaviour
         _ros = ROSConnection.GetOrCreateInstance();
         _ros.Subscribe<PointCloud2Msg>(topic, OnPointcloud);
 
-        lidarSpawner = GetComponent<LidarSpawner>();
-        // lidarSpawner.PointCloudGenerated += OnPointcloud;
+
+        if((_lidarSpawner = GetComponent<LidarSpawner>()) != null)
+        {
+            _lidarSpawner.PointCloudGenerated += OnPointcloud;
+        }
     }
 
     private void OnValidate() {
@@ -77,6 +78,7 @@ public class LidarDrawer : MonoBehaviour
     }
 
     private void Update() {
+        renderParams.matProps.SetMatrix("_ObjectToWorld", transform.localToWorldMatrix);
         Graphics.RenderPrimitivesIndexed(renderParams, MeshTopology.Triangles, _meshTriangles, _meshTriangles.count, (int)mesh.GetIndexStart(0),_displayPts);
     }
 

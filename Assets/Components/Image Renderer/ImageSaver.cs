@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,6 +27,10 @@ public class ImageSaverEditor : Editor
         {
             myScript.MoveToFrame(1);
         }
+        if(GUILayout.Button("Render"))
+        {
+            myScript.Render();
+        }
     }
 }
 #endif
@@ -36,8 +42,8 @@ public class ImageSaver : MonoBehaviour
     private int _width, _height;
     private RenderTexture _renderTexture;
 
-    private List<Vector3> _positions;
-    private List<Quaternion> _rotations;
+    private Vector3[] _positions;
+    private Quaternion[] _rotations;
 
     private Camera _camera;
 
@@ -49,7 +55,7 @@ public class ImageSaver : MonoBehaviour
 
     public void MoveToFrame(int i)
     {
-        if(i < 0 || i >= _positions.Count)
+        if(i < 0 || i >= _positions.Length)
         {
             Debug.LogError("Invalid frame index: " + i);
             return;
@@ -63,64 +69,58 @@ public class ImageSaver : MonoBehaviour
     {
         if(_camera)
         {
-            _camera.Render();
+        // Save the rendered image to a folder
+        string folderPath = "/home/maximum";
+        string fileName = "rendered_image.png";
+        string filePath = System.IO.Path.Combine(folderPath, fileName);
+        RenderTexture.active = _renderTexture;
+        Texture2D image = new Texture2D(_width, _height);
+        image.ReadPixels(new Rect(0, 0, _width, _height), 0, 0);
+        image.Apply();
+        byte[] bytes = image.EncodeToPNG();
+        System.IO.File.WriteAllBytes(filePath, bytes);
+        Debug.Log("Image saved to: " + filePath);
+            
         }
     }
 
     public void ParseFile()
     {
         // Reads the transforms.json file
-        ParseTransforms(textFile.text, out _width, out _height, out _positions, out _rotations);
+        TransformData data = JsonConvert.DeserializeObject<TransformData>(textFile.text);
 
-        Debug.Log("Parsed " + _positions.Count + " frames.");
+        _width = data.w;
+        _height = data.h;
 
-        if(_camera)
+
+        if (_camera)
         {
             _renderTexture = new RenderTexture(_width, _height, 24);
             _camera.targetTexture = _renderTexture;
-        }        
+        }
 
-        // _positions = new Vector3[data.frames.Count];
-        // _rotations = new Quaternion[data.frames.Count];
+        _positions = new Vector3[data.frames.Length];
+        _rotations = new Quaternion[data.frames.Length];
 
-        return;
-        // for(int i=0; i<data.frames.Count; i++)
-        // {
-        //     Frame frame = data.frames[i];
-        //     List<List<double>> matrix = frame.transform_matrix;
-        //     Debug.Log(matrix);
-        //     Matrix4x4 m = new Matrix4x4();
-        //     // m.SetRow(0, new Vector4(matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3]));
-        //     // m.SetRow(1, new Vector4(matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3]));
-        //     // m.SetRow(2, new Vector4(matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3]));
-        //     // m.SetRow(3, new Vector4(matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]));
+        Debug.Log("Parsed " + _positions.Length + " frames.");
 
-        //     Vector3 position = m.GetColumn(3);
-        //     Quaternion rotation = Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1));
 
-        //     _positions[i] = position;
-        //     _rotations[i] = rotation;
-        // }
-    }
-
-    public static void ParseTransforms(string json, out int width, out int height, out List<Vector3> positions, out List<Quaternion> rotations)
-    {
-        // Manually parse the JSON string
-        string[] lines = json.Split('\n');
-        // Initialize variables
-        width = 0;
-        height = 0;
-        positions = new List<Vector3>();
-        rotations = new List<Quaternion>();
-
-        // Iterate through each line of the JSON string
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < data.frames.Length; i++)
         {
-            // Skip empty lines
-            if (string.IsNullOrEmpty(lines[i]))
-            continue;
+            Frame frame = data.frames[i];
+            float[][] matrix = frame.transform_matrix;
+            Matrix4x4 m = new Matrix4x4();
+            m.SetRow(0, new Vector4(matrix[0][0], matrix[0][2], matrix[0][1], matrix[0][3])); // Swap Y and Z coordinates
+            m.SetRow(1, new Vector4(matrix[2][0], matrix[2][2], matrix[2][1], matrix[2][3])); // Swap Y and Z coordinates
+            m.SetRow(2, new Vector4(matrix[1][0], matrix[1][2], matrix[1][1], matrix[1][3])); // Swap Y and Z coordinates
+            m.SetRow(3, new Vector4(matrix[3][0], matrix[3][2], matrix[3][1], matrix[3][3])); // Swap Y and Z coordinates
 
-            
+            Vector3 position = m.GetColumn(3);
+            Quaternion rotation = Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1));
+
+            _positions[i] = position;
+            _rotations[i] = rotation;
         }
     }
+
 }

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Unlit/Lidar"
 {
     Properties
@@ -47,7 +49,8 @@ Shader "Unlit/Lidar"
                 float2 uv = _Positions[_BaseVertexIndex + vertexID] * _PointSize;
                 uv /= float2(_ScreenParams.x/_ScreenParams.y, 1);
                 float4 wpos = mul(_ObjectToWorld, float4(pos, 1.0f));
-                o.pos = mul(UNITY_MATRIX_VP, wpos) + float4(uv,0,0);
+
+                o.pos = UnityObjectToClipPos(wpos) + float4(uv,0,0);
                 o.color = lerp(_ColorMin, _ColorMax, _LidarData[instanceID].intensity);
                 return o;
             }

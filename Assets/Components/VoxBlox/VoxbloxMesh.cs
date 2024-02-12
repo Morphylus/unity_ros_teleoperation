@@ -5,6 +5,25 @@ using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Voxblox;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+
+[CustomEditor(typeof(VoxbloxMesh))]
+public class VoxbloxMeshEditor: Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        VoxbloxMesh myScript = (VoxbloxMesh)target;
+        if(GUILayout.Button("Clear"))
+        {
+            myScript.Clear();
+        }
+    }
+}
+#endif
+
 public class VoxbloxMesh : MonoBehaviour
 {
     public string topic = "/voxblox_node/mesh";
@@ -102,6 +121,15 @@ public class VoxbloxMesh : MonoBehaviour
             mesh.RecalculateBounds();
         }
 
+    }
+
+    public void Clear()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        blocks.Clear();
     }
 
 }
