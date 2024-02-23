@@ -70,7 +70,7 @@ public class SphereTracker : MonoBehaviour
     {
         _enabled = !_enabled;
         sphereAnimator.SetBool("Present", _enabled);
-        viewerAnimator.SetBool("Open", !_enabled);
+        // viewerAnimator.SetBool("Open", !_enabled);
     }
 
     void Render()

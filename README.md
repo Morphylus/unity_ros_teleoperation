@@ -16,6 +16,8 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
 | Alma | Full Alma model compatible with Unity and linked to TF syste | [Assets/Components/Alma](Assets/Components/Alma) | Needs mesh clean up |
 
 
+---
+
 # THINGS TO DO
 
 - [x] ROS to Unity
@@ -118,13 +120,11 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
     - temp ensure within odom hierachy
 
 
-
 - [ ] Center around map (inverse tf)
+- [ ] New TF manager (singleton)
 - [ ] async tcp
 - [ ] splat quest shader
 - [ ] splat streaming
 - [ ] tf lidar pose spike without tf/data
 - [ ] better tf management
 - [ ] nerf scene poses
-
-

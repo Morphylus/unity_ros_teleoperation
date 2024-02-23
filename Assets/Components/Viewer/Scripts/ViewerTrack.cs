@@ -3,6 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+#if UNITY_EDITOR
+using UnityEditor;
+
+[CustomEditor(typeof(ViewerTrack))]
+public class ViewerTrackEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        ViewerTrack myScript = (ViewerTrack)target;
+        if(GUILayout.Button("Toggle"))
+        {
+            myScript.Toggle();
+        }
+    }
+}
+#endif
+
 public class ViewerTrack : MonoBehaviour
 {
     private NerfRender render;
@@ -11,7 +30,7 @@ public class ViewerTrack : MonoBehaviour
 
     private Vector3 lastPosition;
     private Quaternion lastRotation;
-    private bool _enabled = false;
+    private bool _enabled = true;
     private Animator _animator;
 
     void Start()
@@ -20,6 +39,12 @@ public class ViewerTrack : MonoBehaviour
         lastPosition = transform.position;
         lastRotation = transform.rotation;
         _animator = GetComponent<Animator>();
+    }
+
+    public void Toggle()
+    {
+        _enabled = !_enabled;
+        _animator.SetBool("Open", _enabled);
     }
 
     // Update is called once per frame

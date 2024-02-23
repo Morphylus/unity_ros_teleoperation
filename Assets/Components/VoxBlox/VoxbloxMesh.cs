@@ -36,7 +36,7 @@ public class VoxbloxMesh : MonoBehaviour
 
     public GameObject _parent;
 
-    private bool _enabled = true;
+    public bool _enabled = true;
 
 
     void Start()
@@ -151,7 +151,10 @@ public class VoxbloxMesh : MonoBehaviour
     public void ToggleEnabled()
     {
         _enabled = !_enabled;
-        GetComponent<MeshRenderer>().enabled = _enabled;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(_enabled);
+        }
     }
 
     public void Clear()
