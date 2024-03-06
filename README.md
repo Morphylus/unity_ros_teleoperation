@@ -118,13 +118,14 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
     - Sends cancel mission signal
 - [x] Fix realsense tf tracking
     - temp ensure within odom hierachy
+- [x] Add haptic support
+    - Bhaptic gloves supported
 
-
+- [ ] Add haptic feedback from psyonic hand
+- [ ] Inverted scroll option for moving scene
 - [ ] Center around map (inverse tf)
 - [ ] New TF manager (singleton)
 - [ ] async tcp
 - [ ] splat quest shader
 - [ ] splat streaming
-- [ ] tf lidar pose spike without tf/data
-- [ ] better tf management
-- [ ] nerf scene poses
+- [ ] nerf scene poses fix (rotations are off)

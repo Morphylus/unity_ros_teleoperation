@@ -67,6 +67,9 @@ public class HandManager : MonoBehaviour
 
     public void UpdateValue(bool isRight, int index, int value)
     {
+        // Just in case...
+        value = Mathf.Clamp(value, 0, 100);
+
         if(isRight)
         {
             rightHand[index] = value;
@@ -75,5 +78,39 @@ public class HandManager : MonoBehaviour
         {
             leftHand[index] = value;
         }
+    }
+
+    public void UpdateValues(bool isRight, int[] values)
+    {
+        if(isRight)
+        {
+            rightHand = values;
+        }
+        else
+        {
+            leftHand = values;
+        }
+    }
+
+    public void UpdateValue1D(bool isRight, int index, float value)
+    {
+        // This mode doesnt support only sending force to the palm
+        if(index == 5) return;
+        
+        // Value here represents the position between this finger and the palm, so convert to forces for each
+        int fingerForce = (int)(100 * value);
+        int palmForce = 100 - fingerForce;
+
+        if(isRight)
+        {
+            rightHand[index] = fingerForce;
+            rightHand[5] = (palmForce + rightHand[5]) / 2;
+        }
+        else
+        {
+            leftHand[index] = fingerForce;
+            leftHand[5] = (palmForce + leftHand[5]) / 2;
+        }
+
     }
 }

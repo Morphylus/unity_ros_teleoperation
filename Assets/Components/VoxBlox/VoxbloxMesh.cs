@@ -103,6 +103,10 @@ public class VoxbloxMesh : MonoBehaviour
                 mesh = new Mesh();
                 blockObj.AddComponent<MeshFilter>().mesh = mesh;
                 blockObj.AddComponent<MeshRenderer>().material = material;
+                MeshCollider collider = blockObj.AddComponent<MeshCollider>();
+                collider.sharedMesh = mesh;
+                collider.convex = true;
+
             } else
             {
                 mesh = blocks[index].GetComponent<MeshFilter>().mesh;
