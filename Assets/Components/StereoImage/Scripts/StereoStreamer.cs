@@ -54,12 +54,10 @@ public class StereoStreamerEditor : Editor
 
 public class StereoStreamer : ImageView
 {
-    public Material material;
 
     private Texture2D _leftTexture2D;
     private Texture2D _rightTexture2D;
 
-    private Transform _Img;
 
 
     void Start()

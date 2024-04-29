@@ -120,24 +120,30 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
     - temp ensure within odom hierachy
 - [x] Add haptic support
     - Bhaptic gloves supported
+- [x] Add IP Presets
+    - Added presets for IP settings in player prefs
+- [x] Stereo camera support
+    - Added stereo camera support for left/right images
+- [x] Compute shader debayering
+    - Added compute shader for debayering for raw images
+- [x] Add haptic feedback from psyonic hand
+    - Testing needed..
 
-- [ ] Add haptic feedback from psyonic hand
-- [ ] Inverted scroll option for moving scene
-- [ ] Center around map (inverse tf)
+
+- [ ] Center around map frame (inverse tf)
 - [ ] New TF manager (singleton)
 - [ ] async tcp
 - [ ] splat quest shader
 - [ ] splat streaming
 - [ ] nerf scene poses fix (rotations are off)
 - [ ] Grab scaler?
-- [ ] Add IP Presets
 
 - [ ] Teleop demo
     - [x] PS controllers mapped for twist commands
     - [x] Floating camera windows 
     - [x] Sensor spawner
     - [x] Fix hand interaction
-    - [ ] Settings
+    - [x] Settings
         - [x] IP settings
         - [x] Mode settings
         - [ ] Inverted controls

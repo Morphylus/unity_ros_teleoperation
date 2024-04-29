@@ -7,6 +7,8 @@ using Unity.Robotics.ROSTCPConnector;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using TMPro;
+using UnityEngine.Experimental.Rendering;
+
 
 
 #if UNITY_EDITOR
@@ -33,6 +35,14 @@ public class ImageViewEditor : Editor
         {
             imageView.OnSelect(2);
         }
+        if (GUILayout.Button("Clear"))
+        {
+            imageView.OnSelect(0);
+        }
+        if (GUILayout.Button("Render"))
+        {
+            imageView.Render();
+        }
     }
 }
 #endif
@@ -41,15 +51,17 @@ public class ImageView : MonoBehaviour
 {
     public Dropdown dropdown;
     public GameObject topMenu;
-    public RawImage _uiImage;
     public CameraManager manager;
     public TMPro.TextMeshProUGUI name;
     public Sprite untracked;
     public Sprite tracked;
+    public ComputeShader debayer;
+    public Material material;
 
     public string topicName;
 
-    private Texture2D _texture2D;
+    private RenderTexture _texture2D;
+    protected Transform _Img;
 
     protected int _lastSelected = 0;
 
@@ -58,6 +70,25 @@ public class ImageView : MonoBehaviour
     protected Image _icon;
     protected ROSConnection ros;
 
+    public enum DebayerMode
+    {
+        RGGB,
+        BGGR,
+        GBRG,
+        GRBG,
+        None=-1,
+    }
+
+    public DebayerMode debayerType = DebayerMode.GRBG;
+
+
+    public void OnValidate()
+    {
+        if (debayer != null && debayerType != DebayerMode.None)
+        {
+            debayer.SetInt("mode", (int)debayerType);
+        }
+    }
 
     public bool CleanTF(string name)
     {
@@ -117,6 +148,9 @@ public class ImageView : MonoBehaviour
     {
         ros = ROSConnection.GetOrCreateInstance();
 
+        _Img = transform.Find("Img");
+        material = _Img.GetComponent<MeshRenderer>().material;
+
         dropdown.onValueChanged.AddListener(OnSelect);
 
         dropdown.gameObject.SetActive(false);
@@ -175,9 +209,6 @@ public class ImageView : MonoBehaviour
 
     public void Flip()
     {
-        Rect rect = _uiImage.uvRect;
-        rect.width *= -1;
-        _uiImage.uvRect = rect;
     }
 
     public void ScaleUp()
@@ -210,7 +241,7 @@ public class ImageView : MonoBehaviour
         {
             topicName = null;
             // set texture to grey
-            _uiImage.texture = null;
+            material.SetTexture("_BaseMap", null);
             
             dropdown.gameObject.SetActive(false);
             topMenu.SetActive(false);
@@ -237,21 +268,39 @@ public class ImageView : MonoBehaviour
     {
         if (_texture2D == null)
         {
-            _texture2D = new Texture2D(width, height, TextureFormat.RGB24, false);
-            _uiImage.texture = _texture2D;
-            _uiImage.color = Color.white;
+            _texture2D = new RenderTexture(width, height, 0, GraphicsFormat.R8G8B8A8_UNorm);
+            _texture2D.enableRandomWrite = true;
+            _texture2D.Create();
+            material.SetTexture("_BaseMap", _texture2D);
         }
+    }
+
+    public void Render()
+    {
+        // Save the _uiImage rendertexture to a file
+        RenderTexture.active = _texture2D;
+        Texture2D tex = new Texture2D(_texture2D.width, _texture2D.height, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, _texture2D.width, _texture2D.height), 0, 0);
+        tex.Apply();
+        RenderTexture.active = null;
+
+        byte[] bytes = tex.EncodeToPNG();
+        
+        string filename = name.text.Replace("/", "_");
+        System.IO.File.WriteAllBytes(Application.dataPath + "/../" + filename + ".png", bytes);
+
     }
 
     void Resize()
     {
         if (_texture2D == null) return;
-
         float aspectRatio = (float)_texture2D.width/(float)_texture2D.height;
-        float height = _uiImage.rectTransform.sizeDelta.y;
-        float width = height * aspectRatio;
+
+        float width = _Img.transform.localScale.x;
+        float height = width / aspectRatio;
+
         
-        _uiImage.rectTransform.sizeDelta = new Vector2(width,_uiImage.rectTransform.sizeDelta.y);
+        _Img.localScale = new Vector3(width, 1, height);
     }
 
     protected void ParseHeader(HeaderMsg header)
@@ -281,57 +330,32 @@ public class ImageView : MonoBehaviour
 
     void OnCompressed(CompressedImageMsg msg)
     {
-        SetupTex();
+        // SetupTex();
         ParseHeader(msg.header);
 
         try
         {
-            ImageConversion.LoadImage(_texture2D, msg.data);
+            Texture2D _input = new Texture2D(2, 2);
+            ImageConversion.LoadImage(_input, msg.data);
+            _input.Apply();
+            SetupTex(_input.width, _input.height);
 
-            _texture2D.Apply();
+            if(debayerType == DebayerMode.None)
+            {
+                RenderTexture.active = _texture2D;
+                Graphics.Blit(_input, _texture2D);
+                RenderTexture.active = null;
+                return;
+            }
 
-            // debayer the image using bilinear interpolation for rggb format
+            // debayer the image using compute shader
+            debayer.SetInt("mode", (int)debayerType);
+            debayer.SetTexture(0, "Input", _input);
+            debayer.SetTexture(0, "Result", _texture2D);
+            debayer.Dispatch(0, _input.width / 2, _input.height / 2, 1);
 
-            // Color[] pixels = _texture2D.GetPixels();
-            // int width = _texture2D.width;
-            // int height = _texture2D.height;
+            Destroy(_input);
 
-            // for(int i = 0; i < pixels.Length; i++)
-            // {
-            //     int x = i % width;
-            //     int y = i / width;
-
-            //     // check for the r, g, g, b pattern and interpolate
-            //     // check for out of bounds issues
-            //     if (x < width - 1 && y < height - 1)
-            //     {
-            //         if (x % 2 == 0 && y % 2 == 0)
-            //         {
-            //             // red
-            //             pixels[i] = (pixels[i] + pixels[i + 1] + pixels[i + width] + pixels[i + width + 1]) / 4;
-            //         }
-            //         else if (x % 2 == 1 && y % 2 == 0)
-            //         {
-            //             // green
-            //             pixels[i] = (pixels[i - 1] + pixels[i] + pixels[i + width - 1] + pixels[i + width]) / 4;
-            //         }
-            //         else if (x % 2 == 0 && y % 2 == 1)
-            //         {
-            //             // green
-            //             pixels[i] = (pixels[i - width] + pixels[i - width + 1] + pixels[i] + pixels[i + 1]) / 4;
-            //         }
-            //         else if (x % 2 == 1 && y % 2 == 1)
-            //         {
-            //             // blue
-            //             pixels[i] = (pixels[i - width - 1] + pixels[i - width] + pixels[i - 1] + pixels[i]) / 4;
-            //         }
-            //     }
-            // }
-
-            // _texture2D.SetPixels(pixels);
-
-
-            // _texture2D.Apply();
 
             Resize();
         }
@@ -349,8 +373,8 @@ public class ImageView : MonoBehaviour
         try
         {
 
-            _texture2D.LoadRawTextureData(msg.data);
-            _texture2D.Apply();
+            // _texture2D.LoadRawTextureData(msg.data);
+            // _texture2D.Apply();
         }
         catch (System.Exception e)
         {
