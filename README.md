@@ -128,15 +128,17 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
     - Added compute shader for debayering for raw images
 - [x] Add haptic feedback from psyonic hand
     - Testing needed..
+- [ ] Docs
 
-
+- [ ] Palm menu v2
 - [ ] Center around map frame (inverse tf)
 - [ ] New TF manager (singleton)
-- [ ] async tcp
+- [ ] Switch to UDP
 - [ ] splat quest shader
 - [ ] splat streaming
 - [ ] nerf scene poses fix (rotations are off)
 - [ ] Grab scaler?
+- [ ] Nimbro integration
 
 - [ ] Teleop demo
     - [x] PS controllers mapped for twist commands
@@ -154,3 +156,4 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
     - [ ] Recenter on reconnect
     - [x] Enable move unlock at start + point and click
     - [ ] speed settings
+    - [ ] Scene state saver

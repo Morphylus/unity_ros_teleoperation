@@ -161,6 +161,8 @@ public class StereoStreamer : ImageView
         {
             if (_leftTexture2D == null || _leftTexture2D.width != width || _leftTexture2D.height != height)
             {
+                if (_leftTexture2D != null)
+                    Destroy(_leftTexture2D);
                 _leftTexture2D = new Texture2D(width, height, TextureFormat.RGBA32, false);
                 _leftTexture2D.wrapMode = TextureWrapMode.Clamp;
                 _leftTexture2D.filterMode = FilterMode.Bilinear;
@@ -171,6 +173,8 @@ public class StereoStreamer : ImageView
         {
             if (_rightTexture2D == null || _rightTexture2D.width != width || _rightTexture2D.height != height)
             {
+                if (_rightTexture2D != null)
+                    Destroy(_rightTexture2D);
                 _rightTexture2D = new Texture2D(width, height, TextureFormat.RGBA32, false);
                 _rightTexture2D.wrapMode = TextureWrapMode.Clamp;
                 _rightTexture2D.filterMode = FilterMode.Bilinear;

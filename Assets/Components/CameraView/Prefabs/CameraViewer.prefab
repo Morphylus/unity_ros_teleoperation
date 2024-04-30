@@ -2881,13 +2881,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropdown: {fileID: 7095828053753422229}
   topMenu: {fileID: 581824451614313731}
-  _uiImage: {fileID: 657332318609209880}
   manager: {fileID: 0}
   name: {fileID: 6090851291839702032}
   untracked: {fileID: 3286163911610860551, guid: d60032fc7bdc8db91b454ee5c68f9105, type: 3}
   tracked: {fileID: 3286163911610860551, guid: 59f25925f06319d02925dc6f372d08c3, type: 3}
+  debayer: {fileID: 7200000, guid: 34a177d6c747fb5d3b065bacb0d9edeb, type: 3}
+  material: {fileID: 0}
   topicName: 
   _tracking: 0
+  debayerType: 3
 --- !u!54 &6646165695226739177
 Rigidbody:
   m_ObjectHideFlags: 0
