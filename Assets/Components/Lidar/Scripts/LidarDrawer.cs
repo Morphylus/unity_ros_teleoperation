@@ -56,8 +56,8 @@ public class LidarDrawer : MonoBehaviour
     private ROSConnection _ros;
     private Mesh mesh;
     private LidarSpawner _lidarSpawner;
-    private bool _enabled = false;
-    private GameObject _parent;
+    public bool _enabled = false;
+    public GameObject _parent;
     private bool _missingParent = false;
     private bool rgbd = false;
     private int _numPts = 0;
@@ -153,13 +153,17 @@ public class LidarDrawer : MonoBehaviour
 
     void UpdatePose(string frame)
     {
-        if(!CleanTF(frame))
-        {
-            return;
-        }
+        // if(!CleanTF(frame))
+        // {
+        //     // return;
+        // }
         p = GameObject.Find(frame);
         _parent = GameObject.Find(frame);
-        if(_parent == null) return;
+        if(_parent == null) {
+            // The parent object doesn't exist yet, so we place this object at the origin
+            _parent = GameObject.FindWithTag("root");
+            _missingParent = true;
+        }
 
         transform.parent = _parent.transform;
         transform.localPosition = Vector3.zero;
@@ -211,10 +215,22 @@ public class LidarDrawer : MonoBehaviour
         if(this.topic != null)
         {
             _ros.Unsubscribe(this.topic);
+            this.topic = null;
+        }
+        if(topic == null)
+        {
+            Debug.Log("Disabling pointcloud display");
+            _enabled = false;
+            return;
         }
         this.topic = topic;
         _ros.Subscribe<PointCloud2Msg>(topic, OnPointcloud);
         Debug.Log("Subscribed to " + topic);
+    }
+
+    public void OnDensityChange(float density)
+    {
+        displayPts = (int)(density * maxPts);
     }
 
     public void OnSizeChange(float size)

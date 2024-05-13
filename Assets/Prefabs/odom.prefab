@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 7670704849078382791}
   m_Layer: 0
   m_Name: odom
-  m_TagString: Untagged
+  m_TagString: root
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,6 +164,7 @@ MonoBehaviour:
   joystickZR: {fileID: -98630673214662021, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   alt: {fileID: -9069943865240206001, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   action: {fileID: 2685676896762586523, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  bAction: {fileID: 2735638691585490114, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   actions:
     m_PersistentCalls:
       m_Calls:
@@ -179,8 +180,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  bActions:
+    m_PersistentCalls:
+      m_Calls: []
   sphere: {fileID: 4737665478002904411}
+  floor: {fileID: 0}
   speed: 1
+  rotationTolerance: 5
   handSelectable: 0
   root: {fileID: 0}
   _root: {fileID: 362584302416846514}

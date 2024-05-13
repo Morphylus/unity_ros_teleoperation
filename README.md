@@ -16,6 +16,14 @@ This repo contains a series of components for Unity XR teleoperation with ROS in
 | Alma | Full Alma model compatible with Unity and linked to TF syste | [Assets/Components/Alma](Assets/Components/Alma) | Needs mesh clean up |
 
 
+## Scenes
+In general the scenes should have a few objects by default:
+- Light source (usually the default directional light)
+- MR Interaction Setup (this enables AR/VR support and acts as a camera)
+- Debug canvas (will autolink to the menu and shows debug messages)
+- Palm Menu (menu to interact and toggle things with)
+- Root (The roof of the TF/object tree)
+
 ---
 
 # THINGS TO DO

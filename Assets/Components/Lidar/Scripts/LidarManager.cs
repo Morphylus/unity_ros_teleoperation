@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Robotics.ROSTCPConnector;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,15 +17,26 @@ public class LidarManagerEditor : Editor
 
         LidarManager myScript = (LidarManager)target;
         // add text boxes for the topics
-        myScript.lidarTopic.text = EditorGUILayout.TextField("Lidar Topic", myScript.lidarTopic.text);
-        myScript.rgbdTopic.text = EditorGUILayout.TextField("RGBD Topic", myScript.rgbdTopic.text);
-        if (GUILayout.Button("Update Lidar"))
+        if (GUILayout.Button("Click Lidar"))
         {
-            myScript.OnLidarTopic(myScript.lidarTopic.text);
+            myScript.OnLidarClick();
         }
-        if (GUILayout.Button("Update RGBD"))
+        if (GUILayout.Button("Click RGBD"))
         {
-            myScript.OnRGBDTopic(myScript.rgbdTopic.text);
+            myScript.OnRGBDClick();
+        }
+        if (GUILayout.Button("Toggle Menu"))
+        {
+            myScript.ToggleMenu();
+        }
+
+        if (GUILayout.Button("Select 0"))
+        {
+            myScript.OnTopicSelect(0);
+        }
+        if (GUILayout.Button("Select 1"))
+        {
+            myScript.OnTopicSelect(1);
         }
     }
 }
@@ -35,17 +48,25 @@ public class LidarManager : MonoBehaviour
     public LidarDrawer lidarDrawer;
     public LidarDrawer rgbdDrawer;
 
-    public TMPro.TMP_InputField lidarTopic;
-    public TMPro.TMP_InputField rgbdTopic;
+    public TMPro.TextMeshProUGUI lidarTopic;
+    public TMPro.TextMeshProUGUI rgbdTopic;
+
+    public Dropdown topicDropdown;
 
     private string _lidarTopic;
     private string _rgbdTopic;
 
+    private bool _lidarClicked;
+
     public GameObject menu;
+
+    private ROSConnection ros;
 
 
     void Start()
     {
+        ros = ROSConnection.GetOrCreateInstance();
+
         _lidarTopic = lidarTopic.text;
         _rgbdTopic = rgbdTopic.text;
 
@@ -64,12 +85,88 @@ public class LidarManager : MonoBehaviour
         lidarDrawer.topic = _lidarTopic;
         rgbdDrawer.topic = _rgbdTopic;
 
+        lidarTopic.transform.parent.GetComponent<Button>().onClick.AddListener(OnLidarClick);
+        rgbdTopic.transform.parent.GetComponent<Button>().onClick.AddListener(OnRGBDClick);
+
+        topicDropdown.onValueChanged.AddListener(OnTopicSelect);
+        topicDropdown.gameObject.SetActive(false);
+
         menu.SetActive(false);
+    }
+
+    public void OnTopicSelect(int value){
+        string topic = topicDropdown.options[value].text;
+        if(value == 0)
+        {
+            topic = null;
+        }
+        if(_lidarClicked)
+        {
+            OnLidarTopic(topic);
+        }
+        else
+        {
+            OnRGBDTopic(topic);
+        }
+        topicDropdown.gameObject.SetActive(false);
+    }
+
+    public void PopulateTopics(Dictionary<string, string> topics)
+    {
+        List<string> topicList = new List<string>();
+        topicList.Add("None");
+        foreach (KeyValuePair<string, string> topic in topics)
+        {
+            if (topic.Value == "sensor_msgs/PointCloud2")
+                topicList.Add(topic.Key);
+        }
+        
+        if(topicList.Count == 1)
+        {
+            Debug.LogWarning("No PointCloud2 topics found!");
+            return;
+        }
+
+        topicDropdown.ClearOptions();
+        topicDropdown.AddOptions(topicList);
+        
+    }
+
+    public void OnLidarClick()
+    {
+        // Close the dropdown if it's already open and we clicked the button again
+        if(_lidarClicked && topicDropdown.gameObject.activeSelf)
+        {
+            topicDropdown.gameObject.SetActive(false);
+            return;
+        }
+
+        // Store that lidar was the last one clicked and get new topics
+        _lidarClicked = true;
+        topicDropdown.gameObject.SetActive(true);
+        ros.GetTopicAndTypeList(PopulateTopics);
+    }
+
+    public void OnRGBDClick()
+    {
+        // Close the dropdown if it's already open and we clicked the button again
+        if(!_lidarClicked && topicDropdown.gameObject.activeSelf)
+        {
+            topicDropdown.gameObject.SetActive(false);
+            return;
+        }
+
+        // Store that RGBD was the last one clicked and get new topics
+        _lidarClicked = false;
+        topicDropdown.gameObject.SetActive(true);
+        ros.GetTopicAndTypeList(PopulateTopics);
     }
 
     public void OnLidarTopic(string topic)
     {
         _lidarTopic = topic;
+        lidarTopic.text = _lidarTopic;
+        lidarDrawer._enabled = true;
         lidarDrawer.OnTopicChange(_lidarTopic);
         PlayerPrefs.SetString("lidarTopic", _lidarTopic);
         PlayerPrefs.Save();
@@ -78,6 +175,8 @@ public class LidarManager : MonoBehaviour
     public void OnRGBDTopic(string topic)
     {
         _rgbdTopic = topic;
+        rgbdTopic.text = _rgbdTopic;
+        rgbdDrawer._enabled = true;
         rgbdDrawer.OnTopicChange(_rgbdTopic);
         PlayerPrefs.SetString("rgbdTopic", _rgbdTopic);
         PlayerPrefs.Save();
@@ -86,6 +185,12 @@ public class LidarManager : MonoBehaviour
     public void ToggleMenu()
     {
         menu.SetActive(!menu.activeSelf);
+        
+        // If we are closing the menu, close the dropdown
+        if(!menu.activeSelf)
+        {
+            topicDropdown.gameObject.SetActive(false);
+        }
     }
 
     public void Clear()
@@ -103,4 +208,5 @@ public class LidarManager : MonoBehaviour
     {
         rgbdDrawer.ToggleEnabled();
     }
+
 }
