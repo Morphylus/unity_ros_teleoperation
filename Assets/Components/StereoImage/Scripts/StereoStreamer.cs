@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +10,7 @@ using Unity.Robotics.ROSTCPConnector;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine.UI;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,14 +27,12 @@ public class StereoStreamer : ImageView
     private Texture2D _leftTexture2D;
     private Texture2D _rightTexture2D;
 
-
     /// <summary>
     /// Updates the list of the available topics in the dropdown menu
     /// </summary>
     /// <param name="topics">Topics from the ROS TCP function</param>
     protected override void UpdateTopics(Dictionary<string, string> topics)
     {
-        Debug.Log("Updating topics");
         List<string> options = new List<string>();
         options.Add("None");
         foreach (var topic in topics)
@@ -53,9 +51,7 @@ public class StereoStreamer : ImageView
             return;
         }
         dropdown.ClearOptions();
-
         dropdown.AddOptions(options);
-
         dropdown.value = Mathf.Min(_lastSelected, options.Count - 1);
     }
 
@@ -120,7 +116,6 @@ public class StereoStreamer : ImageView
     /// <param name="left">Toggle for whether to operate on the left or right texture</param>
     private void SetupTex(int width = 2, int height = 2, bool left = true)
     {
-        Debug.Log("Setting up texture");
         if (left)
         {
             if (_leftTexture2D == null || _leftTexture2D.width != width || _leftTexture2D.height != height)
@@ -152,7 +147,6 @@ public class StereoStreamer : ImageView
     /// </summary>
     private void Resize()
     {
-        Debug.Log("Resizing");
         if (_leftTexture2D == null) return;
         float aspectRatio = (float)_leftTexture2D.width/(float)_leftTexture2D.height;
 
@@ -202,6 +196,43 @@ public class StereoStreamer : ImageView
         {
             Debug.LogError(e);
         }
+    }
+
+    void OnDestroy()
+    {
+        if (topicName != null)
+        {
+            ros.Unsubscribe(topicName);
+            ros.Unsubscribe(topicName.Replace("left", "right"));
+        }
+    }
+
+    public override void Deserialize(string data)
+    {
+        ImageData imgData = JsonUtility.FromJson<ImageData>(data);
+        transform.position = imgData.position;
+        transform.rotation = imgData.rotation;
+        transform.localScale = imgData.scale;
+
+        topicName = imgData.topicName;
+        _tracking = imgData.tracking;
+
+        if(topicName == null)
+        {
+            return;
+        }
+
+        name.text = topicName;
+        ros.Subscribe<CompressedImageMsg>(topicName, OnCompressedLeft);
+        ros.Subscribe<CompressedImageMsg>(topicName.Replace("left", "right"), OnCompressedRight);
+    }
+
+    public override string Serialize()
+    {
+        ImageData imgData = JsonUtility.FromJson<ImageData>(base.Serialize());
+        imgData.stereo = true;
+
+        return JsonUtility.ToJson(imgData);
     }
 }
 

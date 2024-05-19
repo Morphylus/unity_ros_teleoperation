@@ -47,6 +47,19 @@ public class ImageViewEditor : Editor
 }
 #endif
 
+[System.Serializable]
+public struct ImageData
+{
+    public Vector3 position;
+    public Quaternion rotation;
+    public Vector3 scale;
+    public string topicName;
+    public bool tracking;
+    public bool flip;
+    public bool stereo;
+}
+
+[System.Serializable]
 public class ImageView : MonoBehaviour
 {
     public Dropdown dropdown;
@@ -143,10 +156,15 @@ public class ImageView : MonoBehaviour
         // transform.localScale = new Vector3(-1, 1, 1);
     }
 
-    void Start()
+    void Awake()
     {
         ros = ROSConnection.GetOrCreateInstance();
+        name.text = "None";
 
+    }
+
+    void Start()
+    {
         _Img = transform.Find("Img");
         material = _Img.GetComponent<MeshRenderer>().material;
 
@@ -156,7 +174,6 @@ public class ImageView : MonoBehaviour
         topMenu.SetActive(false);
 
         ros.GetTopicAndTypeList(UpdateTopics);
-        name.text = "None";
 
         _icon = topMenu.transform.Find("Track/Image/Image").GetComponent<Image>();
         _frustrum = transform.Find("Frustrum").gameObject;
@@ -179,8 +196,6 @@ public class ImageView : MonoBehaviour
                 options.Add(topic.Key);
             }
         }
-
-        Debug.Log("Found " + options.Count + " image topics");
 
         if(options.Count == 1)
         {
@@ -331,7 +346,6 @@ public class ImageView : MonoBehaviour
 
     void OnCompressed(CompressedImageMsg msg)
     {
-        Debug.Log("Compressed image received "+gameObject.name);
         // SetupTex();
         ParseHeader(msg.header);
 
@@ -383,4 +397,39 @@ public class ImageView : MonoBehaviour
         Resize();
     }
 
+    public virtual void Deserialize(string data)
+    {
+        ImageData imgData = JsonUtility.FromJson<ImageData>(data);
+        transform.position = imgData.position;
+        transform.rotation = imgData.rotation;
+        transform.localScale = imgData.scale;
+        topicName = imgData.topicName;
+        _tracking = imgData.tracking;
+
+        if (topicName.EndsWith("compressed"))
+        {
+            ros.Subscribe<CompressedImageMsg>(topicName, OnCompressed);
+            name.text = topicName;
+        }
+        else if (topicName != null)
+        {
+            ros.Subscribe<ImageMsg>(topicName, OnImage);
+            name.text = topicName;
+        }
+
+    }
+
+    public virtual string Serialize()
+    {
+        ImageData data = new ImageData();
+        data.position = transform.position;
+        data.rotation = transform.rotation;
+        data.scale = transform.localScale;
+        data.topicName = topicName;
+        data.tracking = _tracking;
+        data.flip = false;
+        data.stereo = false;
+
+        return JsonUtility.ToJson(data);
+    }
 }
