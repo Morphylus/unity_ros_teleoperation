@@ -21,7 +21,7 @@ public class HandManager : MonoBehaviour
     private bool _hasRight;
 
     private int[] leftHand;
-    private int[] rightHand;
+    public int[] rightHand;
 
     private void Awake()
     {
@@ -29,6 +29,9 @@ public class HandManager : MonoBehaviour
             Destroy(this);
         else
             Instance = this;
+
+        leftHand = new int[6];
+        rightHand = new int[6];
     }
 
     public void CheckDevices()
@@ -54,7 +57,7 @@ public class HandManager : MonoBehaviour
             }
             if(!started)
             {
-                Debug.Log(device.DeviceName);
+                Debug.Log(device.DeviceName + " is connected: " + device.IsConnected);
             }
         }
         started = true;
@@ -63,8 +66,6 @@ public class HandManager : MonoBehaviour
     void Start()
     {
         CheckDevices();
-        leftHand = new int[6];
-        rightHand = new int[6];
         
     }
 

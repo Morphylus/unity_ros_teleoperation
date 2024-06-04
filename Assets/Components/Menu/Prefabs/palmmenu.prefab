@@ -5637,80 +5637,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &6616780327329148382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8343064305588532468}
-  - component: {fileID: 1691434809573154835}
-  - component: {fileID: 6777784627225638868}
-  - component: {fileID: 1383702678717700620}
-  m_Layer: 0
-  m_Name: Haptics
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8343064305588532468
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616780327329148382}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1426245650483202958}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1691434809573154835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616780327329148382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56956a857a8cac2128f91a9aa374a881, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.1
-  leftHandImg: {fileID: 5998815924384519486}
-  rightHandImg: {fileID: 6434074203541063588}
---- !u!114 &6777784627225638868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616780327329148382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23aca228b96921048bd497757f5bca2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  autoRunBhapticsPlayer: 0
---- !u!114 &1383702678717700620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6616780327329148382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3309bbcfda3ce549b09ebc27e2d6f02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6732427896125157528
 GameObject:
   m_ObjectHideFlags: 0
@@ -7633,7 +7559,7 @@ MonoBehaviour:
   palmPositionAction: {fileID: -5558332398660993837, guid: 2e52aefc8c982aa458ead95f51a6749e, type: 3}
   active: 0
   reversed: 1
-  useHand: 1
+  useHand: 0
   speed: 0.75
   offset: {x: 0, y: 0.25, z: 0}
 --- !u!1 &8774021543082300908
@@ -8795,6 +8721,97 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5884327349206585001, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
   m_PrefabInstance: {fileID: 3256309790011181345}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3628609460312550699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1426245650483202958}
+    m_Modifications:
+    - target: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: leftHandImg
+      value: 
+      objectReference: {fileID: 5998815924384519486}
+    - target: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: rightHandImg
+      value: 
+      objectReference: {fileID: 6434074203541063588}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604591521579532533, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: m_Name
+      value: Haptics
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7604591521579532533, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 317136531136717685}
+  m_SourcePrefab: {fileID: 100100000, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+--- !u!1 &6616780327329148382 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7604591521579532533, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+  m_PrefabInstance: {fileID: 3628609460312550699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &317136531136717685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6616780327329148382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69f6bf0e35983b73a1c57544a1127c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topicName: /haptics
+--- !u!4 &8343064305588532468 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+  m_PrefabInstance: {fileID: 3628609460312550699}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3756424392406245617
 PrefabInstance:
