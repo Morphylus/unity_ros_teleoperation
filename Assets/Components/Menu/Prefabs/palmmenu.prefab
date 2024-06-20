@@ -440,10 +440,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc814a8b3dabd26e8bd98ca9787edfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: /quest/twist
-  joyTopic: /anyjoy/operator
+  joyTopic: /quest/joystick
   joystickXY: {fileID: 6322519803933757874, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  joystickXYClick: {fileID: -6066685222790740574, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   joystickZR: {fileID: -98630673214662021, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  joystickZRClick: {fileID: -8515944178841178292, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerX: {fileID: -7456493207024446836, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerY: {fileID: -5159384287782571273, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerA: {fileID: 2685676896762586523, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerB: {fileID: 2735638691585490114, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerTriggerL: {fileID: 1218196528249599326, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerTriggerR: {fileID: -2645029339061466397, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerGripL: {fileID: 3913822324826926903, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  controllerGripR: {fileID: -500430493759823200, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &9192392808969577600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7767,6 +7776,7 @@ MonoBehaviour:
   unityFrame: vr_origin
   headsetFrame: headset
   handFrameLeft: hand_left
+  poseTopic: /quest/pose
   headsetPose: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   headsetRotation: {fileID: -530380113134220495, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   handPoseLeft: {fileID: -2024308242397127297, guid: c348712bda248c246b8c49b3db54643f, type: 3}

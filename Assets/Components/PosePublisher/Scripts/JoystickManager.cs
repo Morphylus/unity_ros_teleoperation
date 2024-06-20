@@ -9,30 +9,38 @@ using RosMessageTypes.JoyManager;
 
 public class JoystickManager : MonoBehaviour
 {
-    public string topic = "/quest/twist";
-    public string joyTopic = "/anyjoy/operator";
+    public string joyTopic = "/quest/joystick";
     public InputActionReference joystickXY;
+    public InputActionReference joystickXYClick;
     public InputActionReference joystickZR;
+    public InputActionReference joystickZRClick;
+    public InputActionReference controllerX;
+    public InputActionReference controllerY;
+    public InputActionReference controllerA;
+    public InputActionReference controllerB;
+    public InputActionReference controllerTriggerL;
+    public InputActionReference controllerTriggerR;
+    public InputActionReference controllerGripL;
+    public InputActionReference controllerGripR;
 
     private ROSConnection _ros;
 
-    private TwistStampedMsg _twistMsg;
     private AnyJoyMsg _joyMsg;
     private bool _enabled = false;
+    private int leftHandState = 0; // 0 = not tracked, 1 = tracked, 2 = hand tracked
+    private int rightHandState = 0; // 0 = not tracked, 1 = tracked, 2 = hand tracked
+
+
 
     void Start()
     {
         _ros = ROSConnection.GetOrCreateInstance();
-        _twistMsg = new TwistStampedMsg();
-        _twistMsg.header.frame_id = "base";
 
         _joyMsg = new AnyJoyMsg();
-        _joyMsg.header.frame_id = "base";
+        _joyMsg.header.frame_id = "vr_origin";
         _joyMsg.joy = new JoyMsg();
 
-        _ros.RegisterPublisher<TwistStampedMsg>(topic);
         _ros.RegisterPublisher<AnyJoyMsg>(joyTopic);
-
     }
 
     public void SetEnabled(bool enabled)
@@ -42,17 +50,31 @@ public class JoystickManager : MonoBehaviour
 
     void Update()
     {
-        if(_enabled && (joystickXY.action.IsPressed() || joystickZR.action.IsPressed()))
+        if(_enabled)
         {
             Vector2 xy = joystickXY.action.ReadValue<Vector2>();
-            Vector2 zr = joystickZR.action.ReadValue<Vector2>();
-            _twistMsg.twist.linear.x = xy.y * .85;
-            _twistMsg.twist.linear.y = xy.x * .5;
-            _twistMsg.twist.angular.z = zr.x;
-            Debug.Log("Joystick XY: " + xy);    
-            _ros.Send(topic, _twistMsg);
+            Vector2 zr = joystickZR.action.ReadValue<Vector2>();     
 
-            _joyMsg.joy.axes = new float[] {-xy.x, xy.y, zr.y, zr.x, 0, 0, 0};
+            _joyMsg.joy.axes = new float[] {xy.x, xy.y, zr.x, zr.y, controllerTriggerL.action.ReadValue<float>(), controllerTriggerR.action.ReadValue<float>(), controllerGripL.action.ReadValue<float>(), controllerGripR.action.ReadValue<float>()};
+            _joyMsg.joy.buttons = new int[] {
+                controllerX.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerA.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerB.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerY.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                0,
+                0,
+                0,
+                0,
+                controllerTriggerL.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerTriggerR.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerGripL.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                controllerGripR.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                joystickXYClick.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                joystickZRClick.action.ReadValue<float>() > 0.5f ? 1 : 0,
+                0,
+                leftHandState,
+                rightHandState
+            };
             _ros.Send(joyTopic, _joyMsg);
         }
     }

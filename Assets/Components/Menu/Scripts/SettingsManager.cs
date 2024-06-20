@@ -60,7 +60,7 @@ public class SettingsManager : MonoBehaviour
         axisIcon.sprite = _lockedPose ? lockedIcon : unlockedIcon;
 
         _joystickManager = GetComponent<JoystickManager>();
-        _joystickManager.SetEnabled(false);
+        _joystickManager.SetEnabled(true);
 
         _posePublisher = GetComponent<PosePublisher>();
         _posePublisher.SetEnabled(false);
@@ -96,15 +96,15 @@ public class SettingsManager : MonoBehaviour
     {
         switch (modes)
         {
-            case 0:
+            case 0: // Everything disabled
                 _joystickManager.SetEnabled(false);
                 _posePublisher.SetEnabled(false);
                 break;
-            case 1:
+            case 1: // Pose Publisher enabled
                 _joystickManager.SetEnabled(false);
                 _posePublisher.SetEnabled(true);
                 break;
-            case 2:
+            case 2: // Joystick Manager enabled
                 _joystickManager.SetEnabled(true);
                 _posePublisher.SetEnabled(false);
                 break;
@@ -131,6 +131,7 @@ public class SettingsManager : MonoBehaviour
         poseManager?.SetLocked(_lockedPose);
         axisIcon.sprite = _lockedPose ? lockedIcon : unlockedIcon;
 
+        _joystickManager?.SetEnabled(_lockedPose);
     }
 
 }
