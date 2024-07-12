@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<TorsoControl>
-  <TorsoConfiguration>
-    <TorsoHeight nominal="0.58" min="0.45" max="0.615"/>
-    <Reference
-        target_point="TORSOCOM"/> <!-- WBCOMXY_BASEZ (mixed com), WBCOM (whole body com), BASE, or TORSOCOM (torso com)-->
-  </TorsoConfiguration>
-</TorsoControl>
-

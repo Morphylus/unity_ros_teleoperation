@@ -1,4 +1,0 @@
-gui:
-  mission_monitor:
-    enable_extensive_debugging: false
-    enabled: true

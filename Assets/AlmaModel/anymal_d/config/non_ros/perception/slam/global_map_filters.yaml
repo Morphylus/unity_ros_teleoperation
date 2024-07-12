@@ -1,5 +1,0 @@
-- OctreeGridDataPointsFilter:
-    buildParallel: 1
-    maxPointByNode: 1
-    maxSizeByNode: 0.05
-    samplingMethod: 0

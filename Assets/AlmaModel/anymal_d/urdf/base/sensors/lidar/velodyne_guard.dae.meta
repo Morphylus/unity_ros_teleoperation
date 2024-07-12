@@ -3,7 +3,12 @@ guid: 10b6236b556b1d51489407ad19c6b7d9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: velodyne_gueard_baked
+    second: {fileID: 570205825974728017, guid: 2d37c5a750826f99eb044827b175266c, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

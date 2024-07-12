@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<MotionController>
-  <DefaultControlModeForLeg supportMode="joint_position_velocity_torque_pid_gains"
-                            nonSupportMode="joint_position_velocity_torque_pid_gains"/>
-</MotionController>

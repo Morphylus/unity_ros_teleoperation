@@ -1,5 +1,0 @@
-# Add automatic inspection setup parameters.
-inspection_manager_ros:
-  servers:
-    inspection_autonomous_setup:
-      start_inspection_autonomous_setup: start_inspection_autonomous_setup

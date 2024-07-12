@@ -1,8 +1,0 @@
-- BoundingBoxDataPointsFilter:
-    xMin: -0.527
-    xMax: 0.527
-    yMin: -0.250
-    yMax: 0.250
-    zMin: -0.556
-    zMax: 0.220
-    removeInside: 1

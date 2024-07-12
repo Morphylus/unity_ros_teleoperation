@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<LocomotionController>
-  <include_xml dir="Params.xml"/>
-  <include_xml dir="real/Params.xml"/>
-</LocomotionController>

@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<!-- Specify gaits to be loaded. If you want to loead all available gaits, set type to all -->
-<LimbCoordinationSafety>
-  <GaitSelection type="walk, crawl"/>
-</LimbCoordinationSafety>

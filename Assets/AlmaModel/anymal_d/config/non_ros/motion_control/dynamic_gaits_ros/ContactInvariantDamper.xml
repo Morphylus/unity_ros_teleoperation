@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-<ContactInvariantDamper>
-  <Gains>
-    <LinearVelocity kd_x="0.0" kd_y="0.0"/>
-  </Gains>
-</ContactInvariantDamper>
