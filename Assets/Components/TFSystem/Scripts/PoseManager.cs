@@ -59,7 +59,7 @@ public class PoseManager : MonoBehaviour
     private Transform _mainCamera;
     private Transform _robot;
 
-    private bool _locked = false;
+    public bool _locked = false;
     private Vector3 _center;
     private Vector3 _forward;
 
@@ -109,6 +109,16 @@ public class PoseManager : MonoBehaviour
 
     void Update()
     {
+        if(_robot == null)
+        {
+            GameObject robot = GameObject.FindWithTag("robot");
+            if (robot == null)
+            {
+                Debug.LogWarning("PoseManager: robot not found");
+            }
+            _robot = robot.transform;
+        }
+
         while (root.parent != null)
         {
             root = root.parent;
@@ -164,6 +174,7 @@ public class PoseManager : MonoBehaviour
 
     public void SetLocked(bool locked)
     {
+        Debug.Log(locked);
         _locked = locked;
     }
 

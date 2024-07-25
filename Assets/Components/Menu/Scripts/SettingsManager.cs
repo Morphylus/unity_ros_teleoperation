@@ -26,10 +26,15 @@ public class SettingsManagerEditor : Editor
         {
             myScript.Recenter();
         }
+        if (GUILayout.Button("Toggle Center Lock"))
+        {
+            myScript.ToggleCenterLock();
+        }
         if (GUILayout.Button("Toggle Pose Lock"))
         {
             myScript.TogglePoseLock();
         }
+
     }
 }
 #endif
@@ -123,6 +128,11 @@ public class SettingsManager : MonoBehaviour
         position.y = 0.5f;
 
         poseManager.BaseToLocation(position);
+    }
+
+    public void ToggleCenterLock()
+    {
+        poseManager.ToggleFixedLocation();
     }
 
     public void TogglePoseLock()

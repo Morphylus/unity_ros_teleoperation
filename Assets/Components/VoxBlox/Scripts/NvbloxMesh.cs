@@ -43,6 +43,9 @@ public class NvbloxMesh : MonoBehaviour
 {
     public string topic = "/nvblox_node/mesh";
     public Material material;
+
+    [Range(0, 1)]
+    public float opacity = 0.5f;
     private ROSConnection _ros;
     private Dictionary<Tuple<int, int, int>, GameObject> blocks;
 
@@ -56,6 +59,7 @@ public class NvbloxMesh : MonoBehaviour
     {
 
         blocks = new Dictionary<Tuple<int, int, int>, GameObject>();
+        material.SetFloat("_Opacity", opacity);
 
         _ros = ROSConnection.GetOrCreateInstance();
         if(_enabled)
@@ -188,6 +192,21 @@ public class NvbloxMesh : MonoBehaviour
         Debug.LogWarning("Average vertices: " + (float)numVertices / count);
 
     }
+
+    public void ChangeOpactity(float opacity)
+    {
+        material.SetFloat("_Opacity", opacity);
+    }
+
+    private void OnValidate() {
+        if(material != null)
+        {
+            material.SetFloat("_Opacity", opacity);
+        }
+    }
+
+
+
 
     public void ToggleEnabled()
     {

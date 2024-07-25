@@ -9,6 +9,8 @@ public class StatusIndicator : MonoBehaviour
     public Sprite connectedIcon;
     public Sprite disconnectedIcon;
 
+    public Material[] statusMaterials;
+
     private Image _image;
     private RawImage _rawImage;
     private bool _connected = false;
@@ -26,6 +28,11 @@ public class StatusIndicator : MonoBehaviour
         _connected = connected;
         _image.sprite = connected ? connectedIcon : disconnectedIcon;
         _rawImage.color = connected ? Color.green : Color.red;
+
+        foreach (Material material in statusMaterials)
+        {
+            material.color = connected ? Color.green : Color.red;
+        }
     }
 
     public void OnDelay(bool stagnant)

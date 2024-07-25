@@ -5,7 +5,9 @@ Shader "Unlit/Voxblox"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Blend SrcAlpha OneMinusSrcAlpha
+
         Cull Off
         LOD 100
 
@@ -35,6 +37,7 @@ Shader "Unlit/Voxblox"
             };
 
             sampler2D _MainTex;
+            float _Opacity;
 
             v2f vert (appdata v)
             {
@@ -52,6 +55,7 @@ Shader "Unlit/Voxblox"
                 fixed4 col = i.color;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
+                col.a = _Opacity;
                 return col;
             }
             ENDCG
