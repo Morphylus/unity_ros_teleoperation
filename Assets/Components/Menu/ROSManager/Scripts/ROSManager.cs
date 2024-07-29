@@ -29,7 +29,7 @@ public class ROSManager : MonoBehaviour
     private int _port;
 
     private TMPro.TMP_InputField _ipText;
-    private TMPro.TextMeshProUGUI _portText;
+    private TMPro.TMP_InputField _portText;
 
     private ROSConnection _ros;
     private bool _connected = false;
@@ -69,7 +69,7 @@ public class ROSManager : MonoBehaviour
 
 
         _ipText = ipSetting.GetComponent<TMPro.TMP_InputField>();
-        _portText = portSetting.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        _portText = portSetting.GetComponentInChildren<TMPro.TMP_InputField>();
 
         _ros = ROSConnection.GetOrCreateInstance();
 
@@ -110,6 +110,16 @@ public class ROSManager : MonoBehaviour
         _ip = ip;
         _ros.RosIPAddress = _ip;
         PlayerPrefs.SetString("ip", _ip);
+        PlayerPrefs.Save();
+        _ros.Connect();
+    }
+
+    public void OnPortDone(string port)
+    {
+        _ros.Disconnect();
+        _port = int.Parse(port);
+        _ros.RosPort = _port;
+        PlayerPrefs.SetInt("port", _port);
         PlayerPrefs.Save();
         _ros.Connect();
     }
