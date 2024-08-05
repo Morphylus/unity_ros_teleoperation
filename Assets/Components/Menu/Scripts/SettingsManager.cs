@@ -43,17 +43,26 @@ public class SettingsManager : MonoBehaviour
 {
     public PoseManager poseManager;
     public NvbloxMesh nvbloxMesh;
+
+    [Header("Robot Lock")]
+    public Image robotIcon;
+    public Sprite unlockedRobotIcon;
+    public Sprite lockedRobotIcon;
+
+    [Header("Axis Lock")]
     public Image axisIcon;
     public Sprite unlockedIcon;
     public Sprite lockedIcon;
-    
+
+    [Header("Streamer")]
+    public Image streamIcon;
     public Sprite streamOnIcon;
     public Sprite streamOffIcon;
-    public Image streamIcon;
 
     public bool startStreaming = false;
 
     private bool _lockedPose = true;
+    private bool _fixedPosition = false;
 
     private PosePublisher _posePublisher;
     private JoystickManager _joystickManager;
@@ -63,6 +72,8 @@ public class SettingsManager : MonoBehaviour
         poseManager = PoseManager.Instance;
         poseManager?.SetLocked(_lockedPose);
         axisIcon.sprite = _lockedPose ? lockedIcon : unlockedIcon;
+
+
 
         _joystickManager = GetComponent<JoystickManager>();
         _joystickManager.SetEnabled(true);
@@ -132,7 +143,9 @@ public class SettingsManager : MonoBehaviour
 
     public void ToggleCenterLock()
     {
-        poseManager.ToggleFixedLocation();
+        _fixedPosition = !_fixedPosition;
+        poseManager?.SetFixedLocation(_fixedPosition);
+        robotIcon.sprite = _fixedPosition ? lockedRobotIcon : unlockedRobotIcon;
     }
 
     public void TogglePoseLock()
@@ -143,5 +156,4 @@ public class SettingsManager : MonoBehaviour
 
         _joystickManager?.SetEnabled(_lockedPose);
     }
-
 }

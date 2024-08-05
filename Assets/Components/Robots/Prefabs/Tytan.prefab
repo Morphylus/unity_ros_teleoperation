@@ -2027,7 +2027,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3049193412962041064}
   - component: {fileID: 8040342186855751745}
-  - component: {fileID: 6033693909821629250}
   m_Layer: 0
   m_Name: base
   m_TagString: Untagged
@@ -2088,18 +2087,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FrameID: /base
   m_TFTopic: /tf
---- !u!114 &6033693909821629250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4459882099565160493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca837f21d1c22d154b8f230238101bae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4557596354164755295
 GameObject:
   m_ObjectHideFlags: 0

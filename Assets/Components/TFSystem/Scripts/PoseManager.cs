@@ -20,9 +20,13 @@ public class PoseManagerEditor : Editor
         {
             myScript.BaseToLocation(Vector3.zero);
         }
-        if (GUILayout.Button("Toggle Fixed Location"))
+        if (GUILayout.Button("Fix location"))
         {
-            myScript.ToggleFixedLocation();
+            myScript.SetFixedLocation(true);
+        }
+        if (GUILayout.Button("Unfix location"))
+        {
+            myScript.SetFixedLocation(false);
         }
         if (GUILayout.Button("Lock"))
         {
@@ -62,6 +66,7 @@ public class PoseManager : MonoBehaviour
     public bool _locked = false;
     private Vector3 _center;
     private Vector3 _forward;
+    private bool _fixedLocation = false;
 
     void Awake()
     {
@@ -105,9 +110,11 @@ public class PoseManager : MonoBehaviour
         else
             _robot = robot.transform;
 
+        sphere.SetActive(false);
+
     }
 
-    void Update()
+    void LateUpdate()
     {
         if(_robot == null)
         {
@@ -127,7 +134,7 @@ public class PoseManager : MonoBehaviour
 
         }
 
-        if(_center != Vector3.zero)
+        if(_fixedLocation)
         {
             BaseToLocation(_center);
         }
@@ -174,7 +181,6 @@ public class PoseManager : MonoBehaviour
 
     public void SetLocked(bool locked)
     {
-        Debug.Log(locked);
         _locked = locked;
     }
 
@@ -183,9 +189,11 @@ public class PoseManager : MonoBehaviour
         _root.localScale = Vector3.one;
     }
 
-    public void ToggleFixedLocation()
+
+    public void SetFixedLocation(bool fixedLocation)
     {
-        if (_center == Vector3.zero)
+        _fixedLocation = fixedLocation;
+        if (fixedLocation)
         {
             _center = _robot.position;
             _forward = _robot.forward;
@@ -195,7 +203,6 @@ public class PoseManager : MonoBehaviour
             _center = Vector3.zero;
             _forward = Vector3.zero;
         }
-
     }
 
     void Move(Vector2 input)

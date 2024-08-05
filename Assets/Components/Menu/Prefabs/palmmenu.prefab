@@ -762,12 +762,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poseManager: {fileID: 0}
   nvbloxMesh: {fileID: 4166222870625075468}
+  robotIcon: {fileID: 8178356594981804917}
+  unlockedRobotIcon: {fileID: 3286163911610860551, guid: 51da4ffdaa0cdd7bc8a5705a768934f1, type: 3}
+  lockedRobotIcon: {fileID: 3286163911610860551, guid: 4ef2366ac8a687a4f876c4858461d2e3, type: 3}
   axisIcon: {fileID: 1436239807681881930}
   unlockedIcon: {fileID: 3286163911610860551, guid: d60032fc7bdc8db91b454ee5c68f9105, type: 3}
   lockedIcon: {fileID: 3286163911610860551, guid: 59f25925f06319d02925dc6f372d08c3, type: 3}
+  streamIcon: {fileID: 3593233098518586931}
   streamOnIcon: {fileID: 3286163911610860551, guid: abd3ad8cc6f70289599069776367435a, type: 3}
   streamOffIcon: {fileID: 3286163911610860551, guid: 70ad888bc311328418439f620918c763, type: 3}
-  streamIcon: {fileID: 3593233098518586931}
   startStreaming: 0
 --- !u!114 &7194512740443469361
 MonoBehaviour:
@@ -829,7 +832,7 @@ MonoBehaviour:
     modelRoot: {fileID: 1598719177831470820, guid: 6f8a8d44d61f84fcfa0c4bfa06d7793c, type: 3}
     RobotSprite: {fileID: 0}
   - name: Anymal
-    modelRoot: {fileID: 3939238575851457147, guid: e6f2ae8b7af1028ec8f797a9c39b16a0, type: 3}
+    modelRoot: {fileID: 2531815440558493778, guid: 3d69c5625475f3d94857ca68345df2aa, type: 3}
     RobotSprite: {fileID: 0}
   - name: Tytan
     modelRoot: {fileID: 7894528709108881304, guid: e5b9227dc1faa0d7091ddee20595c20e, type: 3}
@@ -2113,19 +2116,7 @@ MonoBehaviour:
       m_Image: {fileID: 3286163911610860551, guid: 051487bf9d939ae748ee861e7d7bdc0a, type: 3}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 642357313099201138}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_AlphaFadeSpeed: 0.15
 --- !u!1 &1683015856050523412
 GameObject:
@@ -10798,6 +10789,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5884327349206585001, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
   m_PrefabInstance: {fileID: 233846695755685553}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8178356594981804917 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8233021756264646084, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
+  m_PrefabInstance: {fileID: 233846695755685553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &311403436519260007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11141,6 +11143,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 887960454935771931}
     m_Modifications:
+    - target: {fileID: 2576379529200178975, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2576379529200178975, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1

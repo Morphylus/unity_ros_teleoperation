@@ -45,7 +45,7 @@ public class HandPub : MonoBehaviour
 
 
     public TextMeshProUGUI infoText;
-    private PoseManager poseManager;
+    private Transform _root;
 
     ROSConnection ros;
     XRHandSubsystem m_handSubsystem;
@@ -59,12 +59,7 @@ public class HandPub : MonoBehaviour
 
     void Start()
     {
-        poseManager = PoseManager.Instance;
-
-        if(poseManager == null)
-        {
-            Debug.LogError("PoseManager not found!");
-        }
+        _root = GameObject.FindWithTag("root").transform;
 
         var _handSubsystem = new List<XRHandSubsystem>();
         SubsystemManager.GetSubsystems(_handSubsystem);
@@ -205,9 +200,8 @@ public class HandPub : MonoBehaviour
                         points[i] = new Point32Msg();
 
                     // Transform poses relative to the pose manager's root
-                    if(poseManager.root == null)
-                        return;
-                    pose.position = poseManager.transform.InverseTransformPoint(pose.position);
+                    
+                    pose.position = _root.transform.InverseTransformPoint(pose.position);
 
 
                     points[i].x = pose.position.x;

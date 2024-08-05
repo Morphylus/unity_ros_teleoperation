@@ -44,6 +44,11 @@ In general the scenes should have a few objects by default:
 
 ## Version History
 
+### 0.0.9
+- Simplified dynaarm model (down to 98 draw calls and 330k tris)
+- Fixed TF pose publishing so it should work even without a model
+- Removed some duplicated publishers/gameobjects
+
 ### 0.0.8
 - Added versioning with display in debug mode
 - Added tytan, standalone dynaarm, and franka panda robots

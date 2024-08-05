@@ -43,7 +43,13 @@ public class HeadsetPublisher : MonoBehaviour
         handFrameRight = handFrameLeft.Replace("left", "right");
 
         root = GameObject.FindWithTag("root").transform;
-        rootFrame = root.GetComponent<TFAttachment>().FrameID;
+        if (root == null)
+        {
+            Debug.LogError("Root not found");
+            rootFrame = "odom"; // default to odom if no root is found
+        }
+        else 
+            rootFrame = root.GetComponent<TFAttachment>().FrameID;
 
         ros.RegisterPublisher<PoseStampedMsg>(poseTopic+"/headset");
 
@@ -61,12 +67,6 @@ public class HeadsetPublisher : MonoBehaviour
 
         tfMsg = new TFMessageMsg(); 
 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     void Update()
@@ -128,9 +128,6 @@ public class HeadsetPublisher : MonoBehaviour
         for(int i = 0; i < tfMsg.transforms.Length; i++)
             if (tfMsg.transforms[i].transform.rotation.From<FLU>().Equals(default))
                 tfMsg.transforms[i].transform.rotation.w = 1;
-
-
-
 
         // headsetPoseMsg.pose.position = point.To<FLU>();
         headsetPoseMsg.pose.orientation = quaternion;
