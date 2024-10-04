@@ -43,6 +43,10 @@ public class ImageViewEditor : Editor
         {
             imageView.Render();
         }
+        if (GUILayout.Button("Increment Track"))
+        {
+            imageView.ToggleTrack();
+        }
     }
 }
 #endif
@@ -84,6 +88,7 @@ public class ImageView : MonoBehaviour
     protected ROSConnection ros;
 
     public int _trackingState = 0;
+    protected GameObject _root;
     protected Sprite[] icons;
 
     public enum DebayerMode
@@ -146,10 +151,8 @@ public class ImageView : MonoBehaviour
 
     void UpdatePose(string frame)
     {
-        if(!CleanTF(frame))
-        {
-            return;
-        }
+        // CleanTF(frame);
+        
         GameObject _parent = GameObject.Find(frame);
         if(_parent == null) return;
 
@@ -182,6 +185,9 @@ public class ImageView : MonoBehaviour
         ros.GetTopicAndTypeList(UpdateTopics);
 
         _frustrum = transform.Find("Frustrum").gameObject;
+        _frustrum.SetActive(false);
+
+        _root = GameObject.Find("odom");
     }
 
     private void OnDestroy() {
