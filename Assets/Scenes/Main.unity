@@ -176,6 +176,10 @@ PrefabInstance:
       value: odom
       objectReference: {fileID: 0}
     - target: {fileID: 1584844816514495310, guid: 5cf25592f60364c4786f042aa1363c2a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1584844816514495310, guid: 5cf25592f60364c4786f042aa1363c2a, type: 3}
       propertyPath: m_LastSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 639842764}
@@ -183,6 +187,10 @@ PrefabInstance:
       propertyPath: m_FirstSelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 639842764}
+    - target: {fileID: 6781496196413621498, guid: 5cf25592f60364c4786f042aa1363c2a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -254,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7302698467839699370, guid: 284c18ecc4f72ec20968371b116bf40b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: ToggleGridMap
       objectReference: {fileID: 0}
     - target: {fileID: 8605111556703751387, guid: 284c18ecc4f72ec20968371b116bf40b, type: 3}
       propertyPath: m_Name
@@ -484,6 +492,14 @@ PrefabInstance:
     - target: {fileID: 3706470038976726944, guid: 09d10320960f62d47bcc25992fff8bac, type: 3}
       propertyPath: m_Name
       value: Gridmap
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706470038976726944, guid: 09d10320960f62d47bcc25992fff8bac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5367558468766892053, guid: 09d10320960f62d47bcc25992fff8bac, type: 3}
+      propertyPath: topic
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

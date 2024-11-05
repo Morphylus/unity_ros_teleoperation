@@ -12,6 +12,8 @@ public class GridMapData
     public string[] basic_layers;
     public float[][][] data;
     public Mesh mesh;
+    private int width;
+    private int height;
 
     public Gradient gradient;
 
@@ -22,6 +24,13 @@ public class GridMapData
         this.data = new float[data.Length][][];
         this.gradient = gradient;
 
+        Setup(data);
+    }
+
+    private void Setup(Float32MultiArrayMsg[] data)
+    {
+
+        Debug.Log("GridMap setup");
         for (int i = 0; i < data.Length; i++)
         {
             MultiArrayLayoutMsg layout = data[i].layout;
@@ -40,8 +49,8 @@ public class GridMapData
         mesh = new Mesh();
         mesh.name = "GridMapMesh";
 
-        int width = (int)data[0].layout.dim[0].size;
-        int height = (int)data[0].layout.dim[1].size;
+        width = (int)data[0].layout.dim[0].size;
+        height = (int)data[0].layout.dim[1].size;
 
         Vector3[] vertices = new Vector3[width * height];
         Vector2[] uv = new Vector2[width * height];
@@ -84,13 +93,30 @@ public class GridMapData
         mesh.uv = uv;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
     }
 
     public void Update(Float32MultiArrayMsg[] data)
     {
+
+        // Check if the data is the same size
+
+        if (data[0].layout.dim[0].size != width || data[0].layout.dim[1].size != height)
+        {
+            Debug.LogWarning("Data size mismatch");
+            Setup(data);
+            return;
+        }
+
         Vector3[] vertices = mesh.vertices;
         Color[] colors = new Color[vertices.Length];
 
+        float max = -10000000;
+        float min = 10000000;
+
+
+        int total = 0;
+        int invalid = 0;
         for (int i = 0; i < data.Length; i++)
         {
             MultiArrayLayoutMsg layout = data[i].layout;
@@ -99,35 +125,53 @@ public class GridMapData
             {
                 for (int k = 0; k < layout.dim[0].size; k++)
                 {
+                    bool valid = true;
 
                     float elevation = data[i].data[j * layout.dim[0].size + k];
                     this.data[i][j][k] = elevation;
 
-                    bool valid = true;
-
-                    if(float.IsNaN(elevation))
+                    
+                    if(float.IsNaN(elevation) || float.IsInfinity(elevation) || elevation < -1000 || elevation > 1000)
                     {
                         valid = false;
                         elevation = 0;
+                        invalid++;
+                    } else {
+                    }
+                    total++;
+
+
+
+                    if (elevation > max)
+                    {
+                        max = elevation;
+                    }
+
+                    if (elevation < min)
+                    {
+                        min = elevation;
                     }
 
                     // Update the y value of the vertex
-                    vertices[j * layout.dim[0].size + k] = new Vector3(k, elevation, j);
+                    vertices[j * layout.dim[0].size + k] = new Vector3(k - width / 2, elevation, j - height / 2);
 
                     // Update the color of the vertex
                     if (!valid)
                     {
-                        colors[j * layout.dim[0].size + k] = Color.clear;
+                        colors[j * layout.dim[0].size + k] = Color.red;
                     } else {
-                        colors[j * layout.dim[0].size + k] = gradient.Evaluate(elevation/10);                                            
+                        colors[j * layout.dim[0].size + k] = Color.green;//gradient.Evaluate(elevation/10);                                            
                     }
                 }
             }
         }
 
+        // Debug.Log("Max: " + max + " Min: " + min);
+        // Debug.Log("Invalid: " + invalid + " Total: " + total);
         mesh.vertices = vertices;
         mesh.colors = colors;
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
     }
 
     public override string ToString()
@@ -164,25 +208,6 @@ public class GridMapVisualizer : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_updated)
-        {
-            for(int i =0; i<_data.data[0].Length; i++)
-            {
-                for(int j = 0; j<_data.data[0][0].Length; j++)
-                {
-                    if (float.IsNaN(_data.data[0][i][j]))
-                    {
-                        continue;
-                    }
-                    // Debug.DrawRay(new Vector3(i, 0, j) * scale, new Vector3(0, _data.data[0][i][j], 0), gradient.Evaluate(_data.data[0][i][j])/gradientScale);
-                }
-            }
-        }
-        
-    }
 
     void OnGridMapMessage(GridMapMsg message)
     {
@@ -193,13 +218,16 @@ public class GridMapVisualizer : MonoBehaviour
             // spawn the mesh
             GetComponent<MeshFilter>().mesh = _data.mesh;
 
+            Debug.Log(_data);
+            transform.localScale = new Vector3((float)message.info.length_x/50, 1, (float)message.info.length_y/50);
+        // print the size of the mesh in meters
+
         }
         else
         {
             _data.Update(message.data);
         }
 
-        transform.localScale = new Vector3((float)message.info.length_x/10, 1, (float)message.info.length_y/10);
 
         PoseMsg pose = message.info.pose;
 

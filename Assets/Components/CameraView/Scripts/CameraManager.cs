@@ -128,7 +128,7 @@ public class CameraManager : MonoBehaviour
         _allTracking = !_allTracking;
         foreach (GameObject img in imgs)
         {
-            img.GetComponent<ImageView>().ToggleTrack(_allTracking ? 1: 0);
+            img.GetComponent<ImageView>().ToggleTrack(_allTracking ? 2: 0);
         }
         _icon.sprite = _allTracking ? tracked : untracked;
     }

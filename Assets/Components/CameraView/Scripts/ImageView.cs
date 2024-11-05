@@ -167,7 +167,7 @@ public class ImageView : MonoBehaviour
         ros = ROSConnection.GetOrCreateInstance();
         name.text = "None";
 
-        icons = new Sprite[] {untracked, tracked, headTracked};
+        icons = new Sprite[] {untracked, headTracked, tracked};
         _icon = topMenu.transform.Find("Track/Image/Image").GetComponent<Image>();
 
     }
@@ -204,7 +204,14 @@ public class ImageView : MonoBehaviour
             {
                 // issue with depth images at the moment
                 if (topic.Key.Contains("depth")) continue;
-                options.Add(topic.Key);
+
+                if(topic.Key.Contains("small"))
+                {
+                    options.Insert(1, topic.Key);
+                } else
+                {
+                    options.Add(topic.Key);
+                }
             }
         }
 
@@ -340,7 +347,7 @@ public class ImageView : MonoBehaviour
 
     protected virtual void ParseHeader(HeaderMsg header)
     {
-        if (_trackingState == 1)
+        if (_trackingState == 2)
         {
             // If we are tracking to the TF, update the parent
             if(header.frame_id != null && (transform.parent == null || header.frame_id != transform.parent.name))
@@ -359,7 +366,7 @@ public class ImageView : MonoBehaviour
             UpdatePose("odom");
             transform.position = pos;
             transform.rotation = rot;
-        } else  if (_trackingState == 2 && transform.parent != Camera.main.transform)
+        } else  if (_trackingState == 1 && transform.parent != Camera.main.transform)
         {
             // in head tracking mode so we want the parent to be the camera
             transform.parent = Camera.main.transform;

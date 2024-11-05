@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77d19fadec1b81449df6016e3285789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topic: /elevation_mapping/elevation_map_recordable
+  topic: /elevation_mapping/elevation_map_raw
   scale: 1
   gradientScale: 1
   gradient:
