@@ -7,6 +7,7 @@ using UnityEngine.XR.OpenXR.Input;
 using UnityEngine.InputSystem.XR;
 
 using Bhaptics.SDK2;
+using UnityEngine.XR.Hands.Samples.VisualizerSample;
 
 
 public class HandManager : MonoBehaviour
@@ -16,6 +17,12 @@ public class HandManager : MonoBehaviour
 
     public InputActionReference leftHaptic;
     public InputActionReference rightHaptic;
+
+    public Material leftHandMat;
+    public Material rightHandMat;
+    public Color defaultColor = Color.black;
+    public Color activeColor = Color.white;
+    public Gradient hapticColor;
 
     public float duration = 0.1f;
     public Image leftHandImg;
@@ -33,6 +40,8 @@ public class HandManager : MonoBehaviour
     private XRController leftController;
     private XRController rightController;
 
+    private HandVisualizer _handVisualizer;
+
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -42,6 +51,12 @@ public class HandManager : MonoBehaviour
 
         leftHand = new int[6];
         rightHand = new int[6];
+
+        _handVisualizer = GameObject.FindObjectOfType<HandVisualizer>();
+        if(_handVisualizer != null)
+        {
+            _handVisualizer.debugDrawJoints = false;
+        }
     }
 
     public void CheckDevices()
@@ -52,6 +67,7 @@ public class HandManager : MonoBehaviour
         rightHandImg.color = Color.red;
         _hasLeft = false;
         _hasRight = false;
+
 
         foreach (HapticDevice device in devices)
         {
@@ -104,6 +120,9 @@ public class HandManager : MonoBehaviour
             {
                 OpenXRInput.SendHapticImpulse(leftHaptic, maxLeft, duration, UnityEngine.InputSystem.XR.XRController.leftHand);
             }
+            ColorFingers(true, rightHand);
+            ColorFingers(false, leftHand);
+
 
 
 
@@ -175,5 +194,24 @@ public class HandManager : MonoBehaviour
             leftHand[5] = (palmForce + leftHand[5]) / 2;
         }
 
+    }
+
+    public void ColorFingers(bool isRight, int[] values)
+    {
+        Material mat = isRight ? rightHandMat : leftHandMat;
+
+        mat.SetColor("_ThumbColor", values[0]==0 ? defaultColor : hapticColor.Evaluate(values[0]/100f));
+        for(int i=1; i<5; i++)
+        {
+            mat.SetColor("_FingerColor_" + i, values[i]==0 ? defaultColor : hapticColor.Evaluate(values[i]/100f));
+        }
+    }
+
+    public void ToggleSkeleton()
+    {
+        if(_handVisualizer != null)
+        {
+            _handVisualizer.debugDrawJoints = !_handVisualizer.debugDrawJoints;
+        }
     }
 }

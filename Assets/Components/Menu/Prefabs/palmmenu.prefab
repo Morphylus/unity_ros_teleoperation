@@ -8940,6 +8940,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1691434809573154835}
+        m_TargetAssemblyTypeName: HandManager, Assembly-CSharp
+        m_MethodName: ToggleSkeleton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1775703769595248142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12002,6 +12014,18 @@ PrefabInstance:
       propertyPath: rightHandImg
       value: 
       objectReference: {fileID: 6434074203541063588}
+    - target: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.15294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.15294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.15294118
+      objectReference: {fileID: 0}
     - target: {fileID: 4725381964907239903, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -12054,6 +12078,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 317136531136717685}
   m_SourcePrefab: {fileID: 100100000, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+--- !u!114 &1691434809573154835 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2675780204862606648, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
+  m_PrefabInstance: {fileID: 3628609460312550699}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6616780327329148382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56956a857a8cac2128f91a9aa374a881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6616780327329148382 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7604591521579532533, guid: 3d95eb51701605804b1c5d9279c82b0a, type: 3}
@@ -13085,6 +13120,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752666551115, guid: 657321a07c3561043af55547ec4b0ed7, type: 3}
       propertyPath: m_MinValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8969571752666551115, guid: 657321a07c3561043af55547ec4b0ed7, type: 3}
+      propertyPath: m_WholeNumbers
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752666551115, guid: 657321a07c3561043af55547ec4b0ed7, type: 3}
