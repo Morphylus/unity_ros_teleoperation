@@ -29,7 +29,7 @@ public enum VizType
     Lidar = 4 * 4,
     RGBD = 4 * 6,
     RGBDMesh = 4 * 6 + 1,
-    Splat = 4 * 14
+    Splat = 4 * 18
 
 }
 
@@ -222,7 +222,16 @@ public class LidarDrawer : MonoBehaviour
         }
         if (pointCloud.data.Length == 0) return;
 
-        _ptData.SetData(LidarUtils.ExtractXYZI(pointCloud, displayPts, vizType, out _numPts));
+        int fields = pointCloud.fields.Length;
+        uint point_step = pointCloud.point_step;
+        // Debug.Log("Fields: " + fields + " Point Step: " + point_step);
+
+        // if(vizType == VizType.Splat)
+        // {
+        //     _ptData.SetData(SplatUtils.ExtractData(pointCloud, displayPts, vizType, out _numPts));
+        // } else 
+            _ptData.SetData(LidarUtils.ExtractXYZI(pointCloud, displayPts, vizType, out _numPts));
+        
     }
 
     public void OnTopicChange(string topic)
