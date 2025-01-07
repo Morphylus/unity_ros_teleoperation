@@ -20,14 +20,19 @@ Shader "Unlit/Splat"
                 float4 color: COLOR0;
             };
 
-            struct lidardata
+            struct splatdata
             {
                 float3 position;
                 float3 rgb;
+                float3 scale;
+                float4 rotation;
+                // float3 normal;
+                // float3 fc_dc;
+                // float opacity;
             };
 
             StructuredBuffer<float3> _Positions;
-            StructuredBuffer<lidardata> _LidarData;
+            StructuredBuffer<splatdata> _LidarData;
 
             uniform uint _BaseVertexIndex;
             uniform float _PointSize;

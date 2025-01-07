@@ -91,7 +91,7 @@ public class LidarUtils
                     System.BitConverter.GetBytes(bf).CopyTo(outData, outIdx + outOffset + 8);
                     if(vizType == VizType.Splat)
                     {
-                        System.BitConverter.GetBytes(af).CopyTo(outData, outIdx + outOffset + 12);
+                        // System.BitConverter.GetBytes(af).CopyTo(outData, outIdx + outOffset + 12);
                         outOffset+=4;
 
                     }
