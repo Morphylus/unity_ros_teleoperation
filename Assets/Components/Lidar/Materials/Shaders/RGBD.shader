@@ -8,6 +8,8 @@ Shader "Unlit/RGBD"
         Pass
         {
             CGPROGRAM
+// Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
+#pragma exclude_renderers d3d11 gles
             #pragma vertex vert
             #pragma fragment frag
 
@@ -23,8 +25,21 @@ Shader "Unlit/RGBD"
             struct lidardata
             {
                 float3 position;
-                float3 rgb;
+                int color;
             };
+
+            float4 UnpackRGBA(int rgba)
+            {
+                int4 unpackedColor;
+                int unpacked = rgba;
+                
+                unpackedColor.r = unpacked >> 16 & 0xFF;
+                unpackedColor.g = unpacked >> 8 & 0xFF;
+                unpackedColor.b = unpacked & 0xFF;
+                unpackedColor.a = 255;
+
+                return unpackedColor / 255.0f;
+            }
 
             StructuredBuffer<float3> _Positions;
             StructuredBuffer<lidardata> _LidarData;
@@ -35,6 +50,8 @@ Shader "Unlit/RGBD"
             uniform float4 _ColorMin;
             uniform float4 _ColorMax;
 
+
+
             v2f vert (uint vertexID: SV_VertexID, uint instanceID: SV_InstanceID)
             {
                 v2f o;
@@ -43,7 +60,7 @@ Shader "Unlit/RGBD"
                 uv /= float2(_ScreenParams.x/_ScreenParams.y, 1);
                 float4 wpos = mul(_ObjectToWorld, float4(pos, 1.0f));
                 o.pos = mul(UNITY_MATRIX_VP, wpos) + float4(uv,0,0);
-                o.color = float4(_LidarData[instanceID].rgb, 1.0f);
+                o.color = UnpackRGBA(_LidarData[instanceID].color);
                 return o;
             }
 

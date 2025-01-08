@@ -44,6 +44,8 @@ public class LidarUtils
         if(maxPts < 1) maxPts = 1;
         int decmiator = 1;
 
+
+        vizType = VizType.Lidar;
         int data_size = (int)vizType;
         if(data_size % 2 == 1) // In case we are rgbdmesh
         {
@@ -59,43 +61,62 @@ public class LidarUtils
             numPts = numPts / decmiator;
         }
         byte[] outData = new byte[numPts * (int) vizType];
-
+        bool logged = false;
         for(int i = 0; i < numPts; i++)
         {
 
             int inIdx = (int)(i * data.point_step * (decmiator));
             int outIdx = i * data_size;
             int outOffset = 0;
-            for(int j = 0; j < (vizType == VizType.Splat ? 14 : 4); j++)
+            for(int j = 0; j < (vizType == VizType.Splat ? 4 : 4); j++)
             {
-                // Special case for rgb(a) unpacking in non Lidar cases
-                if(j == 3 && vizType != VizType.Lidar)
+                for(int k = 0; k < 4; k++)
                 {
-                    // convert the reinterpret_cast<float&> to int, then extract the rgb bytes
-                    int intensity = System.BitConverter.ToInt32(data.data, inIdx + (int)data.fields[3].offset);
-                    ushort r = (ushort)(intensity >> 16 & 0xff);
-                    ushort g = (ushort)(intensity >> 8 & 0xff);
-                    ushort b = (ushort)(intensity >> 0 & 0xff);
-                    ushort a = (ushort)(intensity >> 24 & 0xff);
+                    outData[outIdx + j * 4 + k] = data.data[inIdx + (int)data.fields[j].offset + k];
+                }
+                continue;
 
-                    // convert to floats
-                    float rf = r / 255.0f;
-                    float gf = g / 255.0f;
-                    float bf = b / 255.0f;
-                    float af = a / 255.0f;
+                // Special case for rgb(a) unpacking in non Lidar cases
+                if(j == 3 && !logged)// vizType != VizType.Lidar)
+                {
+                //     // convert the reinterpret_cast<float&> to int, then extract the rgb bytes
+                    // int intensity = System.BitConverter.ToInt32(data.data, inIdx + (int)data.fields[3].offset);
+                    // Debug.Log(intensity);
+
+                    // float inte = System.BitConverter.ToSingle(data.data, inIdx + (int)data.fields[3].offset);
+                    // Debug.Log(inte);
+                    // logged = true;
+                //     ushort r = (ushort)(intensity >> 16 & 0xff);
+                //     ushort g = (ushort)(intensity >> 8 & 0xff);
+                //     ushort b = (ushort)(intensity >> 0 & 0xff);
+                //     ushort a = (ushort)(intensity >> 24 & 0xff);
+
+                //     // convert to floats
+                //     float rf = r / 255.0f;
+                //     float gf = g / 255.0f;
+                //     float bf = b / 255.0f;
+                //     float af = a / 255.0f;
 
 
-                    // write to outData
-                    System.BitConverter.GetBytes(rf).CopyTo(outData, outIdx + outOffset);
-                    System.BitConverter.GetBytes(gf).CopyTo(outData, outIdx + outOffset + 4);
-                    System.BitConverter.GetBytes(bf).CopyTo(outData, outIdx + outOffset + 8);
-                    if(vizType == VizType.Splat)
-                    {
-                        // System.BitConverter.GetBytes(af).CopyTo(outData, outIdx + outOffset + 12);
-                        outOffset+=4;
+                //     // write to outData
+                //     System.BitConverter.GetBytes(rf).CopyTo(outData, outIdx + outOffset);
+                //     System.BitConverter.GetBytes(gf).CopyTo(outData, outIdx + outOffset + 4);
+                //     System.BitConverter.GetBytes(bf).CopyTo(outData, outIdx + outOffset + 8);
+                //     if(vizType == VizType.Splat)
+                //     {
+                //         // System.BitConverter.GetBytes(af).CopyTo(outData, outIdx + outOffset + 12);
+                //         // outOffset+=4;
 
-                    }
-                    outOffset+=4*3;
+                //     }
+                    // outOffset+=4*3;
+                    // int intensity = 5574495;
+
+
+                    outData[outIdx + outOffset] = data.data[inIdx + (int)data.fields[3].offset];
+                    outData[outIdx + outOffset + 1] = data.data[inIdx + (int)data.fields[3].offset + 1];
+                    outData[outIdx + outOffset + 2] = data.data[inIdx + (int)data.fields[3].offset + 2];
+                    outData[outIdx + outOffset + 3] = data.data[inIdx + (int)data.fields[3].offset + 3];
+                    outOffset+=4;
 
                 }
                 else

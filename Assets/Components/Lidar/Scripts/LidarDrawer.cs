@@ -49,7 +49,7 @@ public class LidarDrawer : MonoBehaviour
     GraphicsBuffer _ptData;
 
     public float scale = 1.0f;
-    public int maxPts = 1_000_000;
+    public int maxPts = 30_000_000;
     public int displayPts = 10;
     public int sides = 3;
     private RenderParams renderParams;
@@ -67,6 +67,7 @@ public class LidarDrawer : MonoBehaviour
     private int _numPts = 0;
 
     public GameObject p;
+    public bool splatUtils = false;
 
 
 
@@ -85,7 +86,7 @@ public class LidarDrawer : MonoBehaviour
         _meshTriangles.SetData(mesh.triangles);
         _meshVertices = new GraphicsBuffer(GraphicsBuffer.Target.Structured, mesh.vertices.Length, 12);
         _meshVertices.SetData(mesh.vertices);
-        _ptData = new GraphicsBuffer(GraphicsBuffer.Target.Structured, maxPts, _LidarDataSize);
+        _ptData = new GraphicsBuffer(GraphicsBuffer.Target.Structured, maxPts, 4*4);
 
         switch (vizType)
         {
@@ -116,6 +117,11 @@ public class LidarDrawer : MonoBehaviour
         if ((_lidarSpawner = GetComponent<LidarSpawner>()) != null)
         {
             _lidarSpawner.PointCloudGenerated += OnPointcloud;
+        }
+
+        if(_enabled)
+        {
+            _ros.Subscribe<PointCloud2Msg>(topic, OnPointcloud);
         }
     }
 
@@ -160,7 +166,6 @@ public class LidarDrawer : MonoBehaviour
         return false;
     }
 
-
     void UpdatePose(string frame)
     {
         // if(!CleanTF(frame))
@@ -169,7 +174,6 @@ public class LidarDrawer : MonoBehaviour
         // }
         p = GameObject.Find(frame);
         _parent = GameObject.Find(frame);
-        Debug.Log("Parent: " + _parent + " " + frame + " " + p);
         if (_parent == null)
         {
             // The parent object doesn't exist yet, so we place this object at the origin
@@ -226,12 +230,17 @@ public class LidarDrawer : MonoBehaviour
         uint point_step = pointCloud.point_step;
         // Debug.Log("Fields: " + fields + " Point Step: " + point_step);
 
-        // if(vizType == VizType.Splat)
-        // {
-        //     _ptData.SetData(SplatUtils.ExtractData(pointCloud, displayPts, vizType, out _numPts));
-        // } else 
+        if(vizType == VizType.RGBD)
+        {
+            vizType = VizType.Lidar;
+        }
+
+        if(splatUtils )
+        {
+            _ptData.SetData(SplatUtils.ExtractData(pointCloud, displayPts, vizType, out _numPts));
+        } else {
             _ptData.SetData(LidarUtils.ExtractXYZI(pointCloud, displayPts, vizType, out _numPts));
-        
+        }
     }
 
     public void OnTopicChange(string topic)

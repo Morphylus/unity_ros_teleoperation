@@ -24,15 +24,15 @@ Shader "Unlit/Splat"
             {
                 float3 position;
                 float3 rgb;
-                float3 scale;
-                float4 rotation;
+                // float scale;
+                // float4 rotation;
                 // float3 normal;
                 // float3 fc_dc;
                 // float opacity;
             };
 
             StructuredBuffer<float3> _Positions;
-            StructuredBuffer<splatdata> _LidarData;
+            StructuredBuffer<splatdata> _SplatData;
 
             uniform uint _BaseVertexIndex;
             uniform float _PointSize;
@@ -43,12 +43,19 @@ Shader "Unlit/Splat"
             v2f vert (uint vertexID: SV_VertexID, uint instanceID: SV_InstanceID)
             {
                 v2f o;
-                float3 pos = _LidarData[instanceID].position;
+                float3 pos = _SplatData[instanceID].position;
+
                 float2 uv = _Positions[_BaseVertexIndex + vertexID] * _PointSize;
                 uv /= float2(_ScreenParams.x/_ScreenParams.y, 1);
                 float4 wpos = mul(_ObjectToWorld, float4(pos, 1.0f));
                 o.pos = mul(UNITY_MATRIX_VP, wpos) + float4(uv,0,0);
-                o.color = float4(_LidarData[instanceID].rgb, 1.0f);
+
+                
+                // o.color = float4(1, 1, 1, 1);
+                o.color = float4(_SplatData[instanceID].rgb, 1.0f);
+
+                // o.color = EncodeFloatRGBA(_SplatData[instanceID].rgb);
+                // o.color.a = 1;//_SplatData[instanceID].opacity;
                 return o;
             }
 
