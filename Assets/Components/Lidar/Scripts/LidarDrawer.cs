@@ -4,6 +4,8 @@ using UnityEngine;
 using RosMessageTypes.Sensor;
 using RosMessageTypes.Std;
 using Unity.Robotics.ROSTCPConnector;
+using TMPro;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -79,6 +81,8 @@ public class LidarDrawer : MonoBehaviour
     public string topic = "/lidar/point_cloud";
     public VizType vizType = VizType.Lidar;
 
+    public TextMeshProUGUI debugText;
+
     private ROSConnection _ros;
     private Mesh mesh;
     private LidarSpawner _lidarSpawner;
@@ -89,8 +93,6 @@ public class LidarDrawer : MonoBehaviour
     private int _numPts = 0;
 
     public GameObject p;
-    public bool splatUtils = false;
-
 
 
     void Awake()
@@ -129,6 +131,8 @@ public class LidarDrawer : MonoBehaviour
         renderParams.matProps.SetBuffer("_PointData", _ptData);
         renderParams.matProps.SetInt("_BaseVertexIndex", (int)mesh.GetBaseVertex(0));
         renderParams.matProps.SetBuffer("_Positions", _meshVertices);
+
+        debugText?.SetText("LidarDrawer Initialized on topic " + topic + ", enabled: " + _enabled);
 
 
         if ((_lidarSpawner = GetComponent<LidarSpawner>()) != null)
@@ -251,8 +255,9 @@ public class LidarDrawer : MonoBehaviour
         uint point_step = pointCloud.point_step;
         // Debug.Log("Fields: " + fields + " Point Step: " + point_step);
 
-
         _ptData.SetData(LidarUtils.ExtractData(pointCloud, displayPts, vizType, out _numPts));
+
+        debugText?.SetText("Rendering " + _numPts + " points");
     }
 
     public void OnTopicChange(string topic)
@@ -294,6 +299,7 @@ public class LidarDrawer : MonoBehaviour
         }
         else
         {
+            Debug.Log("Subscribing to " + topic);
             _ros.Subscribe<PointCloud2Msg>(topic, OnPointcloud);
         }
     }
