@@ -4,15 +4,20 @@ using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.AudioCommon;
 using System;
+using CircularBuffer;
+
+[System.Serializable]
 
 public class AudioReceiver : MonoBehaviour
 {
     private ROSConnection ros;
     private AudioSource audioSource;
-    private List<float> audioBuffer = new List<float>();
+    private CircularBuffer<float> audioBuffer;
+    [SerializeField] private int bufferSize = 8000;
     private string audioDataTopic = "/audio/audio";
     private int sampleRate = 16000;
     private int channelCount = 1;
+    private AudioClip clip;
 
 
     // Start is called before the first frame update
@@ -24,6 +29,10 @@ public class AudioReceiver : MonoBehaviour
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0.0f;
 
+        // Creates audio buffer
+        audioBuffer = new CircularBuffer<float>(bufferSize);
+
+        // Connects to ROS and subscribes to the audio data topic
         ros = ROSConnection.GetOrCreateInstance(); 
         ros.Subscribe<AudioDataMsg>(audioDataTopic, ReceiveAudioMessage);
     }
@@ -31,7 +40,7 @@ public class AudioReceiver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (audioBuffer.Count > 0 && !audioSource.isPlaying)
+        if (audioBuffer.Count > bufferSize/2 && !audioSource.isPlaying)
         {
             PlayBufferedAudio();
         }
@@ -52,7 +61,10 @@ public class AudioReceiver : MonoBehaviour
 
         lock (audioBuffer)
         {
-            audioBuffer.AddRange(floatData);
+            foreach (var sample in floatData)
+            {
+                audioBuffer.Add(sample);
+            }
         }
     }
 
@@ -61,9 +73,9 @@ public class AudioReceiver : MonoBehaviour
     void PlayBufferedAudio()
     {
         lock (audioBuffer)
-        {
-            AudioClip clip = AudioClip.Create("Audio", audioBuffer.Count, channelCount, sampleRate, false);
-            float[] floatData = audioBuffer.ToArray();
+        {   
+            float[] floatData = audioBuffer.GetBuffer();
+            clip = AudioClip.Create("Audio", floatData.Length, channelCount, sampleRate, false);
             clip.SetData(floatData, 0);
             audioSource.clip = clip;
             audioSource.Play();
