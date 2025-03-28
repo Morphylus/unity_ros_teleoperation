@@ -13568,10 +13568,6 @@ PrefabInstance:
       value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 5016077939771438845, guid: 779d8cdef64feca43b204c458230f838, type: 3}
-      propertyPath: vizType
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 5016077939771438845, guid: 779d8cdef64feca43b204c458230f838, type: 3}
       propertyPath: displayPts
       value: 50000
       objectReference: {fileID: 0}
@@ -14118,7 +14114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5016077939771438845, guid: 779d8cdef64feca43b204c458230f838, type: 3}
       propertyPath: vizType
-      value: 24
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5016077939771438845, guid: 779d8cdef64feca43b204c458230f838, type: 3}
       propertyPath: displayPts

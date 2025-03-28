@@ -136,6 +136,7 @@ public class ImageView : SensorStream
                 return false;
             }
         }
+        +
 
         foreach(GameObject child in children)
         {
@@ -146,6 +147,10 @@ public class ImageView : SensorStream
 
     protected void UpdatePose(string frame)
     {
+        while(!CleanTF(frame))
+        {
+            Debug.Log("Cleaning " + frame);
+        }
         // CleanTF(frame);
         
         GameObject _parent = GameObject.Find(frame);

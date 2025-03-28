@@ -53,7 +53,9 @@ MonoBehaviour:
   displayPts: 100000
   sides: 3
   topic: /camera/depth/color/points
-  vizType: 16
+  vizType: 0
+  debugText: {fileID: 0}
   _enabled: 0
   _parent: {fileID: 0}
+  _numPts: 0
   p: {fileID: 0}
