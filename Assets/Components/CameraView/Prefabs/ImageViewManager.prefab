@@ -249,10 +249,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: ImageView
+  tag: camera
   sensorPrefab: {fileID: 7709393259870508619, guid: 2a50976a1f24dd8098ca2921520cdf15, type: 3}
   Count: {fileID: 5928739823399356738}
-  untracked: {fileID: 0}
-  tracked: {fileID: 0}
+  trackingSprites:
+  - {fileID: 3286163911610860551, guid: d60032fc7bdc8db91b454ee5c68f9105, type: 3}
+  - {fileID: 3286163911610860551, guid: 0eebeed137c5a666e810befadd04c4b5, type: 3}
+  - {fileID: 3286163911610860551, guid: 59f25925f06319d02925dc6f372d08c3, type: 3}
+  trackingImage: {fileID: 6544680553952458282}
 --- !u!1 &7163250043845484831
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,10 +406,10 @@ PrefabInstance:
     - target: {fileID: 2576379529200178975, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5765404943611901002}
+      objectReference: {fileID: 8279031515717943549}
     - target: {fileID: 2576379529200178975, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: IncrementTrackedState
       objectReference: {fileID: 0}
     - target: {fileID: 2576379529200178975, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -512,6 +516,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
+--- !u!114 &6544680553952458282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8233021756264646084, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}
+  m_PrefabInstance: {fileID: 2923665066862162926}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8735757800373402951 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5884327349206585001, guid: 9b6ac0439a76e0fdfb6a726e16be7fd7, type: 3}

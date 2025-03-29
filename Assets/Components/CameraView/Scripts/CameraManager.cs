@@ -10,15 +10,44 @@ using UnityEditor;
 [CustomEditor(typeof(CameraManager))]
 public class CameraManagerEditor : SensorManagerEditor
 {
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        CameraManager cameraManager = (CameraManager)target;
+        if (GUILayout.Button("Increment Tracked State"))
+        {
+            cameraManager.IncrementTrackedState();
+        }
+    }
 }
 
 #endif
 
 public class CameraManager : SensorManager
 {
-    public Sprite untracked;
-    public Sprite tracked;
-    private bool _allTracking = false;
+
+    public Sprite[] trackingSprites;
+    public Image trackingImage;
+    private int _trackedState = 0;
+
+    public void Start()
+    {
+        trackingImage.sprite = trackingSprites[_trackedState];
+    }
+
+    public void IncrementTrackedState()
+    {
+        _trackedState++;
+        if (_trackedState > trackingSprites.Length - 1)
+            _trackedState = 0;
+
+        foreach (var sensor in sensors)
+        {
+            sensor.GetComponent<SensorStream>().ToggleTrack(_trackedState);
+        }
+
+        trackingImage.sprite = trackingSprites[_trackedState];        
+    }
 
 }
 

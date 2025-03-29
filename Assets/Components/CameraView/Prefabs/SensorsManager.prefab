@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 3744508100037992178}
+  tagFilter: 
   managers: []
 --- !u!1001 &68585686030418008
 PrefabInstance:
