@@ -65,6 +65,7 @@ public class ISensorData
 public abstract class SensorManager : MonoBehaviour
 {
     public string name = "DEFAULT";
+    public string tag = "default";
     public GameObject sensorPrefab;
     public TMPro.TextMeshProUGUI Count;
     protected List<GameObject> sensors;

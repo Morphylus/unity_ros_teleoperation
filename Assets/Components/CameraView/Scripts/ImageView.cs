@@ -146,7 +146,7 @@ public class ImageView : SensorStream
 
     protected void UpdatePose(string frame)
     {
-        // CleanTF(frame);
+        CleanTF(frame);
         
         GameObject _parent = GameObject.Find(frame);
         if(_parent == null) return;

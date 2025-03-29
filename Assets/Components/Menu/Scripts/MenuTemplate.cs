@@ -28,6 +28,7 @@ public class MenuTemplateEditor : Editor
 public class MenuTemplate : MonoBehaviour
 {
     public GameObject menu;
+    public string tagFilter = ""; // Only show sensors with this tag, leave empty to show all sensors
 
     public SensorManager[] managers;
 
@@ -38,10 +39,27 @@ public class MenuTemplate : MonoBehaviour
 
     public void SetupRows()
     {
+        Dictionary<string, int> groups = new Dictionary<string, int>();
+
         managers = FindObjectsOfType<SensorManager>();
         float offset = 0;
         foreach (SensorManager manager in managers)
         {
+            string tag = manager.tag;
+            if (!groups.ContainsKey(tag))
+            {
+                groups.Add(tag, 1);
+            }
+            else
+            {
+                groups[tag]++;
+            }
+
+            if (tagFilter != "" && tag != tagFilter)
+            {
+                continue;
+            }
+
             // Make a child of this object's rect transform
             manager.transform.SetParent(menu.transform);
             manager.transform.localPosition = Vector3.zero;
@@ -52,6 +70,13 @@ public class MenuTemplate : MonoBehaviour
             manager.transform.localPosition += Vector3.up * offset;
             offset += manager.GetComponent<RectTransform>().sizeDelta.y + 0.1f;
         }
+
+        string debugOutput = "Found " + groups.Count + " groups:\n";
+        foreach (KeyValuePair<string, int> group in groups)
+        {
+            debugOutput += group.Key + ": " + group.Value + "\n";
+        }
+        Debug.Log(debugOutput);
     }
 
     public void ToggleMenu()
