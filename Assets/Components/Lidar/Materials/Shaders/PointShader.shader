@@ -19,11 +19,10 @@ Shader "Unlit/ROS/Point"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // #pragma multi_compile_local COLOR_INTENSITY COLOR_RGB COLOR_Z
-            // #pragma multi_compile __ COLOR_INTENSITY COLOR_RGB
+            #pragma multi_compile_local COLOR_INTENSITY COLOR_RGB COLOR_Z
 
             #include "UnityCG.cginc"
-            // #include "Assets/Components/Lidar/Materials/Shaders/PointHelper.cginc"
+            #include "Assets/Components/Lidar/Materials/Shaders/PointHelper.cginc"
 
 
             struct v2f
@@ -56,7 +55,16 @@ Shader "Unlit/ROS/Point"
                 float4 wpos = mul(_ObjectToWorld, float4(pos, 1.0f));
 
                 o.pos = UnityObjectToClipPos(wpos) + float4(uv,0,0);
-                o.color = lerp(_ColorMin, _ColorMax, _PointData[instanceID].intensity);
+
+                #ifdef COLOR_INTENSITY
+                    o.color = lerp(_ColorMin, _ColorMax, _PointData[instanceID].intensity);
+                #elif defined(COLOR_RGB)
+                    o.color = UnpackRGBA(_PointData[instanceID].intensity);
+                #elif defined(COLOR_Z)
+                    o.color = lerp(_ColorMin, _ColorMax, (pos.z + 1.0f) * 0.5f);
+                #else
+                    o.color = float4(1, 0, 1, 1);
+                #endif
                 return o;
             }
 
