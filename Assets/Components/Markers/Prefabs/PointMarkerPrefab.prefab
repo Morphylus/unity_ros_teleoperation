@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66642451990f9b84ca4c1d1588767b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point_material: {fileID: 2100000, guid: 4a361d2cecf991e49aed96934cdc50f4, type: 2}
+  point_material: {fileID: 2100000, guid: 181bc947bb18065598ad1d23398fd24a, type: 2}
   scale: 0.05
   maxPts: 100000
   sides: 3

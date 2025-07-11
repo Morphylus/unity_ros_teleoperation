@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 using RosMessageTypes.Geometry;
 using RosMessageTypes.Std;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
+using UnityEngine.Timeline;
 
 
 public class MarkerPointStream : MonoBehaviour, IMarkerViz
@@ -23,18 +24,23 @@ public class MarkerPointStream : MonoBehaviour, IMarkerViz
     private Mesh mesh;
     public bool _enabled = true;
     public int _numPts = 0;
+    public MarkerType markerType = MarkerType.Points;
 
 
 
     // Start is called before the first frame update
     void Awake()
     {
-        mesh = LidarUtils.MakePolygon(sides);
 
 
-        _meshTriangles = new GraphicsBuffer(GraphicsBuffer.Target.Structured, mesh.triangles.Length, 4);
+
+        // mesh = LidarUtils.MakePolygon(sides);
+        mesh = LidarUtils.MakeCube();
+
+
+        _meshTriangles = new GraphicsBuffer(GraphicsBuffer.Target.Structured, mesh.triangles.Length, sizeof(int));
         _meshTriangles.SetData(mesh.triangles);
-        _meshVertices = new GraphicsBuffer(GraphicsBuffer.Target.Structured, mesh.vertices.Length, 12);
+        _meshVertices = new GraphicsBuffer(GraphicsBuffer.Target.Structured, mesh.vertices.Length, 3 * sizeof(float));
         _meshVertices.SetData(mesh.vertices);
         _ptData = new GraphicsBuffer(GraphicsBuffer.Target.Structured, maxPts, 4);
 
@@ -47,28 +53,36 @@ public class MarkerPointStream : MonoBehaviour, IMarkerViz
         renderParams.matProps.SetMatrix("_ObjectToWorld", Matrix4x4.Translate(new Vector3(0, 0, 0)));
         renderParams.matProps.SetFloat("_PointSize", scale);
         renderParams.matProps.SetBuffer("_PointData", _ptData);
-        renderParams.matProps.SetInt("_BaseVertexIndex", (int)mesh.GetBaseVertex(0));
-        renderParams.matProps.SetBuffer("_Positions", _meshVertices);
-
-        LocalKeyword rgbdKeyword = new LocalKeyword(renderParams.material.shader, "COLOR_RGB");
-        LocalKeyword intensityKeyword = new LocalKeyword(renderParams.material.shader, "COLOR_INTENSITY");
-        LocalKeyword zKeyword = new LocalKeyword(renderParams.material.shader, "COLOR_Z");
-
-        renderParams.material.SetKeyword(rgbdKeyword, true);
-        renderParams.material.SetKeyword(intensityKeyword, false);
-        renderParams.material.SetKeyword(zKeyword, false);
-
 
     }
 
 
     private void Update()
     {
-        if (_enabled)
+        if (_enabled && mesh != null)
         {
             renderParams.matProps.SetMatrix("_ObjectToWorld", transform.localToWorldMatrix);
             Graphics.RenderPrimitivesIndexed(renderParams, MeshTopology.Triangles, _meshTriangles, _meshTriangles.count, (int)mesh.GetIndexStart(0), _numPts);
         }
+    }
+
+    public void SetMesh(Mesh newMesh)
+    {
+        if (newMesh == null)
+        {
+            Debug.LogError("MarkerPointStream: SetMesh called with null mesh");
+            return;
+        }
+
+        _meshTriangles?.Dispose();
+        _meshTriangles = new GraphicsBuffer(GraphicsBuffer.Target.Structured, newMesh.triangles.Length, sizeof(int));
+        _meshTriangles.SetData(newMesh.triangles);
+
+        _meshVertices?.Dispose();
+        _meshVertices = new GraphicsBuffer(GraphicsBuffer.Target.Structured, newMesh.vertices.Length, 3 * sizeof(float));
+        _meshVertices.SetData(newMesh.vertices);
+
+        renderParams.matProps.SetBuffer("_Positions", _meshVertices);
     }
 
 

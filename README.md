@@ -31,7 +31,8 @@ On the ROS side, the custom [TCP Endpoint](https://github.com/leggedrobotics/ROS
 | VR Debug | Debugging tools for VR, namely a console | [Assets/Components/VRDebug](Assets/Components/VRDebug) | ![](/docs/images/vr_console.jpg) | Functional |
 | VR Streamer | Streams a the VR view to a ROS topic (w/o AR view) | [Assets/Components/VRStreamer](Assets/Components/VRStreamer) | ![](/docs/images/streamer.jpg) | Deprecated |
 | Tactile Images | Displays tactile images on finger tips | [Assets/Components/TactileImages](Assets/Components/TactileImages) | ![](/docs/images/tactile.gif) | Functional |
-| Markers | Displays various ROS markers in the scene | [Assets/Components/Markers](Assets/Components/Markers) | ![](/docs/images/marker_arrow.png) | WiP |
+| Markers | Displays various ROS markers in the scene (supports points, cubes, spheres) | [Assets/Components/Markers](Assets/Components/Markers) | ![](/docs/images/markers.gif) | WiP |
+| TF Viz | Debug viewer to show currently streamed TF links | [Assets/Components/TFViz](Assets/Components/TFViz) | ![](/docs/images/tfdebug.gif) | Functional |
 
 
 ## Scenes

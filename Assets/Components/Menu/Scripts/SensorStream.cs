@@ -2,6 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+[CustomEditor(typeof(SensorStream))]
+public abstract class SensorStreamEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        SensorStream myScript = (SensorStream)target;
+        if (GUILayout.Button("Clear"))
+        {
+            myScript.Clear();
+        }
+    }
+}
+#endif
+
 public abstract class SensorStream : MonoBehaviour
 {
     /// <summary>
@@ -23,4 +41,12 @@ public abstract class SensorStream : MonoBehaviour
     /// Converts a string into the state of this sensor
     /// </summary>
     public abstract void Deserialize(string data);
+
+    /// <summary>
+    /// Clears the sensor stream, removing it from the manager
+    /// </summary>
+    public void Clear()
+    {
+        manager.Remove(gameObject);
+    }
 }
