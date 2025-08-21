@@ -143,6 +143,7 @@ public class LidarStream : SensorStream
     private bool _missingParent = false;
     private bool rgbd = false;
     public int _numPts = 0;
+    private int _trackingMode = 0; // 0: None, 1: Camera
 
     private LocalKeyword _rgbdKeyword;
     private LocalKeyword _intensityKeyword;
@@ -206,7 +207,7 @@ public class LidarStream : SensorStream
             _lidarSpawner.PointCloudGenerated += OnPointcloud;
         }
 
-        if (_enabled)
+        if (_enabled && !string.IsNullOrEmpty(topic))
         {
             _ros.Subscribe<PointCloud2Msg>(topic, OnPointcloud);
         }
@@ -321,7 +322,11 @@ public class LidarStream : SensorStream
         if (_enabled)
         {
             Transform parentTransform = _parent != null ? _parent.transform : transform;
-            renderParams.matProps.SetMatrix("_ObjectToWorld", parentTransform.localToWorldMatrix);
+            Matrix4x4 localToWorldMatrix = parentTransform.localToWorldMatrix;
+            Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(-90, 90, 0));
+            Matrix4x4 inversionMatrix = Matrix4x4.Scale(new Vector3(-1, 1, 1));
+            Matrix4x4 transformationMatrix = localToWorldMatrix * rotationMatrix * inversionMatrix;
+            renderParams.matProps.SetMatrix("_ObjectToWorld", transformationMatrix);
             Graphics.RenderPrimitivesIndexed(renderParams, MeshTopology.Triangles, _meshTriangles, _meshTriangles.count, (int)mesh.GetIndexStart(0), _numPts);
         }
     }
@@ -340,7 +345,20 @@ public class LidarStream : SensorStream
 
         _ptData.SetData(LidarUtils.ExtractData(pointCloud, displayPts, vizType, out _numPts));
 
-        debugText?.SetText("" + _numPts);
+        string txt;
+        if (_numPts < 1000)
+        {
+            txt = _numPts + "";
+        }
+        else if (_numPts < 1_000_000)
+        {
+            txt = (_numPts / 1000f).ToString("F2") + "K";
+        }
+        else
+        {
+            txt = (_numPts / 1_000_000f).ToString("F2") + "M";
+        }
+        debugText?.SetText(txt);
     }
 
     public void OnTopicChange(string topic)
@@ -474,7 +492,40 @@ public class LidarStream : SensorStream
 
     public override void ToggleTrack(int mode)
     {
-        throw new System.NotImplementedException();
+
+        if (mode == 0)
+        {
+            Transform rootTransform = GameObject.FindWithTag("root")?.transform;
+            if (rootTransform != null)
+            {
+                transform.SetParent(rootTransform, true);
+            }
+            else
+            {
+                Debug.LogWarning("Root object with tag 'root' not found.");
+                transform.SetParent(null, true);
+            }
+        }
+        else if (mode == 1)
+        {
+            transform.SetParent(Camera.main.transform);
+        }
+        else
+        {
+            Debug.LogWarning("Invalid tracking mode: " + mode);
+            return;
+        }
+        _trackingMode = mode;
+    }
+
+    public void IncrementTrack()
+    {
+        _trackingMode++;
+        if (_trackingMode > 1)
+        {
+            _trackingMode = 0;
+        }
+        ToggleTrack(_trackingMode); 
     }
 
     public override string Serialize()
@@ -487,9 +538,5 @@ public class LidarStream : SensorStream
         throw new System.NotImplementedException();
     }
 
-    public void Clear()
-    {
-        manager.Remove(gameObject);
-    }
     
 }

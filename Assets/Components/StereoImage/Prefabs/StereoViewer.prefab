@@ -3858,6 +3858,7 @@ GameObject:
   - component: {fileID: 469553569978465405}
   - component: {fileID: 1734187512519650493}
   - component: {fileID: 7351593240785892723}
+  - component: {fileID: 7832242828509854044}
   m_Layer: 5
   m_Name: StereoViewer
   m_TagString: Untagged
@@ -3935,7 +3936,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 5
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5230880497370916528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4176,3 +4177,16 @@ MonoBehaviour:
   topicName: 
   _trackingState: 0
   debayerType: 3
+--- !u!114 &7832242828509854044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8890415464594094642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5205dcb20c14a1a2e8ba4313fed1e390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragging: 0

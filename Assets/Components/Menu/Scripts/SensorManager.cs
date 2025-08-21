@@ -90,7 +90,8 @@ public abstract class SensorManager : MonoBehaviour, IComparable<SensorManager>
 
     public void AddSensor()
     {
-        GameObject sensor = Instantiate(sensorPrefab, transform.position + (transform.right * 0.5f), Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up));
+        Transform target = Camera.main.transform;
+        GameObject sensor = Instantiate(sensorPrefab, target.position + (target.forward * 0.5f), Quaternion.LookRotation(Camera.main.transform.forward, Vector3.up));
         sensor.GetComponentInChildren<SensorStream>().manager = this;
         sensors.Add(sensor);
         count.text = sensors.Count.ToString();

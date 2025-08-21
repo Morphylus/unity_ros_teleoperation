@@ -234,6 +234,28 @@ public class ImageView : SensorStream
         _trackingState = _trackingState % 3;
 
         _icon.sprite = icons[_trackingState];
+
+        if (_trackingState == 0 && transform.parent != null && transform.parent.name != "odom")
+        {
+            _frustrum?.SetActive(false);
+            // Otherwise, set the parent to the odom frame but keep the current position
+            Vector3 pos = transform.position;
+            Quaternion rot = transform.rotation;
+            UpdatePose("odom");
+            transform.position = pos;
+            transform.rotation = rot;
+        }
+        else if (_trackingState == 1 && transform.parent != Camera.main.transform)
+        {
+            // in head tracking mode so we want the parent to be the camera
+
+            transform.parent = Camera.main.transform;
+            _frustrum?.SetActive(false);
+        }
+
+
+
+
     }
 
     public void ToggleTrack()
@@ -352,22 +374,7 @@ public class ImageView : SensorStream
                 UpdatePose(header.frame_id);
             }
 
-        } else if (_trackingState == 0 && transform.parent != null && transform.parent.name != "odom")
-        {
-            _frustrum?.SetActive(false);
-            // Otherwise, set the parent to the odom frame but keep the current position
-            Vector3 pos = transform.position;
-            Quaternion rot = transform.rotation;
-            UpdatePose("odom");
-            transform.position = pos;
-            transform.rotation = rot;
-        } else  if (_trackingState == 1 && transform.parent != Camera.main.transform)
-        {
-            // in head tracking mode so we want the parent to be the camera
-            
-            transform.parent = Camera.main.transform;
-            _frustrum?.SetActive(false);
-        }
+        } 
     }
 
     void OnCompressed(CompressedImageMsg msg)

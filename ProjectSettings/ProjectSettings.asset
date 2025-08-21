@@ -43,7 +43,7 @@ PlayerSettings:
   m_VirtualRealitySplashScreen: {fileID: 2800000, guid: 523db8f83da06d16a9122969303467e5, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
-  defaultScreenHeight: 1200
+  defaultScreenHeight: 1080
   defaultScreenWidthWeb: 1920
   defaultScreenHeightWeb: 1200
   m_StereoRenderingPath: 0
@@ -138,9 +138,8 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.0.96
   preloadedAssets:
-  - {fileID: 3693302877158471611, guid: be0e8438bce994bf9b3025d014d3b0dd, type: 2}
   - {fileID: 11400000, guid: 9502fd768ba2eebf9a447f1eb9e39f11, type: 2}
-  - {fileID: -1259983124889634441, guid: c0c3e31970d4d9d008092693dfcd9ac5, type: 2}
+  - {fileID: -657491491164703863, guid: c0c3e31970d4d9d008092693dfcd9ac5, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -162,13 +161,14 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.RSL.teleoperation
+    Standalone: com.RSL.teleoperation
   buildNumber:
     Standalone: 0
     VisionOS: 0
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 0
-  AndroidBundleVersionCode: 963
+  AndroidBundleVersionCode: 965
   AndroidMinSdkVersion: 30
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0
@@ -493,7 +493,8 @@ PlayerSettings:
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
-  m_TemplateCustomTags: {}
+  m_TemplateCustomTags:
+    PRODUCT_DESCRIPTION: 
   mobileMTRendering:
     Android: 1
     iPhone: 1
@@ -767,10 +768,10 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: APPLICATION:Default
+  webGLTemplate: APPLICATION:Minimal
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
-  webGLCompressionFormat: 1
+  webGLCompressionFormat: 2
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
@@ -904,4 +905,4 @@ PlayerSettings:
   hmiLoadingImage: {fileID: 0}
   platformRequiresReadableAssets: 0
   virtualTexturingSupportEnabled: 0
-  insecureHttpOption: 0
+  insecureHttpOption: 2

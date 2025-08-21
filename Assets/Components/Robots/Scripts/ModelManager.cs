@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using Unity.Robotics.ROSTCPConnector;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,10 +38,6 @@ public class ModelManager : MonoBehaviour
 
     public Robot[] robots = new Robot[]
     {
-            new Robot { name = "ALMA", modelRoot = null, RobotSprite = null },
-            new Robot { name = "Dynaarm", modelRoot = null, RobotSprite = null },
-            new Robot { name = "Anymal", modelRoot = null, RobotSprite = null },
-            new Robot { name = "Panda", modelRoot = null, RobotSprite = null },
     };
 
 
@@ -48,6 +47,7 @@ public class ModelManager : MonoBehaviour
     public Sprite hideRobotSprite;
     public Button toggleModel;
     public Dropdown robotDropdown;
+    public TMP_InputField rootFrame;
     public bool startVisible = true;
 
     public bool _enabled;
@@ -63,9 +63,18 @@ public class ModelManager : MonoBehaviour
         _root = GameObject.FindWithTag("root");
 
         startRobotIndex = PlayerPrefs.GetInt("startRobotIndex", startRobotIndex);
+        string startRootFrame = PlayerPrefs.GetString("rootFrame", "odom");
+
+        rootFrame.text = startRootFrame;
+        _root.name = startRootFrame;
+        _root.GetComponent<TFAttachment>().FrameID = startRootFrame;
+
+        rootFrame.onEndEdit.AddListener(delegate {
+            ChangeRootFrame(rootFrame.text);
+        });
 
 
-        if(startVisible)
+        if (startVisible)
         {
             ChangeModel(startRobotIndex);
         }
@@ -99,6 +108,7 @@ public class ModelManager : MonoBehaviour
         Debug.Log("Changed to model of " + currentRobot);
 
         PlayerPrefs.SetInt("startRobotIndex", modelIndex);
+        PlayerPrefs.SetString("rootFrame", currentRobot.rootFrame);
         PlayerPrefs.Save();
 
 
@@ -109,12 +119,21 @@ public class ModelManager : MonoBehaviour
         if(_root != null)
             _currentModel.transform.SetParent(_root.transform);
 
-        if(_inited)
+        if (_inited)
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }
 
+    }
+
+    public void ChangeRootFrame(string newRootFrame)
+    {
+        _root.name = newRootFrame;
+        _root.GetComponent<TFAttachment>().FrameID = newRootFrame;
+
+        PlayerPrefs.SetString("rootFrame", newRootFrame);
+        PlayerPrefs.Save();
     }
 
     public void ToggleModel()

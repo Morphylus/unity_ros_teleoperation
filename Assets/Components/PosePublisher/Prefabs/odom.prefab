@@ -102,6 +102,7 @@ MonoBehaviour:
   speed: 1
   rotationTolerance: 1
   handSelectable: 0
+  findRoot: 1
   root: {fileID: 0}
   _root: {fileID: 1197795077337918393, guid: cc51eeae84a6ef51ba1a829fccc48d5d, type: 3}
   _locked: 0
@@ -196,6 +197,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 362584302416846514}
     m_Modifications:
+    - target: {fileID: 695926872446891174, guid: b480a5e2a6cd844c193373ad0c259f73, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2616182077862831445, guid: b480a5e2a6cd844c193373ad0c259f73, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.014
@@ -234,6 +239,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2616182077862831445, guid: b480a5e2a6cd844c193373ad0c259f73, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776811667986760466, guid: b480a5e2a6cd844c193373ad0c259f73, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4776811667986760466, guid: b480a5e2a6cd844c193373ad0c259f73, type: 3}

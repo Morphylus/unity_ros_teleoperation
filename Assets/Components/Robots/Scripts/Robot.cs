@@ -14,6 +14,7 @@ public class Robot
     public string name;
     public GameObject modelRoot;
     public Sprite RobotSprite;
+    public string rootFrame = "odom"; 
     public readonly int id;
     private static int nextId = 0;
 
@@ -27,7 +28,7 @@ public class Robot
         return robot.id;
     }
 
-    public string ToString()
+    public override string ToString()
     {
         return name;
     }

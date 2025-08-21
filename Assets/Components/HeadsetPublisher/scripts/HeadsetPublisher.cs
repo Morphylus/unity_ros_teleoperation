@@ -40,7 +40,7 @@ public class HeadsetPublisher : MonoBehaviour
     private int _decimator = 1;
     private int _frameCounter = 0;
 
-    void Awake()
+    void Start()
     {
         ros = ROSConnection.GetOrCreateInstance();
 
