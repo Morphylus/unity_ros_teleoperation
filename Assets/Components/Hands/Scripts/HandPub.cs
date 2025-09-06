@@ -10,6 +10,7 @@ using RosMessageTypes.Sensor;
 using RosMessageTypes.VrHaptic;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class HandPub : MonoBehaviour
@@ -43,23 +44,36 @@ public class HandPub : MonoBehaviour
     public InputActionReference twistController;
     public InputActionReference poseController;
 
-
+    public Sprite enableIcon;
+    public Sprite disableIcon;
+    public Button enableButton;
+    private Image _img;
     public TextMeshProUGUI infoText;
-    private Transform _root;
 
-    ROSConnection ros;
+    ROSConnection _ros;
     XRHandSubsystem m_handSubsystem;
 
+    private Transform _root;
+    private bool _publishing = false;
+
     private bool _highConfidence = false;
-    private const string _landmarksTopic = "/hand_pose";
-    private const string _pointCloudTopic = "/hand_points";
-    private const string _gestureTopic = "/hand_gesture";
+    private const string _landmarksTopic = "/quest/hand_pose";
+    private const string _pointCloudTopic = "/quest/hand_points";
+    private const string _gestureTopic = "/quest/hand_gesture";
 
     public string worldFrame = "quest_origin";
 
     void Start()
     {
         _root = GameObject.FindWithTag("root").transform;
+
+        _img = enableButton.transform.Find("Image/Image").GetComponent<Image>();
+
+        if (PlayerPrefs.HasKey("handPublishing"))
+        {
+            _publishing = PlayerPrefs.GetInt("handPublishing") == 1;
+            _img.sprite = _publishing ? enableIcon : disableIcon;
+        }
 
         var _handSubsystem = new List<XRHandSubsystem>();
         SubsystemManager.GetSubsystems(_handSubsystem);
@@ -92,10 +106,10 @@ public class HandPub : MonoBehaviour
             }
             
         }
-        ros = ROSConnection.GetOrCreateInstance();
-        ros.RegisterPublisher<ManoLandmarksMsg>(_landmarksTopic);
-        ros.RegisterPublisher<PointCloudMsg>(_pointCloudTopic);
-        ros.RegisterPublisher<HandGestureMsg>(_gestureTopic);
+        _ros = ROSConnection.GetOrCreateInstance();
+        _ros.RegisterPublisher<ManoLandmarksMsg>(_landmarksTopic);
+        _ros.RegisterPublisher<PointCloudMsg>(_pointCloudTopic);
+        _ros.RegisterPublisher<HandGestureMsg>(_gestureTopic);
 
         // setup action map listeners
         twistController.action.performed += _ => PubTwistController();
@@ -117,7 +131,7 @@ public class HandPub : MonoBehaviour
     {
         HandGestureMsg msg = new HandGestureMsg();
         msg.name = "Closed_Fist";
-        ros.Publish(_gestureTopic, msg);
+        _ros.Publish(_gestureTopic, msg);
         if(infoText != null)
             infoText.color = Color.green;
 
@@ -127,7 +141,7 @@ public class HandPub : MonoBehaviour
     {
         HandGestureMsg msg = new HandGestureMsg();
         msg.name = "Thumb_Up";
-        ros.Publish(_gestureTopic, msg);
+        _ros.Publish(_gestureTopic, msg);
         
         infoText?.SetText("Twist activated");
     }
@@ -136,7 +150,7 @@ public class HandPub : MonoBehaviour
     {
         HandGestureMsg msg = new HandGestureMsg();
         msg.name = "Thump_Down";
-        ros.Publish(_gestureTopic, msg);
+        _ros.Publish(_gestureTopic, msg);
         infoText?.SetText("Pose activated");
     }
 
@@ -146,11 +160,20 @@ public class HandPub : MonoBehaviour
         infoText?.SetText(_highConfidence ? "High Confidence" : "Low Confidence");
     }
 
+    public void TogglePublishing()
+    {
+        _publishing = !_publishing;
+        PlayerPrefs.SetInt("handPublishing", _publishing ? 1 : 0);
+        PlayerPrefs.Save();
+        _img.sprite = _publishing ? enableIcon : disableIcon;
+    }
+
     void OnHandUpdate(XRHandSubsystem subsystem, 
         XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags,
         XRHandSubsystem.UpdateType updateType)
     {
-        if(updateSuccessFlags == 0 && _highConfidence) return;
+        if(!_publishing) return;
+        if (updateSuccessFlags == 0 && _highConfidence) return;
         
 
         // bypass render update to slightly throttle
@@ -221,8 +244,8 @@ public class HandPub : MonoBehaviour
 
             pointCloudMsg.points = points;
             msg.landmarks = CastPoints(points);
-            ros.Publish(_landmarksTopic, msg);
-            ros.Publish(_pointCloudTopic, pointCloudMsg);
+            _ros.Publish(_landmarksTopic, msg);
+            _ros.Publish(_pointCloudTopic, pointCloudMsg);
         } 
     }
 

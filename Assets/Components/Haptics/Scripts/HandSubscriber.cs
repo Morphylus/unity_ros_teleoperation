@@ -6,15 +6,15 @@ using RosMessageTypes.VrHaptic;
 
 public class HandSubscriber : MonoBehaviour
 {
-    public string topicName = "/haptics";
+    public string topicName = "/quest/haptics";
 
-    ROSConnection ros;
+    ROSConnection _ros;
 
     // Start is called before the first frame update
     void Start()
     {
-        ros = ROSConnection.GetOrCreateInstance();
-        ros.Subscribe<HapticReadingsMsg>(topicName, ReceiveMessage);
+        _ros = ROSConnection.GetOrCreateInstance();
+        _ros.Subscribe<HapticReadingsMsg>(topicName, ReceiveMessage);
     }
 
     int ForceMapper(double force)
