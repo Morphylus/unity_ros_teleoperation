@@ -51,6 +51,7 @@ In general the scenes should have a few objects by default:
 ## Minor Version History
 
 ### 0.1.0
+_May need to reset the repo as LFS has been removed from history_
 - Added 2D version of the app
 - Refactored new Manager-Streamer system for standardized message visualizations
 - Added new visualizations
@@ -79,3 +80,16 @@ In general the scenes should have a few objects by default:
 - Added robot manager for switching between robots
 
 ---
+
+## Citing
+If you use this project in your work please cite [this paper](https://arxiv.org/abs/2407.20194):
+```bibtex
+@INPROCEEDINGS{wildersmith2024rfteleoperation,
+        author={Wilder-Smith, Maximum and Patil, Vaishakh and Hutter, Marco},
+        booktitle={2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+        title={Radiance Fields for Robotic Teleoperation}, 
+        year={2024},
+        pages={13861-13868},
+        doi={10.1109/IROS58592.2024.10801345}
+}
+```
