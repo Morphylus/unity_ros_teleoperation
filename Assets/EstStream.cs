@@ -5,21 +5,23 @@ using RosMessageTypes.Geometry;
 using Unity.Robotics.ROSTCPConnector;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class CarStream : SensorStream
+public class EstimatorCarStream : SensorStream
 {
     public GameObject carPrefab;
     private GameObject carInstance;
     public float carScale = 0.4f;
+    public Color estimatorColor = Color.blue;
     private Material carMaterial;
-
+    
+    public bool showEstimator = true;
+    
     // Trail settings
     public bool showTrail = true;
     private GameObject trailObject;
     private TrailRenderer trail;
     public float trailTime = 3f;
-    public Color trailColor = Color.white;
+    public Color trailColor = Color.blue;
 
     void Awake()
     {
@@ -29,16 +31,16 @@ public class CarStream : SensorStream
     void Start()
     {
         _msgType = "crs_msgs/car_state_cart";
-        _ros.Subscribe<Car_state_cartMsg>(topicName, OnCarState);
-        
+        _ros.Subscribe<Car_state_cartMsg>(topicName, OnEstimatorState);
+
         carMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        carMaterial.SetColor("_BaseColor", Color.white);
+        carMaterial.SetColor("_BaseColor", estimatorColor);
 
         if (carPrefab != null)
         {
             carInstance = Instantiate(carPrefab, Vector3.zero, Quaternion.identity);
             carInstance.transform.SetParent(transform);
-            carInstance.name = "Car";
+            carInstance.name = "EstimatorCar";
             carInstance.transform.localScale = Vector3.one * carScale;
 
             Renderer[] renderers = carInstance.GetComponentsInChildren<Renderer>();
@@ -46,10 +48,12 @@ public class CarStream : SensorStream
             {
                 renderer.material = carMaterial;
             }
+            
+            carInstance.SetActive(showEstimator);
         }
-
+        
         // Create separate trail object
-        trailObject = new GameObject("CarTrail");
+        trailObject = new GameObject("EstimatorTrail");
         trailObject.transform.SetParent(transform);
         trail = trailObject.AddComponent<TrailRenderer>();
         trail.time = trailTime;
@@ -64,7 +68,11 @@ public class CarStream : SensorStream
 
     void Update()
     {
-        // Toggle trail visibility
+        if (carInstance != null)
+        {
+            carInstance.SetActive(showEstimator);
+        }
+        
         if (trailObject != null)
         {
             trailObject.SetActive(showTrail);
@@ -77,6 +85,13 @@ public class CarStream : SensorStream
         {
             _ros.Unsubscribe(topicName);
         }
+        
+        topicName = newTopic;
+        
+        if (!string.IsNullOrEmpty(topicName))
+        {
+            _ros.Subscribe<Car_state_cartMsg>(topicName, OnEstimatorState);
+        }
     }
 
     public override void ToggleTrack(int mode)
@@ -84,16 +99,16 @@ public class CarStream : SensorStream
         _trackingState = mode;
     }
 
-    private void OnCarState(Car_state_cartMsg msg)
+    private void OnEstimatorState(Car_state_cartMsg msg)
     {
         if (carInstance == null) return;
 
         // Position
         PointMsg rosPosition = new(msg.x, msg.y, msg.z);
         Vector3 unityPosition = rosPosition.From<FLU>();
+        
         carInstance.transform.position = unityPosition;
         
-        // Update trail position
         if (trailObject != null)
         {
             trailObject.transform.position = unityPosition;
@@ -106,7 +121,6 @@ public class CarStream : SensorStream
 
     void OnDestroy()
     {
-        // Clean up
         if (carInstance != null)
         {
             Destroy(carInstance);
