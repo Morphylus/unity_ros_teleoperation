@@ -12,7 +12,7 @@ public class CarStream : SensorStream
     public GameObject carPrefab;
     private GameObject carInstance;
     public float carScale = 0.4f;
-    private Material carMaterial;
+    public Material carMaterial;
 
     // Trail settings
     public bool showTrail = true;
@@ -30,9 +30,12 @@ public class CarStream : SensorStream
     {
         _msgType = "crs_msgs/car_state_cart";
         _ros.Subscribe<Car_state_cartMsg>(topicName, OnCarState);
-        
-        carMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        carMaterial.SetColor("_BaseColor", Color.white);
+
+        if (carMaterial == null)
+        {
+            carMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            carMaterial.SetColor("_BaseColor", Color.white);
+        }
 
         if (carPrefab != null)
         {
@@ -58,7 +61,7 @@ public class CarStream : SensorStream
         trail.material = new Material(Shader.Find("Sprites/Default"));
         trail.startColor = trailColor;
         trail.endColor = new Color(trailColor.r, trailColor.g, trailColor.b, 0);
-        
+
         trailObject.SetActive(showTrail);
     }
 
@@ -86,13 +89,14 @@ public class CarStream : SensorStream
 
     private void OnCarState(Car_state_cartMsg msg)
     {
-        if (carInstance == null) return;
+        if (carInstance == null)
+            return;
 
         // Position
         PointMsg rosPosition = new(msg.x, msg.y, msg.z);
         Vector3 unityPosition = rosPosition.From<FLU>();
         carInstance.transform.position = unityPosition;
-        
+
         // Update trail position
         if (trailObject != null)
         {
@@ -111,7 +115,7 @@ public class CarStream : SensorStream
         {
             Destroy(carInstance);
         }
-        
+
         if (trailObject != null)
         {
             Destroy(trailObject);

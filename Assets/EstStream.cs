@@ -36,6 +36,7 @@ public class EstimatorCarStream : SensorStream
         carMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         carMaterial.SetColor("_BaseColor", estimatorColor);
 
+
         if (carPrefab != null)
         {
             carInstance = Instantiate(carPrefab, Vector3.zero, Quaternion.identity);

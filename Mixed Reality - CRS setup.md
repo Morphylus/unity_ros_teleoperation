@@ -27,8 +27,7 @@ for enabling the estimation node to publish
 To open another terminal: 
 ```bash
 docker ps 
-docker exec -it fb099fdd9426 bash<- this is the container id
-```
+docker exec -it fb099fdd9426 bash 
 
 To start the tcp endpoint run
 ```bash
