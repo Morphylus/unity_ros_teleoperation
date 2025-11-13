@@ -229,7 +229,6 @@ The Control Input visualization has **two modes** that can be toggled during run
 - Uses LineRenderer for 3D line visualization
 - Converts ROS FLU coordinates to Unity
 
-
 ---
 
 ## Runtime Controls
@@ -287,7 +286,6 @@ Each visualization topic follows a consistent two-component pattern:
 - Inherits from `SensorManager` base class
 - Uses custom editor (`*ManagerEditor` inheriting from `SensorManagerEditor`)
 - Enables unified control and configuration
-
 
 ---
 
