@@ -5,6 +5,7 @@ using RosMessageTypes.Geometry;
 using Unity.Robotics.ROSTCPConnector;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class EstimatorCarStream : SensorStream
 {
@@ -22,6 +23,16 @@ public class EstimatorCarStream : SensorStream
     private TrailRenderer trail;
     public float trailTime = 3f;
     public Color trailColor = Color.blue;
+
+    private KeyCode toggleCarKey = KeyCode.F;
+    private KeyCode toggleTrailKey = KeyCode.G;
+    
+    // Quest controller button mappings (Left Hand)
+    private InputFeatureUsage<bool> questToggleCarButton = CommonUsages.menuButton;
+    private InputFeatureUsage<bool> questToggleTrailButton = CommonUsages.gripButton;
+    
+    private bool wasCarButtonPressed = false;
+    private bool wasTrailButtonPressed = false;
 
     void Awake()
     {
@@ -69,6 +80,21 @@ public class EstimatorCarStream : SensorStream
 
     void Update()
     {
+        // Handle keyboard input (Desktop)
+        if (Input.GetKeyDown(toggleCarKey))
+        {
+            showEstimator = !showEstimator;
+        }
+        
+        if (Input.GetKeyDown(toggleTrailKey))
+        {
+            showTrail = !showTrail;
+        }
+
+        // Handle Quest controller input
+        HandleQuestInput();
+
+        // Update visibility
         if (carInstance != null)
         {
             carInstance.SetActive(showEstimator);
@@ -77,6 +103,37 @@ public class EstimatorCarStream : SensorStream
         if (trailObject != null)
         {
             trailObject.SetActive(showTrail);
+        }
+    }
+
+    private void HandleQuestInput()
+    {
+        // Get the left controller
+        InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        
+        if (leftController.isValid)
+        {
+            // Toggle car visibility
+            bool carButtonPressed;
+            if (leftController.TryGetFeatureValue(questToggleCarButton, out carButtonPressed))
+            {
+                if (carButtonPressed && !wasCarButtonPressed)
+                {
+                    showEstimator = !showEstimator;
+                }
+                wasCarButtonPressed = carButtonPressed;
+            }
+            
+            // Toggle trail visibility
+            bool trailButtonPressed;
+            if (leftController.TryGetFeatureValue(questToggleTrailButton, out trailButtonPressed))
+            {
+                if (trailButtonPressed && !wasTrailButtonPressed)
+                {
+                    showTrail = !showTrail;
+                }
+                wasTrailButtonPressed = trailButtonPressed;
+            }
         }
     }
 

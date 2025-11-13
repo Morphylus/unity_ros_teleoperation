@@ -6,6 +6,7 @@ using Unity.Robotics.ROSTCPConnector;
 using Unity.Robotics.ROSTCPConnector.ROSGeometry;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 
 public class CarStream : SensorStream
 {
@@ -13,6 +14,8 @@ public class CarStream : SensorStream
     private GameObject carInstance;
     public float carScale = 0.4f;
     public Material carMaterial;
+    
+    public bool showCar = true;
 
     // Trail settings
     public bool showTrail = true;
@@ -20,6 +23,18 @@ public class CarStream : SensorStream
     private TrailRenderer trail;
     public float trailTime = 3f;
     public Color trailColor = Color.white;
+
+    // Input settings
+    [Header("Input Settings")]
+    private KeyCode toggleCarKey = KeyCode.J;
+    private KeyCode toggleTrailKey = KeyCode.H;
+    
+    // Quest controller button mappings (Right Hand)
+    private InputFeatureUsage<bool> questToggleCarButton = CommonUsages.menuButton;
+    private InputFeatureUsage<bool> questToggleTrailButton = CommonUsages.gripButton;
+    
+    private bool wasCarButtonPressed = false;
+    private bool wasTrailButtonPressed = false;
 
     void Awake()
     {
@@ -49,6 +64,8 @@ public class CarStream : SensorStream
             {
                 renderer.material = carMaterial;
             }
+            
+            carInstance.SetActive(showCar);
         }
 
         // Create separate trail object
@@ -67,10 +84,60 @@ public class CarStream : SensorStream
 
     void Update()
     {
-        // Toggle trail visibility
+        // Handle keyboard input (Desktop)
+        if (Input.GetKeyDown(toggleCarKey))
+        {
+            showCar = !showCar;
+        }
+        
+        if (Input.GetKeyDown(toggleTrailKey))
+        {
+            showTrail = !showTrail;
+        }
+
+        // Handle Quest controller input
+        HandleQuestInput();
+
+        // Update visibility
+        if (carInstance != null)
+        {
+            carInstance.SetActive(showCar);
+        }
+        
         if (trailObject != null)
         {
             trailObject.SetActive(showTrail);
+        }
+    }
+
+    private void HandleQuestInput()
+    {
+        // Get the right controller
+        InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        
+        if (rightController.isValid)
+        {
+            // Toggle car visibility
+            bool carButtonPressed;
+            if (rightController.TryGetFeatureValue(questToggleCarButton, out carButtonPressed))
+            {
+                if (carButtonPressed && !wasCarButtonPressed)
+                {
+                    showCar = !showCar;
+                }
+                wasCarButtonPressed = carButtonPressed;
+            }
+            
+            // Toggle trail visibility
+            bool trailButtonPressed;
+            if (rightController.TryGetFeatureValue(questToggleTrailButton, out trailButtonPressed))
+            {
+                if (trailButtonPressed && !wasTrailButtonPressed)
+                {
+                    showTrail = !showTrail;
+                }
+                wasTrailButtonPressed = trailButtonPressed;
+            }
         }
     }
 
