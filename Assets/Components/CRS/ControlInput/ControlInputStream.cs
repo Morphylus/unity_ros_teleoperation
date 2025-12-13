@@ -150,6 +150,12 @@ public class ControlInputStream : SensorStream
 
     private void SetupUIElements()
     {
+        // Only setup UI elements if the panels are assigned
+        if (torqueBarPanel == null || steeringWheelPanel == null)
+        {
+            return;
+        }
+
         _torqueBarFillPositive = torqueBarPanel.transform.Find("TorqueBarFillPositive").GetComponent<Image>();
         _torqueBarFillNegative = torqueBarPanel.transform.Find("TorqueBarFillNegative").GetComponent<Image>();
         _torqueValueText = torqueBarPanel.transform.Find("TorqueValueText").GetComponent<TextMeshProUGUI>();
